@@ -1,0 +1,27 @@
+interface ButtonProps {
+  label: string;
+  onClick?: () => void;
+}
+
+export default class Button {
+  private readonly label: string = '';
+
+  private readonly onClick: () => void;
+
+  constructor(props: ButtonProps) {
+    this.label = props.label;
+
+    this.onClick = props.onClick;
+  }
+
+  render() {
+    const component = document.createElement('button');
+    component.textContent = this.label;
+
+    if (this.onClick) {
+      component.addEventListener('click', this.onClick.bind(this));
+    }
+
+    return component;
+  }
+}
