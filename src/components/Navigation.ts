@@ -7,9 +7,9 @@ export default class Navigation {
   isLinkActive(el: HTMLElement) {
     const links = document.querySelectorAll('.menu__item');
     links.forEach((element) => {
-      (element as HTMLElement).style.fontWeight = 'normal';
+      (element as HTMLElement).style.background = 'none';
     });
-    el.style.fontWeight = 'bold';
+    el.style.backgroundColor = '#ffffff30';
   }
 
   render() {
@@ -20,7 +20,7 @@ export default class Navigation {
       const link = document.createElement('li');
       link.className = 'menu__item';
       if (i === 0) {
-        link.style.fontWeight = 'bold';
+        link.style.backgroundColor = '#ffffff30';
       }
 
       const iconWrap = document.createElement('div');
