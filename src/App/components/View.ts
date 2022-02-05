@@ -1,5 +1,5 @@
-/* eslint-disable no-empty-function */
 import Controller from './Controller';
+import { MainPage } from '../../pages';
 
 export default class View {
   private appPage: Element | null = null;
@@ -9,11 +9,12 @@ export default class View {
   changePage(page: string) {
     switch (page.slice(1)) {
       case 'main':
-        // this.appPage = /* func() */;
+        this.appPage = new MainPage().render();
         break;
 
       case 'textbook':
-        //  this.appPage = ;
+        //  this.appPage = comp;
+
         break;
 
       case 'games':

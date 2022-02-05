@@ -22,5 +22,33 @@ a:hover {
 ul {
   list-style-type: none;
   padding: 0;
+  margin: 0;
+}
+
+.menu {
+  background: -webkit-gradient(linear, left top, left bottom, from(#785cad), to(#eb6897));
+  background: linear-gradient(180deg, #785cad 0%, #eb6897 100%);
+  max-width: 300px;
+  height: 100vh;
+}
+
+.menu__link {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: white;
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+.menu__icon-wrap {
+  padding-right: 20px;
+}
+
+.menu__item {
+  padding-left: 30px;
 }
 /*# sourceMappingURL=style.css.map */
