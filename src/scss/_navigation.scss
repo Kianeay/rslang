@@ -8,13 +8,19 @@
     align-items: center;
     color: white;
     font-size: $font-med;
+
+    &.active {
+      background-color: #ffffff42;
+    }
+
+    &:hover {
+      background-color: #ffffff7e;
+      transition: all 1s;
+    }
   }
 
   &__icon-wrap {
     padding-right: 20px;
-  }
-
-  &__item {
     padding-left: 30px;
   }
 }

@@ -43,11 +43,18 @@ ul {
   font-size: 1.125rem;
 }
 
-.menu__icon-wrap {
-  padding-right: 20px;
+.menu__link.active {
+  background-color: #ffffff42;
 }
 
-.menu__item {
+.menu__link:hover {
+  background-color: #ffffff7e;
+  -webkit-transition: all 1s;
+  transition: all 1s;
+}
+
+.menu__icon-wrap {
+  padding-right: 20px;
   padding-left: 30px;
 }
 /*# sourceMappingURL=style.css.map */

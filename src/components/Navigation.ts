@@ -4,14 +4,6 @@ import { MenuTitle } from '../constants';
 export default class Navigation {
   constructor() {}
 
-  isLinkActive(el: HTMLElement) {
-    const links = document.querySelectorAll('.menu__item');
-    links.forEach((element) => {
-      (element as HTMLElement).style.background = 'none';
-    });
-    el.style.backgroundColor = '#ffffff30';
-  }
-
   render() {
     const component = document.createElement('ul');
     component.className = 'menu';
@@ -19,9 +11,6 @@ export default class Navigation {
     MenuTitle.forEach((item, i) => {
       const link = document.createElement('li');
       link.className = 'menu__item';
-      if (i === 0) {
-        link.style.backgroundColor = '#ffffff30';
-      }
 
       const iconWrap = document.createElement('div');
       iconWrap.className = 'menu__icon-wrap';
@@ -38,8 +27,6 @@ export default class Navigation {
       linkName.append(iconWrap, linkText);
       link.append(linkName);
       component.append(link);
-
-      linkName.addEventListener('click', () => this.isLinkActive(link));
     });
 
     return component;
