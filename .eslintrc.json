@@ -33,6 +33,8 @@
         "object-curly-newline":"off",
         "import/prefer-default-export": "off",
         "no-empty-function":"off",
-        "class-methods-use-this":"off"
+        "class-methods-use-this":"off",
+        "implicit-arrow-linebreak":"off",
+        "function-paren-newline": "off"
     }
 }

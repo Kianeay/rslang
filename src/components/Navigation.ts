@@ -1,15 +1,27 @@
+/* eslint-disable no-param-reassign */
 import { MenuTitle } from '../constants';
 
 export default class Navigation {
   constructor() {}
 
+  isLinkActive(el: HTMLElement) {
+    const links = document.querySelectorAll('.menu__item');
+    links.forEach((element) => {
+      (element as HTMLElement).style.fontWeight = 'normal';
+    });
+    el.style.fontWeight = 'bold';
+  }
+
   render() {
     const component = document.createElement('ul');
     component.className = 'menu';
 
-    MenuTitle.forEach((item) => {
+    MenuTitle.forEach((item, i) => {
       const link = document.createElement('li');
       link.className = 'menu__item';
+      if (i === 0) {
+        link.style.fontWeight = 'bold';
+      }
 
       const iconWrap = document.createElement('div');
       iconWrap.className = 'menu__icon-wrap';
@@ -26,6 +38,8 @@ export default class Navigation {
       linkName.append(iconWrap, linkText);
       link.append(linkName);
       component.append(link);
+
+      linkName.addEventListener('click', () => this.isLinkActive(link));
     });
 
     return component;
