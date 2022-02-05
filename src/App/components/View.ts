@@ -39,8 +39,6 @@ export default class View {
   }
 
   updateLink(currentPage: string) {
-    console.log(currentPage);
-
     const links = document.querySelectorAll('.menu__link');
     links.forEach((el) => {
       if (currentPage === el.getAttribute('href')) {

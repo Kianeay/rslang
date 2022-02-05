@@ -19,17 +19,36 @@ a:hover {
   text-decoration: none;
 }
 
+h1 {
+  margin-top: 0;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
 }
 
+.button {
+  background-color: #d2448d;
+  color: white;
+  outline: none;
+  border: none;
+  width: 180px;
+  height: 50px;
+  font-size: 1.5rem;
+  border-top-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  cursor: pointer;
+}
+
 .menu {
   background: -webkit-gradient(linear, left top, left bottom, from(#785cad), to(#eb6897));
   background: linear-gradient(180deg, #785cad 0%, #eb6897 100%);
-  max-width: 300px;
+  width: 240px;
   height: 100vh;
+  position: fixed;
+  padding-top: 200px;
 }
 
 .menu__link {
@@ -41,6 +60,7 @@ ul {
           align-items: center;
   color: white;
   font-size: 1.125rem;
+  height: 70px;
 }
 
 .menu__link.active {
@@ -56,5 +76,69 @@ ul {
 .menu__icon-wrap {
   padding-right: 20px;
   padding-left: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.menu__img {
+  width: 50px;
+}
+
+.main {
+  position: relative;
+}
+
+.main__wrap {
+  margin-left: 240px;
+  padding-left: 50px;
+  position: relative;
+  background-image: url("../assets/images/gray-back.svg");
+  background-repeat: no-repeat;
+  width: 35%;
+  background-size: contain;
+}
+
+.main h1 {
+  font-size: 7vw;
+  color: #785cad;
+  padding-top: 50px;
+}
+
+.main__subtitle {
+  color: #5d6571;
+  font-size: 1.125rem;
+  max-width: 80%;
+  padding-top: 50px;
+}
+
+.main__login {
+  position: absolute;
+  right: 30px;
+  top: 30px;
+  background-color: #a68efe;
+  font-size: 1.125rem;
+  padding-left: 50px;
+}
+
+.main__login::before {
+  content: url("../assets/images/user.svg");
+  position: absolute;
+  left: 30px;
+  top: 0;
+}
+
+.main__start {
+  margin-top: 50px;
+}
+
+.main__img {
+  position: absolute;
+  right: 70px;
+  top: 70px;
+  width: 45vw;
 }
 /*# sourceMappingURL=style.css.map */

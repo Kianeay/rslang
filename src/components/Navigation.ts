@@ -15,6 +15,7 @@ export default class Navigation {
       const iconWrap = document.createElement('div');
       iconWrap.className = 'menu__icon-wrap';
       const svg = document.createElement('img');
+      svg.className = 'menu__img';
       svg.src = `src/assets/images/${item.iconName}`;
       iconWrap.append(svg);
 

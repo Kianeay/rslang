@@ -17,6 +17,7 @@ export default class Button {
   render() {
     const component = document.createElement('button');
     component.textContent = this.label;
+    component.className = 'button';
 
     if (this.onClick) {
       component.addEventListener('click', this.onClick.bind(this));
