@@ -40,3 +40,13 @@ ul {
   border-bottom-right-radius: 30px;
   cursor: pointer;
 }
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+}
+
+.content {
+  overflow-y: auto;
+  flex-grow: 1;
+}

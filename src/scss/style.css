@@ -42,12 +42,30 @@ ul {
   cursor: pointer;
 }
 
+.wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.content {
+  overflow-y: auto;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
 .nav {
   background: -webkit-gradient(linear, left top, left bottom, from(#785cad), to(#eb6897));
   background: linear-gradient(180deg, #785cad 0%, #eb6897 100%);
-  width: 240px;
+  -webkit-transition: all 1.5s;
+  transition: all 1.5s;
+  width: 115px;
   height: 100vh;
-  position: fixed;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -60,12 +78,26 @@ ul {
           justify-content: space-between;
 }
 
-.nav__icon-wrap {
+.nav.open {
+  width: 240px;
+  -webkit-transition: all 1.5s;
+  transition: all 1.5s;
+}
+
+.nav__close-wrap {
   margin-top: 20px;
   -ms-flex-item-align: end;
       -ms-grid-row-align: end;
       align-self: end;
   margin-right: 20px;
+  cursor: pointer;
+}
+
+.nav__burger-wrap {
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
+  margin-top: 20px;
   cursor: pointer;
 }
 
@@ -82,6 +114,15 @@ ul {
   left: 30px;
   top: 10px;
   width: 30px;
+}
+
+.nav__logout-wrap {
+  width: 50px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  -ms-flex-item-align: center;
+      -ms-grid-row-align: center;
+      align-self: center;
 }
 
 .menu__link {
@@ -121,12 +162,15 @@ ul {
   width: 50px;
 }
 
+.none {
+  display: none;
+}
+
 .main {
   position: relative;
 }
 
 .main__wrap {
-  margin-left: 240px;
   padding-left: 50px;
   position: relative;
   background-image: url("../assets/images/gray-back.svg");

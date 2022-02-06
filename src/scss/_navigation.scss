@@ -1,16 +1,28 @@
 .nav {
+  &.open {
+    width: 240px;
+    transition: all 1.5s;
+  }
+
   background: linear-gradient(180deg, #785cad 0%, #eb6897 100%);
-  width: 240px;
+  transition: all 1.5s;
+  width: 115px;
   height: 100vh;
-  position: fixed;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
-  &__icon-wrap {
+  &__close-wrap {
     margin-top: 20px;
     align-self: end;
     margin-right: 20px;
+    cursor: pointer;
+  }
+
+  &__burger-wrap {
+    align-self: center;
+    margin-top: 20px;
     cursor: pointer;
   }
 
@@ -27,6 +39,13 @@
       top: 10px;
       width: 30px;
     }
+  }
+
+  &__logout-wrap {
+    width: 50px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    align-self: center;
   }
 }
 
@@ -58,4 +77,8 @@
   &__img {
     width: 50px;
   }
+}
+
+.none {
+  display: none;
 }
