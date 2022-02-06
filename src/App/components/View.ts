@@ -1,5 +1,5 @@
-/* eslint-disable no-empty-function */
 import Controller from './Controller';
+import { MainPage, TextbookPage } from '../../pages';
 
 export default class View {
   private appPage: Element | null = null;
@@ -9,11 +9,12 @@ export default class View {
   changePage(page: string) {
     switch (page.slice(1)) {
       case 'main':
-        // this.appPage = /* func() */;
+        this.appPage = new MainPage().render();
         break;
 
       case 'textbook':
-        //  this.appPage = ;
+        this.appPage = new TextbookPage().render();
+
         break;
 
       case 'games':
@@ -33,5 +34,24 @@ export default class View {
     }
     this.root.innerHTML = '';
     this.root.append(this.appPage);
+
+    this.updateLink(page);
+  }
+
+  updateLink(currentPage: string) {
+    const links = document.querySelectorAll('.menu__link');
+    links.forEach((el) => {
+      if (currentPage === el.getAttribute('href')) {
+        el.classList.add('active');
+      } else {
+        el.classList.remove('active');
+      }
+    });
+
+    /*   for (const link of links) {
+      currentPage === link.getAttribute('href').slice(1)
+        ? link.classList.add('active')
+        : link.classList.remove('active');
+    } */
   }
 }

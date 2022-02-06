@@ -1,0 +1,35 @@
+.menu {
+  background: linear-gradient(180deg, #785cad 0%, #eb6897 100%);
+  width: 240px;
+  height: 100vh;
+  position: fixed;
+  padding-top: 200px;
+
+  &__link {
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: $font-med;
+    height: 70px;
+
+    &.active {
+      background-color: #ffffff42;
+    }
+
+    &:hover {
+      background-color: #ffffff7e;
+      transition: all 1s;
+    }
+  }
+
+  &__icon-wrap {
+    padding-right: 20px;
+    padding-left: 30px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__img {
+    width: 50px;
+  }
+}

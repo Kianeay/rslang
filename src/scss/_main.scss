@@ -1,0 +1,52 @@
+.main {
+  position: relative;
+  &__wrap {
+    margin-left: 240px;
+    padding-left: 50px;
+    position: relative;
+    background-image: url('../assets/images/gray-back.svg');
+    background-repeat: no-repeat;
+    width: 35%;
+    background-size: contain;
+  }
+
+  h1 {
+    font-size: 7vw;
+    color: $violet;
+    padding-top: 50px;
+  }
+
+  &__subtitle {
+    color: $gray;
+    font-size: $font-med;
+    max-width: 80%;
+    padding-top: 50px;
+  }
+
+  &__login {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    background-color: $light-violet;
+    font-size: $font-med;
+    padding-left: 50px;
+
+    &::before {
+      content: url('../assets/images/user.svg');
+      position: absolute;
+      left: 30px;
+      top: 0;
+    }
+  }
+
+  &__start {
+    margin-top: 50px;
+  }
+
+  &__img {
+    position: absolute;
+    right: 70px;
+    top: 70px;
+    width: 45vw;
+  }
+}
