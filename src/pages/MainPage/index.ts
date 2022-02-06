@@ -68,10 +68,7 @@ export default class MainPage {
     const component = document.createElement('div');
     component.className = 'main';
 
-    const nav = new Navigation().render();
-
     component.append(
-      nav,
       this.createMainContent(),
       this.createMainBackground(),
       this.createLoginBtn(),

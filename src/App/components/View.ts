@@ -1,10 +1,17 @@
 import Controller from './Controller';
 import { MainPage, TextbookPage } from '../../pages';
+import { Navigation } from '../../components';
 
 export default class View {
   private appPage: Element | null = null;
 
-  constructor(private controller: Controller, private root: Element) {}
+  private nav: Element | null = null;
+
+  private content: Element | null = null;
+
+  constructor(private controller: Controller, private root: Element) {
+    this.createRoot(root);
+  }
 
   changePage(page: string) {
     switch (page.slice(1)) {
@@ -32,10 +39,27 @@ export default class View {
       default:
         break;
     }
-    this.root.innerHTML = '';
-    this.root.append(this.appPage);
+
+    this.content.innerHTML = '';
+    this.content.append(this.appPage);
 
     this.updateLink(page);
+  }
+
+  createRoot(root: Element) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'wrapper';
+
+    const nav = new Navigation().render();
+    this.nav = nav;
+
+    const content = document.createElement('div');
+    content.className = 'content';
+    this.content = content;
+
+    wrapper.append(nav, content);
+
+    root.append(wrapper);
   }
 
   updateLink(currentPage: string) {
