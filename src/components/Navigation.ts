@@ -1,3 +1,4 @@
+import Button from './Button';
 import { MenuTitle } from '../constants';
 
 interface MenuTitleItem {
@@ -7,6 +8,23 @@ interface MenuTitleItem {
 
 export default class Navigation {
   constructor() {}
+
+  private createCloseIcon() {
+    const closeMenu = () => {
+      console.log('menu');
+    };
+
+    const iconWrap = document.createElement('div');
+    iconWrap.className = 'nav__icon-wrap';
+    const svg = document.createElement('img');
+    svg.className = 'nav__img';
+    svg.src = 'src/assets/images/close.svg';
+    iconWrap.append(svg);
+
+    iconWrap.addEventListener('click', () => closeMenu());
+
+    return iconWrap;
+  }
 
   private createIcon(iconName: string) {
     const iconWrap = document.createElement('div');
@@ -35,13 +53,27 @@ export default class Navigation {
     return link;
   }
 
+  private createLogoutBtn() {
+    const logOut = () => {
+      console.log('logout');
+    };
+    const btn = new Button({ label: 'Log out', onClick: logOut }).render();
+    btn.className = 'nav__logout button';
+
+    return btn;
+  }
+
   render() {
-    const component = document.createElement('ul');
-    component.className = 'menu';
+    const component = document.createElement('nav');
+    component.className = 'nav';
+    const menu = document.createElement('ul');
+    menu.className = 'menu';
 
     MenuTitle.forEach((item, i) => {
-      component.append(this.createLink(item));
+      menu.append(this.createLink(item));
     });
+
+    component.append(this.createCloseIcon(), menu, this.createLogoutBtn());
 
     return component;
   }

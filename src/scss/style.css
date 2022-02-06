@@ -42,13 +42,46 @@ ul {
   cursor: pointer;
 }
 
-.menu {
+.nav {
   background: -webkit-gradient(linear, left top, left bottom, from(#785cad), to(#eb6897));
   background: linear-gradient(180deg, #785cad 0%, #eb6897 100%);
   width: 240px;
   height: 100vh;
   position: fixed;
-  padding-top: 200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.nav__icon-wrap {
+  margin-top: 20px;
+  -ms-flex-item-align: end;
+      -ms-grid-row-align: end;
+      align-self: end;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.nav__logout {
+  position: relative;
+  background: none;
+  padding-left: 50px;
+  margin-bottom: 20px;
+}
+
+.nav__logout::before {
+  content: url("../assets/images/logout.svg");
+  position: absolute;
+  left: 30px;
+  top: 10px;
+  width: 30px;
 }
 
 .menu__link {

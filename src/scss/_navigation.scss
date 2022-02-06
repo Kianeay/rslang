@@ -1,10 +1,36 @@
-.menu {
+.nav {
   background: linear-gradient(180deg, #785cad 0%, #eb6897 100%);
   width: 240px;
   height: 100vh;
   position: fixed;
-  padding-top: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 
+  &__icon-wrap {
+    margin-top: 20px;
+    align-self: end;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  &__logout {
+    position: relative;
+    background: none;
+    padding-left: 50px;
+    margin-bottom: 20px;
+
+    &::before {
+      content: url('../assets/images/logout.svg');
+      position: absolute;
+      left: 30px;
+      top: 10px;
+      width: 30px;
+    }
+  }
+}
+
+.menu {
   &__link {
     display: flex;
     align-items: center;
