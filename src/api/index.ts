@@ -1,9 +1,11 @@
-const BASE_URL = 'https://react-learnwords2022.herokuapp.com/';
-const WORDS_URL = `${BASE_URL}words`;
-const USERS_URL = `${BASE_URL}users`;
-const SIGNIN_URL = `${BASE_URL}signin`;
+enum EndPoints {
+  BASE_URL = 'https://react-learnwords2022.herokuapp.com/',
+  WORDS_URL = 'https://react-learnwords2022.herokuapp.com/words',
+  USERS_URL = 'https://react-learnwords2022.herokuapp.com/users',
+  SIGNIN_URL = 'https://react-learnwords2022.herokuapp.com/signin',
+}
 
-type words = {
+type Words = {
   id : string,
   group: number,
   page: number,
@@ -20,13 +22,13 @@ type words = {
   textExampleTranslate: string
 }
 
-type user = {
+type User = {
   name?: string;
   email: string;
   password: string;
 }
 
-type userTokens = {
+type UserTokens = {
   message: string;
   token: string;
   refreshToken: string;
@@ -34,56 +36,58 @@ type userTokens = {
   name: string;
 }
 
-type headers = {
+type Headers = {
   Authorization?: string;
   Accept?: string;
   'Content-Type'?: string;
 }
 
-type optionalObj = {
+type OptionalObj = {
   [key: string]: string;
 }
 
 type MongoDB_ObjectAnd = {
-  '$and' : optionalObj[];
+  '$and' : OptionalObj[];
 }
 type MongoDB_ObjectOr = {
-  '$or': optionalObj[];
+  '$or': OptionalObj[];
 }
 
 type MongoDB_ObjectOrAnd = {
   '$or': MongoDB_ObjectAnd[];
 }
 
-type MongoDB_Object = optionalObj | MongoDB_ObjectAnd | MongoDB_ObjectOr | MongoDB_ObjectOrAnd;
+type MongoDB_Object = OptionalObj | MongoDB_ObjectAnd | MongoDB_ObjectOr | MongoDB_ObjectOrAnd;
 
-interface optionsObj {
+interface OptionsObj {
   method?: string;
-  headers?: headers;
+  headers?: Headers;
   body?: string;
   filter?: MongoDB_Object;
 }
 
 type UsersWordParameter = {
   difficulty: string;
-  optional?: optionalObj;
+  optional?: OptionalObj;
 }
 
 type UserStatistic = {
   learnedWords: number;
-  options?: optionalObj;
+  options?: OptionalObj;
 }
 
 type UserSettings = {
   wordsPerDay: number;
-  options?: optionalObj;
+  options?: OptionalObj;
 }
 
-const setLocalToken = (token: string) => localStorage.setItem('token', token);
-const setLocalRefreshToken = (token: string) => localStorage.setItem('refreshToken', token);
+const setLocalTokens = (token: string, refreshToken: string) => {
+  localStorage.setItem('token', token);
+  localStorage.setItem('refreshToken', refreshToken);
+};
 const setLocalId = (id: string) => localStorage.setItem('userID', id);
 
-const load = async (url: string, options: optionsObj) => {
+const load = async (url: string, options: OptionsObj) => {
   const token = localStorage.getItem('token');
   const makeOpt = { ...options };
   if (makeOpt.headers) {
@@ -102,7 +106,7 @@ const load = async (url: string, options: optionsObj) => {
 
 // Получить токены
 const getTokens = async (id: string) => {
-  const response = await fetch(`${USERS_URL}/${id}/tokens`, {
+  const response = await fetch(`${EndPoints.USERS_URL}/${id}/tokens`, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('refreshToken')}`,
     },
@@ -110,36 +114,39 @@ const getTokens = async (id: string) => {
   if (!response.ok) {
     console.log('Вывести сообщение с просьбой войти или зарегистрироваться');
   } else {
-    const content: userTokens = await response.json();
-    setLocalToken(content.token);
-    setLocalRefreshToken(content.refreshToken);
+    const content: UserTokens = await response.json();
+    setLocalTokens(content.token, content.refreshToken);
   }
 };
 
 const errorHandler = async (promise: Response, data: string) => {
-  if (promise.status === 404) {
-    console.error(`${data} not found`);
-  }
-  if (promise.status === 401) {
-    console.log('change token');
-    await getTokens(localStorage.getItem('userID'));
-  }
-  if (promise.status === 417) {
-    console.error(`${data} has been create`);
-  }
-  if (promise.status === 422) {
-    console.error('Incorrect e-mail or password');
-  }
-  if (promise.status === 400) {
-    console.error('Bad request');
-  }
-  if (promise.status === 403) {
-    // logout => modal window signIn
-    console.error('Bad request');
+  switch (promise.status) {
+    case 404:
+      console.error(`${data} not found`);
+      break;
+    case 401:
+      console.log('change token');
+      await getTokens(localStorage.getItem('userID'));
+      break;
+    case 417:
+      console.error(`${data} has been create`);
+      break;
+    case 422:
+      console.error('Incorrect e-mail or password');
+      break;
+    case 400:
+      console.error('Bad request');
+      break;
+    case 403:
+      // logout => modal window signIn
+      console.error('incorect email or password');
+      break;
+    default:
+      console.error('uncaught error');
   }
 };
 
-const requestWrapper = async (url: string, options: optionsObj, type: string) => {
+const requestWrapper = async (url: string, options: OptionsObj, type: string) => {
   try {
     let response = await load(url, options);
     if (!response.ok && response.status === 401) {
@@ -159,8 +166,8 @@ const requestWrapper = async (url: string, options: optionsObj, type: string) =>
 };
 
 // создание нового User
-export const createUser = async (userData: user) => {
-  const response = await fetch(USERS_URL, {
+export const createUser = async (userData: User) => {
+  const response = await fetch(EndPoints.USERS_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -170,15 +177,15 @@ export const createUser = async (userData: user) => {
   if (!response.ok) {
     errorHandler(response, 'user');
   } else {
-    const content: user = await response.json();
+    const content: User = await response.json();
     return content;
   }
   return null;
 };
 
 // Регистрация User
-export const signIn = async (userData: user) => {
-  const response = await fetch(SIGNIN_URL, {
+export const signIn = async (userData: User) => {
+  const response = await fetch(EndPoints.SIGNIN_URL, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -189,9 +196,8 @@ export const signIn = async (userData: user) => {
   if (!response.ok) {
     errorHandler(response, 'user');
   } else {
-    const content: userTokens = await response.json();
-    setLocalToken(content.token);
-    setLocalRefreshToken(content.refreshToken);
+    const content: UserTokens = await response.json();
+    setLocalTokens(content.token, content.refreshToken);
     setLocalId(content.userId);
     return content;
   }
@@ -200,13 +206,13 @@ export const signIn = async (userData: user) => {
 
 // Получить User
 export const getUser = async (id: string) => {
-  const response = requestWrapper(`${USERS_URL}/${id}`, {}, 'user');
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}`, {}, 'user');
   return response;
 };
 
 // Изменить пользователя
-export const changeUserParameters = async (id: string, userData: user) => {
-  const response = requestWrapper(`${USERS_URL}/${id}`, {
+export const changeUserParameters = async (id: string, userData: User) => {
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -219,7 +225,7 @@ export const changeUserParameters = async (id: string, userData: user) => {
 
 // Удалить пользователя
 export const removeUser = async (id: string) => {
-  const response = requestWrapper(`${USERS_URL}/${id}`, { method: 'DELETE' }, 'user');
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}`, { method: 'DELETE' }, 'user');
   if (response) {
     console.log('The user has been deleted');
   }
@@ -227,11 +233,11 @@ export const removeUser = async (id: string) => {
 
 // Получить все слова с базы данных
 export const getWords = async () => {
-  const response = await fetch(`${WORDS_URL}`);
+  const response = await fetch(`${EndPoints.WORDS_URL}`);
   if (!response.ok) {
     errorHandler(response, 'words');
   } else {
-    const result: Array<words> = await response.json();
+    const result: Array<Words> = await response.json();
     return result;
   }
   return null;
@@ -239,11 +245,11 @@ export const getWords = async () => {
 
 // Получить одно слово с базы данных по его ID
 export const getWord = async (id: string) => {
-  const response = await fetch(`${WORDS_URL}/${id}`);
+  const response = await fetch(`${EndPoints.WORDS_URL}/${id}`);
   if (!response.ok) {
     errorHandler(response, 'words');
   } else {
-    const result: words = await response.json();
+    const result: Words = await response.json();
     return result;
   }
   return null;
@@ -251,13 +257,13 @@ export const getWord = async (id: string) => {
 
 // Получить все слова User
 export const getUserWords = async (id: string) => {
-  const response = requestWrapper(`${USERS_URL}/${id}/words`, {}, 'user Words');
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words`, {}, 'user Words');
   return response;
 };
 
 // Получить слово Юзера по ID
 export const getUserWordsId = async (id: string, wordId: string) => {
-  const response = requestWrapper(`${USERS_URL}/${id}/words/${wordId}`, {}, 'user Words');
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words/${wordId}`, {}, 'user Words');
   return response;
 };
 
@@ -267,7 +273,7 @@ export const createUserWords = async (
   wordId: string,
   userWordParameter: UsersWordParameter,
 ) => {
-  const response = requestWrapper(`${USERS_URL}/${id}/words/${wordId}`, {
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words/${wordId}`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -284,7 +290,7 @@ export const changeUserWord = async (
   wordId: string,
   userWordParameter: UsersWordParameter,
 ) => {
-  const response = requestWrapper(`${USERS_URL}/${id}/words/${wordId}`, {
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words/${wordId}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
@@ -297,13 +303,13 @@ export const changeUserWord = async (
 
 // Удалить слово пользователя
 export const removeUserWord = async (id: string, wordId: string) => {
-  const response = requestWrapper(`${USERS_URL}/${id}/words/${wordId}`, { method: 'DELETE' }, 'user words');
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words/${wordId}`, { method: 'DELETE' }, 'user words');
   if (response) {
     console.log('The words has been deleted');
   }
 };
 
-const makeUrl = (baseUrl:string, options: optionalObj) => {
+const makeUrl = (baseUrl:string, options: OptionalObj) => {
   const urlOptions = { ...options };
   let url:string = `${baseUrl}?`;
 
@@ -316,26 +322,26 @@ const makeUrl = (baseUrl:string, options: optionalObj) => {
 // Cгруппировать слова
 export const getAggregatedWords = async (id: string, group = '', page = '', wordsPerPage = '', filterObj: MongoDB_Object = {}) => {
   const filter = JSON.stringify(filterObj) || '';
-  const url = makeUrl(`${USERS_URL}/${id}/aggregatedWords`, { page, filter, group, wordsPerPage });
-  const response = requestWrapper(url, {}, 'user Words');
+  const url = makeUrl(`${EndPoints.USERS_URL}/${id}/aggregatedWords`, { page, filter, group, wordsPerPage });
+  const response = await requestWrapper(url, {}, 'user Words');
   return response;
 };
 
 // Cгруппировать слово
 export const getAggregatedWord = async (id: string, wordId: string) => {
-  const response = requestWrapper(`${USERS_URL}/${id}/aggregatedWords/${wordId}`, {}, 'user Words');
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/aggregatedWords/${wordId}`, {}, 'user Words');
   return response;
 };
 
 // Получить статистику User
 export const getUserStatistics = async (id: string) => {
-  const response = requestWrapper(`${USERS_URL}/${id}/statistics}`, {}, 'user statistics');
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/statistics}`, {}, 'user statistics');
   return response;
 };
 
 // Исправить статистику User
 export const changeUserStatistics = async (id: string, statistic: UserStatistic) => {
-  const response = requestWrapper(`${USERS_URL}/${id}/statistics}`, {
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/statistics}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
@@ -348,13 +354,13 @@ export const changeUserStatistics = async (id: string, statistic: UserStatistic)
 
 // Получить настройки User
 export const getUserSettings = async (id: string) => {
-  const response = requestWrapper(`${USERS_URL}/${id}/settings}`, {}, 'user settings');
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/settings}`, {}, 'user settings');
   return response;
 };
 
 // Исправить настройки User
 export const changeUserSettings = async (id: string, settings: UserSettings) => {
-  const response = requestWrapper(`${USERS_URL}/${id}/statistics}`, {
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/statistics}`, {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
