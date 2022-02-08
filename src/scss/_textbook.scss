@@ -1,0 +1,26 @@
+.textbook {
+ &__wrap {
+    padding-left: 50px;
+    position: relative;
+    background-image: url('../assets/images/gray-back.svg');
+    background-repeat: no-repeat;
+    background-position: center -35px;
+    width: 20%;
+    background-size: contain;
+
+    h2 {
+      font-size: 3vw;
+      color: $violet;
+      padding-top: 15px;
+    }
+
+    h3 {
+      font-size: 1vw;
+      color: $gray;
+    }
+
+    .dictionary {
+      padding-top: 20px;
+    }
+  }   
+}
