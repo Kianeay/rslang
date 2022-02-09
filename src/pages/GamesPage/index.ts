@@ -18,13 +18,13 @@ export default class GamesPage {
   private createSprintBlock() {
     const sprintText =
       'Check how much points you can get in one minute, making educated guesses about what is right and what is wrong.';
-    const audioBlock = new GamesPreview({
+    const sprintBlock = new GamesPreview({
       title: 'Sprint',
       text: sprintText,
       imgName: 'sprint.svg',
     }).render();
 
-    return audioBlock;
+    return sprintBlock;
   }
 
   render() {
