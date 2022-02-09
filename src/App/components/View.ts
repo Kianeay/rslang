@@ -1,5 +1,5 @@
 import Controller from './Controller';
-import { MainPage, TextbookPage } from '../../pages';
+import { MainPage, TextbookPage, GamesPage } from '../../pages';
 import { Navigation } from '../../components';
 
 export default class View {
@@ -21,11 +21,10 @@ export default class View {
 
       case 'textbook':
         this.appPage = new TextbookPage().render();
-
         break;
 
-      case 'games':
-        //  this.appPage = ;
+      case 'minigames':
+        this.appPage = new GamesPage().render();
         break;
 
       case 'statistics':
