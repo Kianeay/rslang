@@ -1,4 +1,5 @@
 import { Navigation } from '../../components';
+import { getWords } from '../../api';
 
 export default class TextbookPage {
   constructor() { }
@@ -10,6 +11,23 @@ export default class TextbookPage {
     return h2;
   }
 
+  private createWordsList() {
+    const wordList = document.createElement('div');
+    wordList.className = 'dictionary__words-list';
+
+    getWords('0', '4').then(result => {
+      const words = result;
+      words.forEach(item => {
+        const p = document.createElement('p');
+        p.textContent = item.word;
+        wordList.append(p);
+      });
+
+    })
+
+    return wordList;
+  }
+
   private createDictionary() {
     const dictionary = document.createElement('div');
     dictionary.className = 'dictionary';
@@ -18,6 +36,7 @@ export default class TextbookPage {
     h3.textContent = 'Vocabulary difficulty level';
 
     dictionary.append(h3);
+    dictionary.append(this.createWordsList());
     return dictionary;
   }
 
