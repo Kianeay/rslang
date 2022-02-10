@@ -5,41 +5,55 @@ export default class TextbookPage {
   constructor() { }
 
   private createTitle() {
-    const h2 = document.createElement('h2');
-    h2.textContent = 'Textbook';
+    const title = document.createElement('h2');
+    title.textContent = 'Textbook';
+    title.className = "textbook__title";
 
-    return h2;
+    return title;
   }
 
-  private async loadWords(element: HTMLDivElement) {
+  private createDifficultyLevels() {
+    const difficultyLevels = document.createElement('div');
+    difficultyLevels.className = 'difficulty';
+
+    const title = document.createElement('h3');
+    title.textContent = 'Vocabulary difficulty level';
+    title.className = "difficulty__title"
+    difficultyLevels.append(title);
+
+    return difficultyLevels;
+  }
+
+  private async createWordsList(element: HTMLDivElement) {
+    const wordsList = document.createElement('div');
+    wordsList.className = 'words__list';
+    element.append(wordsList);
+
     const words = await getWords('0', '4');
 
     words.forEach(item => {
-      const p = document.createElement('p');
-      p.textContent = item.word;
-      element.append(p);
+      const word = document.createElement('div');
+      word.className = "words__item";
+
+      const wordMeaning = document.createElement('h4');
+      wordMeaning.textContent = item.word;
+      wordMeaning.className = "words__word";
+      word.append(wordMeaning);
+
+      const wordTranslate = document.createElement('p');
+      wordTranslate.textContent = item.wordTranslate;
+      wordTranslate.className = "words__translate";
+      word.append(wordTranslate);
+
+      wordsList.append(word);
     });
-  }
-
-  private createWordsList() {
-    const wordList = document.createElement('div');
-    wordList.className = 'dictionary__words-list';
-
-    this.loadWords(wordList);
-
-    return wordList;
   }
 
   private createDictionary() {
     const dictionary = document.createElement('div');
-    dictionary.className = 'dictionary';
+    dictionary.className = 'words';
 
-    const h3 = document.createElement('h3');
-    h3.textContent = 'Vocabulary difficulty level';
-
-    dictionary.append(h3);
-    this.createWordsList()
-    dictionary.append(this.createWordsList());
+    this.createWordsList(dictionary);
 
     return dictionary;
   }
@@ -58,10 +72,11 @@ export default class TextbookPage {
 
   render() {
     const component = document.createElement('div');
-    component.className = 'textbook__wrap';
+    component.className = 'textbook';
 
     component.append(
       this.createTitle(),
+      this.createDifficultyLevels(),
       this.createDictionary(),
       this.createGamesList(),
     );

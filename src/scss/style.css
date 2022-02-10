@@ -31,6 +31,14 @@ h3 {
   margin: 0;
 }
 
+h4 {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
@@ -227,7 +235,7 @@ ul {
   width: 45vw;
 }
 
-.textbook__wrap {
+.textbook {
   padding-left: 50px;
   position: relative;
   background-image: url("../assets/images/gray-back.svg");
@@ -237,18 +245,22 @@ ul {
   background-size: contain;
 }
 
-.textbook__wrap h2 {
-  font-size: 3vw;
+.textbook__title {
+  font-size: 48px;
   color: #785cad;
   padding-top: 15px;
 }
 
-.textbook__wrap h3 {
-  font-size: 1vw;
+.textbook .difficulty {
+  padding-top: 20px;
+}
+
+.textbook .difficulty__title {
+  font-size: 24px;
   color: #5d6571;
 }
 
-.textbook__wrap .dictionary {
+.textbook .words {
   padding-top: 20px;
 }
 /*# sourceMappingURL=style.css.map */

@@ -1,5 +1,4 @@
 .textbook {
- &__wrap {
     padding-left: 50px;
     position: relative;
     background-image: url('../assets/images/gray-back.svg');
@@ -8,19 +7,22 @@
     width: 20%;
     background-size: contain;
 
-    h2 {
-      font-size: 3vw;
+    &__title {
+      font-size: 48px;
       color: $violet;
       padding-top: 15px;
     }
 
-    h3 {
-      font-size: 1vw;
-      color: $gray;
+    .difficulty {
+      padding-top: 20px;
+
+      &__title {
+        font-size: 24px;
+        color: $gray;
+      }
     }
 
-    .dictionary {
+    .words {
       padding-top: 20px;
     }
-  }   
 }
