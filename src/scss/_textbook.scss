@@ -1,16 +1,15 @@
 .textbook {
     padding-left: 50px;
     position: relative;
-    background-image: url('../assets/images/gray-back.svg');
-    background-repeat: no-repeat;
-    background-position: center -35px;
-    width: 20%;
     background-size: contain;
 
     &__title {
       font-size: 48px;
       color: $violet;
       padding-top: 15px;
+      background-image: url('../assets/images/gray-back.svg');
+      background-repeat: no-repeat;
+      background-position: left -35px;
     }
 
     .difficulty {
@@ -24,5 +23,34 @@
 
     .words {
       padding-top: 20px;
+
+      &__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 22px;
+      }
+
+      &__item {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 256px;
+        height: 100px;
+        background-color: #EAE8ED;
+        border-radius: 16px;
+      }
+
+      &__word {
+        font-weight: bold;
+        font-size: 24px;
+        text-transform: uppercase;
+        color: #785CAD;
+      }
+
+      &__translate {
+        font-size: 24px;
+        color: #000000;
+      }
     }
 }

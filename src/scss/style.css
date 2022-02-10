@@ -238,10 +238,6 @@ ul {
 .textbook {
   padding-left: 50px;
   position: relative;
-  background-image: url("../assets/images/gray-back.svg");
-  background-repeat: no-repeat;
-  background-position: center -35px;
-  width: 20%;
   background-size: contain;
 }
 
@@ -249,6 +245,9 @@ ul {
   font-size: 48px;
   color: #785cad;
   padding-top: 15px;
+  background-image: url("../assets/images/gray-back.svg");
+  background-repeat: no-repeat;
+  background-position: left -35px;
 }
 
 .textbook .difficulty {
@@ -262,5 +261,46 @@ ul {
 
 .textbook .words {
   padding-top: 20px;
+}
+
+.textbook .words__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 22px;
+}
+
+.textbook .words__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 256px;
+  height: 100px;
+  background-color: #EAE8ED;
+  border-radius: 16px;
+}
+
+.textbook .words__word {
+  font-weight: bold;
+  font-size: 24px;
+  text-transform: uppercase;
+  color: #785CAD;
+}
+
+.textbook .words__translate {
+  font-size: 24px;
+  color: #000000;
 }
 /*# sourceMappingURL=style.css.map */
