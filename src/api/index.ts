@@ -6,7 +6,7 @@ enum EndPoints {
 }
 
 type Words = {
-  id : string,
+  id: string,
   group: number,
   page: number,
   word: string,
@@ -47,7 +47,7 @@ type OptionalObj = {
 }
 
 type MongoDB_ObjectAnd = {
-  '$and' : OptionalObj[];
+  '$and': OptionalObj[];
 }
 type MongoDB_ObjectOr = {
   '$or': OptionalObj[];
@@ -232,8 +232,9 @@ export const removeUser = async (id: string) => {
 };
 
 // Получить все слова с базы данных
-export const getWords = async () => {
-  const response = await fetch(`${EndPoints.WORDS_URL}`);
+export const getWords = async (group: string, page: string) => {
+  //const response = await fetch(`${EndPoints.WORDS_URL}?` + new URLSearchParams({ group: group, page: page, }));
+  const response = await fetch(`${EndPoints.WORDS_URL}?page=${page}&group=${group}`);
   if (!response.ok) {
     errorHandler(response, 'words');
   } else {
@@ -309,9 +310,9 @@ export const removeUserWord = async (id: string, wordId: string) => {
   }
 };
 
-const makeUrl = (baseUrl:string, options: OptionalObj) => {
+const makeUrl = (baseUrl: string, options: OptionalObj) => {
   const urlOptions = { ...options };
-  let url:string = `${baseUrl}?`;
+  let url: string = `${baseUrl}?`;
 
   Object.keys(urlOptions).forEach((key) => {
     url += `${key}=${urlOptions[key]}&`;

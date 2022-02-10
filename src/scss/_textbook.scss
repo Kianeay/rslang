@@ -1,0 +1,57 @@
+.textbook {
+  padding-left: 50px;
+  position: relative;
+  background-size: contain;
+
+  &__title {
+    font-size: $font-title;
+    color: $violet;
+    padding-top: 15px;
+    background-image: url('../assets/images/gray-back.svg');
+    background-repeat: no-repeat;
+    background-position: left -35px;
+  }
+}
+
+.difficulty {
+  padding-top: 20px;
+
+  &__title {
+    font-size: $font-big;
+    color: $gray;
+  }
+}
+
+.words {
+  padding-top: 20px;
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    max-width: 70%;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 100px;
+    background-color: $light-gray;
+    border-radius: 16px;
+  }
+
+  &__word {
+    font-weight: bold;
+    font-size: $font-med;
+    text-transform: uppercase;
+    color: $violet;
+  }
+
+  &__translate {
+    font-size: $font-sm;
+    color: #000000;
+  }
+}

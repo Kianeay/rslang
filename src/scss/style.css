@@ -23,6 +23,22 @@ h1 {
   margin-top: 0;
 }
 
+h2 {
+  margin: 0;
+}
+
+h3 {
+  margin: 0;
+}
+
+h4 {
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
 ul {
   list-style-type: none;
   padding: 0;
@@ -57,6 +73,7 @@ ul {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
+  height: 100vh;
 }
 
 .nav {
@@ -217,5 +234,75 @@ ul {
   right: 70px;
   top: 70px;
   width: 45vw;
+}
+
+.textbook {
+  padding-left: 50px;
+  position: relative;
+  background-size: contain;
+}
+
+.textbook__title {
+  font-size: 2.8125rem;
+  color: #785cad;
+  padding-top: 15px;
+  background-image: url("../assets/images/gray-back.svg");
+  background-repeat: no-repeat;
+  background-position: left -35px;
+}
+
+.difficulty {
+  padding-top: 20px;
+}
+
+.difficulty__title {
+  font-size: 1.5rem;
+  color: #5d6571;
+}
+
+.words {
+  padding-top: 20px;
+}
+
+.words__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 22px;
+  max-width: 70%;
+}
+
+.words__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 200px;
+  height: 100px;
+  background-color: #eae8ed;
+  border-radius: 16px;
+}
+
+.words__word {
+  font-weight: bold;
+  font-size: 1.125rem;
+  text-transform: uppercase;
+  color: #785cad;
+}
+
+.words__translate {
+  font-size: 1rem;
+  color: #000000;
 }
 /*# sourceMappingURL=style.css.map */
