@@ -11,19 +11,21 @@ export default class TextbookPage {
     return h2;
   }
 
+  private async loadWords(element: HTMLDivElement) {
+    const words = await getWords('0', '4');
+
+    words.forEach(item => {
+      const p = document.createElement('p');
+      p.textContent = item.word;
+      element.append(p);
+    });
+  }
+
   private createWordsList() {
     const wordList = document.createElement('div');
     wordList.className = 'dictionary__words-list';
 
-    getWords('0', '4').then(result => {
-      const words = result;
-      words.forEach(item => {
-        const p = document.createElement('p');
-        p.textContent = item.word;
-        wordList.append(p);
-      });
-
-    })
+    this.loadWords(wordList);
 
     return wordList;
   }
@@ -36,7 +38,9 @@ export default class TextbookPage {
     h3.textContent = 'Vocabulary difficulty level';
 
     dictionary.append(h3);
+    this.createWordsList()
     dictionary.append(this.createWordsList());
+
     return dictionary;
   }
 
@@ -48,6 +52,7 @@ export default class TextbookPage {
     h2.textContent = 'Games';
 
     gamesList.append(h2);
+
     return gamesList;
   }
 
