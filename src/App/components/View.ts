@@ -1,5 +1,5 @@
 import Controller from './Controller';
-import { MainPage, TextbookPage, GamesPage } from '../../pages';
+import { MainPage, TextbookPage, GamesPage, LoginPage } from '../../pages';
 import { Navigation } from '../../components';
 
 export default class View {
@@ -9,8 +9,12 @@ export default class View {
 
   private content: Element | null = null;
 
+  private loginPage: LoginPage;
+
   constructor(private controller: Controller, private root: Element) {
     this.createRoot(root);
+    this.loginPage = new LoginPage();
+    this.loginPage.getUser();
   }
 
   changePage(page: string) {
@@ -32,7 +36,7 @@ export default class View {
         break;
 
       case 'login':
-        //  this.appPage = ;
+        this.appPage = this.loginPage.render();
         break;
 
       default:
