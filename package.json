@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@types/node": "^16.11.12",
+    "axios": "^0.25.0",
     "css-modules-typescript-loader": "^4.0.1"
   },
   "homepage": "https://github.com/Kianeay/rslang#readme"
