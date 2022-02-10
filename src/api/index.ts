@@ -54,7 +54,7 @@ type OptionalObj = {
   [key: string]: string;
 }
 
-export type MongoDB_ObjectAnd = {
+type MongoDB_ObjectAnd = {
   '$and': OptionalObj[];
 }
 export type MongoDB_ObjectOr = {
