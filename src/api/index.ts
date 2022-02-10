@@ -1,6 +1,13 @@
 import { AxiosDefaults, AxiosError } from 'axios';
 import instance from './tokenInterceptors';
 
+enum EndPoints {
+  BASE_URL = 'https://react-learnwords2022.herokuapp.com/',
+  WORDS_URL = 'https://react-learnwords2022.herokuapp.com/words',
+  USERS_URL = 'https://react-learnwords2022.herokuapp.com/users',
+  SIGNIN_URL = 'https://react-learnwords2022.herokuapp.com/signin',
+}
+
 const axios = require('axios').default;
 
 const instanceUser = axios.create({
@@ -11,7 +18,7 @@ const instanceUser = axios.create({
   },
 });
 
-export type Words = {
+type Words = {
   id: string,
   group: number,
   page: number,
@@ -47,12 +54,6 @@ type OptionalObj = {
   [key: string]: string;
 }
 
-export type UserWord = {
-  difficulty: string;
-  id: string;
-  wordId: string;
-}
-
 export type MongoDB_ObjectAnd = {
   '$and': OptionalObj[];
 }
@@ -81,6 +82,19 @@ export type UserSettings = {
   options?: OptionalObj;
 }
 
+interface OptionsObj {
+  method?: string;
+  headers?: Headers;
+  body?: string;
+  filter?: MongoDB_Object;
+}
+
+type Headers = {
+  Authorization?: string;
+  Accept?: string;
+  'Content-Type'?: string;
+}
+
 type MultiOptionalObj = OptionalObj | UsersWordParameter | UserStatistic | UserSettings;
 
 const getId = () => localStorage.getItem('userID');
@@ -90,6 +104,23 @@ const setLocalTokens = (token: string, refreshToken: string) => {
   localStorage.setItem('refreshToken', refreshToken);
 };
 const setLocalId = (id: string) => localStorage.setItem('userID', id);
+
+const load = async (url: string, options: OptionsObj) => {
+  const token = localStorage.getItem('token');
+  const makeOpt = { ...options };
+  if (makeOpt.headers) {
+    makeOpt.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+  } else {
+    makeOpt.headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+  }
+  try {
+    const promise = await fetch(url, makeOpt);
+    return promise;
+  } catch (error) {
+    console.error(error.message);
+  }
+  return null;
+};
 
 const handleAxiosError = async (error: AxiosError, data: string) => {
   switch (error.response.status) {
@@ -112,6 +143,23 @@ const handleAxiosError = async (error: AxiosError, data: string) => {
     default:
       console.error('uncaught error');
   }
+};
+
+const requestWrapper = async (url: string, options: OptionalObj, type: string) => {
+  try {
+    let response = await load(url, options);
+    if (!response.ok && response.status === 401) {
+      response = await load(url, options);
+    }
+    if (!response.ok) {
+      return null;
+    }
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error(error.message);
+  }
+  return null;
 };
 
 const axiosRequestWrapper = async (
@@ -183,20 +231,15 @@ export const removeUser = async () => {
 };
 
 // Получить все слова с базы данных
-export const getWords = async (page: string, group: string) => {
-  try {
-    const response = await axios.get('https://react-learnwords2022.herokuapp.com/words', { params: { page, group } });
-
-    return response.data as Words[];
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      handleAxiosError(error, 'words');
-    } else {
-      console.error('uncaught error');
-    }
+export const getWords = async (group: string, page: string) => {
+  //const response = await fetch(`${EndPoints.WORDS_URL}?` + new URLSearchParams({ group: group, page: page, }));
+  const response = await fetch(`${EndPoints.WORDS_URL}?page=${page}&group=${group}`);
+  if (!response.ok) {
+    return null;
+  } else {
+    const result: Array<Words> = await response.json();
+    return result;
   }
-
-  return null;
 };
 
 // Получить одно слово с базы данных по его ID
@@ -218,37 +261,49 @@ export const getWord = async (id: string) => {
 
 // Получить все слова User
 export const getUserWords = async () => {
-  const response: UserWord[] = await axiosRequestWrapper('Get', `/users/${getId()}/words`, {}, 'user Words');
+  const response = await axiosRequestWrapper('Get', `/users/${getId()}/words`, {}, 'user Words');
 
   return response;
 };
 
 // Получить слово Юзера по ID
 export const getUserWordsId = async (wordId: string) => {
-  const response: UserWord = await axiosRequestWrapper('Get', `/users/${getId()}/words/${wordId}`, {}, 'user Words');
+  const response = await axiosRequestWrapper('Get', `/users/${getId()}/words/${wordId}`, {}, 'user Words');
 
   return response;
 };
 
 // Записать слово Юзеру
 export const createUserWords = async (wordId: string, userWordParameter: UsersWordParameter) => {
-  const response: UserWord = await axiosRequestWrapper('POST', `/users/${getId()}/words/${wordId}`, userWordParameter, 'user words');
+  const response = await axiosRequestWrapper('POST', `/users/${getId()}/words/${wordId}`, userWordParameter, 'user words');
 
   return response;
 };
 
 // Изменить слово пользователя
 export const changeUserWord = async (wordId: string, userWordParameter: UsersWordParameter) => {
-  const response: UserWord = await axiosRequestWrapper('PUT', `/users/${getId()}/words/${wordId}`, userWordParameter, 'user words');
+  const response = await axiosRequestWrapper('PUT', `/users/${getId()}/words/${wordId}`, userWordParameter, 'user words');
 
   return response;
 };
 
 // Удалить слово пользователя
-export const removeUserWord = async (wordId: string) => {
-  const response = await axiosRequestWrapper('DELETE', `/users/${getId()}/words/${wordId}`, {}, 'user words');
-  console.log('The words has been deleted');
+export const removeUserWord = async (id: string, wordId: string) => {
+  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words/${wordId}`, { method: 'DELETE' }, 'user words');
+  if (response) {
+    console.log('The words has been deleted');
+  }
 };
+
+const makeUrl = (baseUrl: string, options: OptionalObj) => {
+  const urlOptions = { ...options };
+  let url: string = `${baseUrl}?`;
+
+  Object.keys(urlOptions).forEach((key) => {
+    url += `${key}=${urlOptions[key]}&`;
+  });
+  return url;
+}
 
 // Cгруппировать слова
 export const getAggregatedWords = async (filterObj?: MongoDB_Object, group = '', page = '', wordsPerPage = '') => {
