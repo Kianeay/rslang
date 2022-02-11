@@ -1,6 +1,8 @@
 import { Navigation } from '../../components';
 import { getWords } from '../../api';
 
+const difficultyLevelsCount = 6;
+
 export default class TextbookPage {
   constructor() { }
 
@@ -18,18 +20,50 @@ export default class TextbookPage {
 
     const title = document.createElement('h3');
     title.textContent = 'Vocabulary difficulty level';
-    title.className = "difficulty__title"
+    title.className = "difficulty__title";
     difficultyLevels.append(title);
+
+    const difficultyList = document.createElement('ul');
+    difficultyList.className = "difficulty__list";
+    for (let i = 0; i < difficultyLevelsCount; i++) {
+      const difficultyItem = document.createElement('li');
+      difficultyItem.className = "difficulty__item";
+      difficultyItem.textContent = String(i);
+      difficultyItem.setAttribute('data-num', String(i));
+
+      if (i === 0) {
+        difficultyItem.classList.add('difficulty__item-active');
+      }
+
+      difficultyList.append(difficultyItem);
+      difficultyItem.addEventListener('click', (event: Event) => {
+        const { target } = event;
+
+        const difficultyLevel = (target as HTMLElement).dataset.num;
+        const wordsList: HTMLDivElement = document.querySelector('.words__list');
+
+        wordsList.innerHTML = '';
+        this.loadWords(wordsList, difficultyLevel);
+
+        this.changeActiveDifficultyLevel(target as HTMLElement);
+      });
+    }
+    difficultyLevels.append(difficultyList);
 
     return difficultyLevels;
   }
 
-  private async createWordsList(element: HTMLDivElement) {
-    const wordsList = document.createElement('div');
-    wordsList.className = 'words__list';
-    element.append(wordsList);
+  private changeActiveDifficultyLevel(element: HTMLElement) {
+    const parent = element.parentElement;
 
-    const words = await getWords('0', '4');
+    for (let child of Array.from(parent.children)) {
+      child.classList.remove('difficulty__item-active');
+    }
+    element.classList.add('difficulty__item-active');
+  }
+
+  private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string) {
+    const words = await getWords(difficultyLevel, '4');
 
     words.forEach(item => {
       const word = document.createElement('div');
@@ -47,6 +81,15 @@ export default class TextbookPage {
 
       wordsList.append(word);
     });
+
+  }
+
+  private async createWordsList(element: HTMLDivElement) {
+    const wordsList = document.createElement('div');
+    wordsList.className = 'words__list';
+    element.append(wordsList);
+
+    this.loadWords(wordsList, '0');
   }
 
   private createDictionary() {

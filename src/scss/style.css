@@ -259,8 +259,33 @@ ul {
   color: #5d6571;
 }
 
+.textbook .difficulty__list {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 25px;
+  padding-top: 25px;
+}
+
+.textbook .difficulty__item {
+  width: 73px;
+  height: 73px;
+  line-height: 73px;
+  background-color: #A68EFE;
+  border-radius: 50%;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  font-size: 48px;
+  color: #FFFFFF;
+}
+
+.textbook .difficulty__item-active {
+  background: #785CAD;
+}
+
 .textbook .words {
-  padding-top: 20px;
+  padding-top: 100px;
 }
 
 .textbook .words__list {

@@ -19,10 +19,33 @@
         font-size: 24px;
         color: $gray;
       }
+
+      &__list {
+        display: flex;
+        gap: 25px;
+        padding-top: 25px;
+      }
+
+      &__item {
+        width: 73px;
+        height: 73px;
+        line-height: 73px;
+        background-color: #A68EFE;
+        border-radius: 50%;
+        cursor: pointer;
+        text-align: center;
+        font-weight: bold;
+        font-size: 48px;
+        color: #FFFFFF;
+      }
+
+      &__item-active {
+        background: #785CAD;
+      }
     }
 
     .words {
-      padding-top: 20px;
+      padding-top: 100px;
 
       &__list {
         display: flex;
