@@ -1,0 +1,60 @@
+.form {
+  &__login-btn, &__signup-btn {
+    transition: transform 0.2s;
+    &_scale-down {
+      transform: scale(0);
+    }
+  }
+
+  &__logout-btn {
+    transform: scale(0);
+    transition: transform 0.2s;
+    &_scale-up {
+      transform: scale(1) translateX(-200%);
+    }
+  }
+
+  &__title {
+    margin: 0;
+    color: $violet;
+    font-style: normal;
+    font-weight: bold;
+    font-size: $font-title-big;
+    line-height: 1.16;
+    position: relative;
+    margin-bottom: 90px;
+    &::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 5px;
+      background-color: $violet;
+    }
+  }
+
+  &__email, &__password {
+    width: 469px;
+    height: 67px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $font-s-big;
+    line-height: 1.04;
+    background-color: $light-purple;
+    border: none;
+    &_invalid {
+      border: solid 1px red;
+    }
+  }
+
+  &__label-box {
+    position: relative;
+    label {
+      pointer-events: none;
+    }
+  }
+}
+
+.form-container {
+  padding-left: 290px;
+  padding-top: 265px;
+}
