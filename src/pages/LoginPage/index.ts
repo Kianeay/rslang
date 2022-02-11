@@ -1,6 +1,3 @@
-/* eslint-disable no-empty-function */
-/* eslint-disable class-methods-use-this */
-
 import { Button, Input } from '../../components';
 import { createUser, signIn, getUser } from '../../api/index';
 
@@ -40,7 +37,7 @@ export default class LoginPage {
     }).render();
     logInBtn.classList.add('form__login-btn');
     if (this.logIn) {
-      logInBtn.classList.add('scaleLessBtn');
+      logInBtn.classList.add('_scale-down');
     }
 
     return logInBtn;
@@ -53,7 +50,7 @@ export default class LoginPage {
     }).render();
     lSignUpBtn.classList.add('form__signup-btn');
     if (this.logIn) {
-      lSignUpBtn.classList.add('scaleLessBtn');
+      lSignUpBtn.classList.add('_scale-down');
     }
 
     return lSignUpBtn;
@@ -66,7 +63,7 @@ export default class LoginPage {
     }).render();
     logOutBtn.classList.add('form__logout-btn');
     if (this.logIn) {
-      logOutBtn.classList.add('scaleLargeBtn');
+      logOutBtn.classList.add('_scale-up');
     }
 
     return logOutBtn;
@@ -77,10 +74,7 @@ export default class LoginPage {
     if (isCheck) {
       const create = await createUser({ ...isCheck });
       if (create) {
-        const login = await signIn({ ...isCheck });
-        if (login) {
-          this.getUser();
-        }
+        this.logInUser();
       }
     }
   }
@@ -121,15 +115,15 @@ export default class LoginPage {
     const passwordElem = document.querySelector('.form__password') as HTMLInputElement;
     const email = emailElem.value;
     const password = passwordElem.value;
-    if (email.length === 0) {
+    if (!email.length) {
+      emailElem.classList.add('_invalid');
       console.log('email invalid');
     }
-    if (password.length === 0) {
+    if (!email.length) {
+      passwordElem.classList.add('_invalid');
       console.log('password invalid');
     }
-    if (emailElem.classList.contains('_valid-input') && passwordElem.classList.contains('_valid-input')) {
-      emailElem.classList.remove('_valid-input');
-      passwordElem.classList.remove('_valid-input');
+    if (!emailElem.classList.contains('_invalid') && !passwordElem.classList.contains('_invalid')) {
       return { email, password };
     }
 
@@ -149,12 +143,12 @@ export default class LoginPage {
     const sighUpBtn = document.querySelector('.form__signup-btn');
     const logOut = document.querySelector('.form__logout-btn');
     if (loginBtn !== null && sighUpBtn !== null && logOut !== null) {
-      loginBtn.classList.toggle('scaleLessBtn');
-      sighUpBtn.classList.toggle('scaleLessBtn');
-      logOut.classList.toggle('scaleLargeBtn');
+      loginBtn.classList.toggle('_scale-down');
+      sighUpBtn.classList.toggle('_scale-down');
+      logOut.classList.toggle('_scale-up');
     }
-    this.logoutNav.classList.toggle('visibility');
-    this.logoutNavImage.classList.toggle('visibility');
+    this.logoutNav.classList.toggle('hidden');
+    this.logoutNavImage.classList.toggle('hidden');
   }
 
   clearInput() {
@@ -171,18 +165,20 @@ export default class LoginPage {
     const validEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!emailElem.value.match(validEmail)) {
+      emailElem.classList.add('_invalid');
       console.log('invalid email');
     } else {
-      emailElem.classList.add('_valid-input');
+      emailElem.classList.remove('_invalid');
     }
   }
 
   validatePassword(event: Event) {
     const passwordElem = event.currentTarget as HTMLInputElement;
     if (passwordElem.value.length < 8) {
+      passwordElem.classList.add('_invalid');
       console.log('invalid password');
     } else {
-      passwordElem.classList.add('_valid-input');
+      passwordElem.classList.remove('_invalid');
     }
   }
 
@@ -191,6 +187,7 @@ export default class LoginPage {
     const label = document.createElement('label');
     labelWrap.className = `form__label-box ${classDiv}`;
     label.textContent = text;
+
     labelWrap.append(label);
 
     return labelWrap;
@@ -199,6 +196,7 @@ export default class LoginPage {
   private createButtonsContainer() {
     const buttonsContainer = document.createElement('div');
     buttonsContainer.className = 'form__buttons-container';
+
     buttonsContainer.append(
       this.createLogInBtn(),
       this.createSignUpBtn(),
@@ -211,6 +209,7 @@ export default class LoginPage {
   private createInputContainer(input: HTMLInputElement, label: HTMLDivElement) {
     const inputContainer = document.createElement('div');
     inputContainer.className = 'form__input-container';
+
     inputContainer.append(input, label);
 
     return inputContainer;
@@ -227,6 +226,7 @@ export default class LoginPage {
   private createForm() {
     const form = document.createElement('div');
     form.className = 'form';
+
     form.append(
       this.createTitle(),
       this.createInputContainer(
@@ -246,7 +246,9 @@ export default class LoginPage {
   render() {
     const component = document.createElement('div');
     component.className = 'form-container';
+
     component.append(this.createForm());
+
     return component;
   }
 }

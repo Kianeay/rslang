@@ -76,6 +76,10 @@ ul {
   height: 100vh;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .nav {
   background: -webkit-gradient(linear, left top, left bottom, from(#785cad), to(#eb6897));
   background: linear-gradient(180deg, #785cad 0%, #eb6897 100%);
@@ -307,15 +311,6 @@ ul {
   color: #000000;
 }
 
-.nav__logout, .nav__logout-wrap {
-  visibility: hidden;
-}
-
-.scaleLessBtn {
-  -webkit-transform: scale(0);
-          transform: scale(0);
-}
-
 .form__login-btn, .form__signup-btn {
   -webkit-transition: -webkit-transform 0.2s;
   transition: -webkit-transform 0.2s;
@@ -332,28 +327,13 @@ ul {
   transition: transform 0.2s, -webkit-transform 0.2s;
 }
 
-.scaleLargeBtn {
-  -webkit-transform: scale(1) translateX(-200%);
-          transform: scale(1) translateX(-200%);
-}
-
-.visibility {
-  visibility: visible;
-}
-
-.form-container {
-  padding-left: 18rem;
-  padding-top: 16.6rem;
-}
-
 .form__title {
   margin: 0;
   color: #785cad;
-  font-family: Roboto;
   font-style: normal;
   font-weight: bold;
   font-size: 6rem;
-  line-height: 7rem;
+  line-height: 1.16;
   position: relative;
   margin-bottom: 90px;
 }
@@ -369,11 +349,10 @@ ul {
 .form__email, .form__password {
   width: 469px;
   height: 67px;
-  font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 2.5rem;
-  line-height: 2.6rem;
+  font-size: 2.1875rem;
+  line-height: 1.04;
   background-color: #EAE8ED;
   border: none;
 }
@@ -384,5 +363,24 @@ ul {
 
 .form__label-box label {
   pointer-events: none;
+}
+
+.form-container {
+  padding-left: 290px;
+  padding-top: 265px;
+}
+
+._scale-down {
+  -webkit-transform: scale(0);
+          transform: scale(0);
+}
+
+._scale-up {
+  -webkit-transform: scale(1) translateX(-200%);
+          transform: scale(1) translateX(-200%);
+}
+
+._invalid {
+  border: solid 1px red;
 }
 /*# sourceMappingURL=style.css.map */

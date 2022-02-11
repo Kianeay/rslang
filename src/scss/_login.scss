@@ -1,67 +1,63 @@
-.nav__logout, .nav__logout-wrap {
-  visibility: hidden;
-}
+.form {
+  &__login-btn, &__signup-btn {
+    transition: transform 0.2s;
+  }
 
-.scaleLessBtn {
-  transform: scale(0);
-}
+  &__logout-btn {
+    transform: scale(0);
+    transition: transform 0.2s;
+  }
 
-.form__login-btn, .form__signup-btn {
-  transition: transform 0.2s;
-}
+  &__title {
+    margin: 0;
+    color: $violet;
+    font-style: normal;
+    font-weight: bold;
+    font-size: $font-title-big;
+    line-height: 1.16;
+    position: relative;
+    margin-bottom: 90px;
+    &::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 5px;
+      background-color: $violet;
+    }
+  }
 
-.form__logout-btn {
-  transform: scale(0);
-  transition: transform 0.2s;
-}
+  &__email, &__password {
+    width: 469px;
+    height: 67px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $font-s-big;
+    line-height: 1.04;
+    background-color: $light-purple;
+    border: none;
+  }
 
-.scaleLargeBtn {
-  transform: scale(1) translateX(-200%);
-}
-
-.visibility {
-  visibility: visible;
+  &__label-box {
+    position: relative;
+    label {
+      pointer-events: none;
+    }
+  }
 }
 
 .form-container {
-  padding-left: 18rem;
-  padding-top: 16.6rem;
+  padding-left: 290px;
+  padding-top: 265px;
 }
 
-.form__title {
-  margin: 0;
-  color: $violet;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 6rem;
-  line-height: 7rem;
-  position: relative;
-  margin-bottom: 90px;
-  &::after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 5px;
-    background-color: $violet;
-  }
+._scale-down {
+  transform: scale(0);
 }
 
-.form__email, .form__password {
-  width: 469px;
-  height: 67px;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 2.5rem;
-  line-height: 2.6rem;
-  background-color: $light-purple;
-  border: none;
+._scale-up {
+  transform: scale(1) translateX(-200%);
 }
 
-.form__label-box {
-  position: relative;
-  label {
-    pointer-events: none;
-  }
+._invalid {
+  border: solid 1px red;
 }
