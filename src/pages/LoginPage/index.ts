@@ -143,9 +143,9 @@ export default class LoginPage {
     const sighUpBtn = document.querySelector('.form__signup-btn');
     const logOut = document.querySelector('.form__logout-btn');
     if (loginBtn !== null && sighUpBtn !== null && logOut !== null) {
-      loginBtn.classList.toggle('_scale-down');
-      sighUpBtn.classList.toggle('_scale-down');
-      logOut.classList.toggle('_scale-up');
+      loginBtn.classList.toggle('form__login-btn_scale-down');
+      sighUpBtn.classList.toggle('form__signup-btn_scale-down');
+      logOut.classList.toggle('form__logout-btn_scale-up');
     }
     this.logoutNav.classList.toggle('hidden');
     this.logoutNavImage.classList.toggle('hidden');
@@ -165,20 +165,20 @@ export default class LoginPage {
     const validEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
     if (!emailElem.value.match(validEmail)) {
-      emailElem.classList.add('_invalid');
+      emailElem.classList.add('form__email_invalid');
       console.log('invalid email');
     } else {
-      emailElem.classList.remove('_invalid');
+      emailElem.classList.remove('form__email_invalid');
     }
   }
 
   validatePassword(event: Event) {
     const passwordElem = event.currentTarget as HTMLInputElement;
     if (passwordElem.value.length < 8) {
-      passwordElem.classList.add('_invalid');
+      passwordElem.classList.add('form__password_invalid');
       console.log('invalid password');
     } else {
-      passwordElem.classList.remove('_invalid');
+      passwordElem.classList.remove('form__password_invalid');
     }
   }
 

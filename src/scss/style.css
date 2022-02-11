@@ -318,6 +318,11 @@ ul {
   transition: transform 0.2s, -webkit-transform 0.2s;
 }
 
+.form__login-btn_scale-down, .form__signup-btn_scale-down {
+  -webkit-transform: scale(0);
+          transform: scale(0);
+}
+
 .form__logout-btn {
   -webkit-transform: scale(0);
           transform: scale(0);
@@ -325,6 +330,11 @@ ul {
   transition: -webkit-transform 0.2s;
   transition: transform 0.2s;
   transition: transform 0.2s, -webkit-transform 0.2s;
+}
+
+.form__logout-btn_scale-up {
+  -webkit-transform: scale(1) translateX(-200%);
+          transform: scale(1) translateX(-200%);
 }
 
 .form__title {
@@ -357,6 +367,10 @@ ul {
   border: none;
 }
 
+.form__email_invalid, .form__password_invalid {
+  border: solid 1px red;
+}
+
 .form__label-box {
   position: relative;
 }
@@ -368,19 +382,5 @@ ul {
 .form-container {
   padding-left: 290px;
   padding-top: 265px;
-}
-
-._scale-down {
-  -webkit-transform: scale(0);
-          transform: scale(0);
-}
-
-._scale-up {
-  -webkit-transform: scale(1) translateX(-200%);
-          transform: scale(1) translateX(-200%);
-}
-
-._invalid {
-  border: solid 1px red;
 }
 /*# sourceMappingURL=style.css.map */

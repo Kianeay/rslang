@@ -1,11 +1,17 @@
 .form {
   &__login-btn, &__signup-btn {
     transition: transform 0.2s;
+    &_scale-down {
+      transform: scale(0);
+    }
   }
 
   &__logout-btn {
     transform: scale(0);
     transition: transform 0.2s;
+    &_scale-up {
+      transform: scale(1) translateX(-200%);
+    }
   }
 
   &__title {
@@ -35,6 +41,9 @@
     line-height: 1.04;
     background-color: $light-purple;
     border: none;
+    &_invalid {
+      border: solid 1px red;
+    }
   }
 
   &__label-box {
@@ -48,16 +57,4 @@
 .form-container {
   padding-left: 290px;
   padding-top: 265px;
-}
-
-._scale-down {
-  transform: scale(0);
-}
-
-._scale-up {
-  transform: scale(1) translateX(-200%);
-}
-
-._invalid {
-  border: solid 1px red;
 }
