@@ -277,17 +277,17 @@ ul {
   width: 73px;
   height: 73px;
   line-height: 73px;
-  background-color: #A68EFE;
+  background-color: #a68efe;
   border-radius: 50%;
   cursor: pointer;
   text-align: center;
   font-weight: bold;
   font-size: 48px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 .textbook .difficulty__item-active {
-  background: #785CAD;
+  background: #785cad;
 }
 
 .textbook .words {

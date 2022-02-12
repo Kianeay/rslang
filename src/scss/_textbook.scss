@@ -30,17 +30,17 @@
         width: 73px;
         height: 73px;
         line-height: 73px;
-        background-color: #A68EFE;
+        background-color: $light-violet;
         border-radius: 50%;
         cursor: pointer;
         text-align: center;
         font-weight: bold;
         font-size: 48px;
-        color: #FFFFFF;
+        color: $white;
       }
 
       &__item-active {
-        background: #785CAD;
+        background: $violet;
       }
     }
     
@@ -73,15 +73,7 @@
 
       &__translate {
         font-size: $font-sm;
-        color: #000000;
+        color: $black;
       }
     }
 }
-
-
-
-
-
-
-
-
