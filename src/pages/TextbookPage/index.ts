@@ -23,10 +23,10 @@ export default class TextbookPage {
     difficultyLevels.append(title);
 
     const difficultyList = document.createElement('ul');
-    difficultyList.className = "difficulty__list";
-    for (let i = 0; i < difficultyLevelsCount; i++) {
+    difficultyList.className = 'difficulty__list';
+    for (let i = 0; i < difficultyLevelsCount; i += 1) {
       const difficultyItem = document.createElement('li');
-      difficultyItem.className = "difficulty__item";
+      difficultyItem.className = 'difficulty__item';
       difficultyItem.textContent = String(i);
       difficultyItem.setAttribute('data-num', String(i));
 
@@ -55,9 +55,10 @@ export default class TextbookPage {
   private changeActiveDifficultyLevel(element: HTMLElement) {
     const parent = element.parentElement;
 
-    for (let child of Array.from(parent.children)) {
+    Array.from(parent.children).forEach((child) => {
       child.classList.remove('difficulty__item-active');
-    }
+    });
+
     element.classList.add('difficulty__item-active');
   }
 
@@ -80,7 +81,6 @@ export default class TextbookPage {
 
       wordsList.append(word);
     });
-
   }
 
   private async createWordsList(element: HTMLDivElement) {
