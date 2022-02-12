@@ -1,4 +1,3 @@
-import { Navigation } from '../../components';
 import { getWords } from '../../api';
 
 const difficultyLevelsCount = 6;
@@ -9,7 +8,7 @@ export default class TextbookPage {
   private createTitle() {
     const title = document.createElement('h2');
     title.textContent = 'Textbook';
-    title.className = "textbook__title";
+    title.className = 'textbook__title';
 
     return title;
   }
@@ -20,7 +19,7 @@ export default class TextbookPage {
 
     const title = document.createElement('h3');
     title.textContent = 'Vocabulary difficulty level';
-    title.className = "difficulty__title";
+    title.className = 'difficulty__title';
     difficultyLevels.append(title);
 
     const difficultyList = document.createElement('ul');
@@ -65,18 +64,18 @@ export default class TextbookPage {
   private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string) {
     const words = await getWords(difficultyLevel, '4');
 
-    words.forEach(item => {
+    words.forEach((item) => {
       const word = document.createElement('div');
-      word.className = "words__item";
+      word.className = 'words__item';
 
       const wordMeaning = document.createElement('h4');
       wordMeaning.textContent = item.word;
-      wordMeaning.className = "words__word";
+      wordMeaning.className = 'words__word';
       word.append(wordMeaning);
 
       const wordTranslate = document.createElement('p');
       wordTranslate.textContent = item.wordTranslate;
-      wordTranslate.className = "words__translate";
+      wordTranslate.className = 'words__translate';
       word.append(wordTranslate);
 
       wordsList.append(word);

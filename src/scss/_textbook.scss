@@ -4,7 +4,7 @@
     background-size: contain;
 
     &__title {
-      font-size: 48px;
+      font-size: $font-title;
       color: $violet;
       padding-top: 15px;
       background-image: url('../assets/images/gray-back.svg');
@@ -16,7 +16,7 @@
       padding-top: 20px;
 
       &__title {
-        font-size: 24px;
+        font-size: $font-big;
         color: $gray;
       }
 
@@ -43,7 +43,7 @@
         background: #785CAD;
       }
     }
-
+    
     .words {
       padding-top: 100px;
 
@@ -60,20 +60,28 @@
         align-items: center;
         width: 256px;
         height: 100px;
-        background-color: #EAE8ED;
+        background-color: $light-gray;
         border-radius: 16px;
       }
 
       &__word {
         font-weight: bold;
-        font-size: 24px;
+        font-size: $font-med;
         text-transform: uppercase;
-        color: #785CAD;
+        color: $violet;
       }
 
       &__translate {
-        font-size: 24px;
+        font-size: $font-sm;
         color: #000000;
       }
     }
 }
+
+
+
+
+
+
+
+
