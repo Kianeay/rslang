@@ -383,4 +383,57 @@ ul {
   padding-left: 290px;
   padding-top: 265px;
 }
+
+.games {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.minigame {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80%;
+  margin-bottom: 50px;
+}
+
+.minigame__wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.minigame__icon-wrap {
+  margin-right: 50px;
+}
+
+.minigame__title {
+  font-size: 1.5rem;
+  color: #785cad;
+  padding-bottom: 20px;
+}
+
+.minigame__start {
+  background-color: #a68efe;
+  margin-bottom: 5px;
+}
+
+.minigame__img {
+  width: 350px;
+}
 /*# sourceMappingURL=style.css.map */

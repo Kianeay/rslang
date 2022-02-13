@@ -30,7 +30,7 @@ export default class GamesPreview {
         console.log('play');
       },
     }).render();
-    playBtn.classList.add('main__start');
+    playBtn.classList.add('minigame__start');
 
     return playBtn;
   }
@@ -49,6 +49,8 @@ export default class GamesPreview {
   private createDescription() {
     const wrapper = document.createElement('div');
     wrapper.className = 'minigame__wrap';
+    const textWrapper = document.createElement('div');
+    textWrapper.className = 'minigame__info';
     const title = document.createElement('h3');
     title.className = 'minigame__title';
     title.textContent = this.title;
@@ -56,7 +58,8 @@ export default class GamesPreview {
     text.className = 'minigame__text';
     text.textContent = this.text;
 
-    wrapper.append(title, text, this.createPlayBtn());
+    textWrapper.append(title, text);
+    wrapper.append(textWrapper, this.createPlayBtn());
 
     return wrapper;
   }
