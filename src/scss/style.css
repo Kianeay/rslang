@@ -197,6 +197,18 @@ ul {
 
 .main {
   position: relative;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 100vh;
 }
 
 .main__wrap {
@@ -204,7 +216,7 @@ ul {
   position: relative;
   background-image: url("../assets/images/gray-back.svg");
   background-repeat: no-repeat;
-  width: 35%;
+  width: 39%;
   background-size: contain;
 }
 
@@ -212,6 +224,8 @@ ul {
   font-size: 7vw;
   color: #785cad;
   padding-top: 50px;
+  z-index: 10;
+  position: relative;
 }
 
 .main__subtitle {
@@ -243,9 +257,13 @@ ul {
 
 .main__img {
   position: absolute;
-  right: 70px;
+  right: 170px;
   top: 70px;
-  width: 45vw;
+  width: 41vw;
+}
+
+.main .footer {
+  padding-left: 50px;
 }
 
 .textbook {

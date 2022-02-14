@@ -27,7 +27,7 @@ export default class GamesPage {
     return sprintBlock;
   }
 
-  private createTitile(content: string) {
+  private createTitle(content: string) {
     const title = document.createElement('h2');
     title.className = 'games-wrap__title';
     title.textContent = content;
@@ -46,7 +46,7 @@ export default class GamesPage {
 
     games.append(this.createAudioBlock(), this.createSprintBlock());
 
-    component.append(this.createTitile('Minigames'), games, footer);
+    component.append(this.createTitle('Minigames'), games, footer);
 
     return component;
   }
