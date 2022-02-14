@@ -27,11 +27,24 @@ export default class GamesPage {
     return sprintBlock;
   }
 
+  private createTitile(content: string) {
+    const title = document.createElement('h2');
+    title.className = 'games-wrap__title';
+    title.textContent = content;
+
+    return title;
+  }
+
   render() {
     const component = document.createElement('div');
-    component.className = 'games';
+    component.className = 'games-wrap';
 
-    component.append(this.createAudioBlock(), this.createSprintBlock());
+    const games = document.createElement('div');
+    games.className = 'games';
+
+    games.append(this.createAudioBlock(), this.createSprintBlock());
+
+    component.append(this.createTitile('Minigames'), games);
 
     return component;
   }
