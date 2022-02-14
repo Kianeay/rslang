@@ -25,6 +25,9 @@ h1 {
 
 h2 {
   margin: 0;
+  font-size: 2.8125rem;
+  color: #785cad;
+  text-transform: uppercase;
 }
 
 h3 {
@@ -56,6 +59,10 @@ ul {
   border-top-left-radius: 30px;
   border-bottom-right-radius: 30px;
   cursor: pointer;
+}
+
+.button_colored {
+  background-color: #785cad;
 }
 
 .wrapper {
@@ -190,6 +197,18 @@ ul {
 
 .main {
   position: relative;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: 100vh;
 }
 
 .main__wrap {
@@ -197,7 +216,7 @@ ul {
   position: relative;
   background-image: url("../assets/images/gray-back.svg");
   background-repeat: no-repeat;
-  width: 35%;
+  width: 39%;
   background-size: contain;
 }
 
@@ -205,6 +224,8 @@ ul {
   font-size: 7vw;
   color: #785cad;
   padding-top: 50px;
+  z-index: 10;
+  position: relative;
 }
 
 .main__subtitle {
@@ -236,9 +257,13 @@ ul {
 
 .main__img {
   position: absolute;
-  right: 70px;
+  right: 170px;
   top: 70px;
-  width: 45vw;
+  width: 41vw;
+}
+
+.main .footer {
+  padding-left: 50px;
 }
 
 .textbook {
@@ -311,6 +336,15 @@ ul {
   color: #000000;
 }
 
+.form {
+  width: 470px;
+  font-style: normal;
+  font-weight: normal;
+  color: #785cad;
+  font-size: 2.1875rem;
+  line-height: 1.04;
+}
+
 .form__login-btn, .form__signup-btn {
   -webkit-transition: -webkit-transform 0.2s;
   transition: -webkit-transform 0.2s;
@@ -333,14 +367,21 @@ ul {
 }
 
 .form__logout-btn_scale-up {
-  -webkit-transform: scale(1) translateX(-200%);
-          transform: scale(1) translateX(-200%);
+  -webkit-transform: scale(1) translateY(-100%);
+          transform: scale(1) translateY(-100%);
+}
+
+.form__login-btn {
+  margin-right: 28.8px;
+}
+
+.form__signup-btn {
+  -webkit-transform: translateX(-116%);
+          transform: translateX(-116%);
 }
 
 .form__title {
   margin: 0;
-  color: #785cad;
-  font-style: normal;
   font-weight: bold;
   font-size: 6rem;
   line-height: 1.16;
@@ -350,13 +391,19 @@ ul {
 
 .form__title::after {
   content: '';
+  margin-top: 19px;
   display: block;
   width: 100%;
   height: 5px;
   background-color: #785cad;
 }
 
-.form__email, .form__password {
+.form__input-container {
+  margin-bottom: 61px;
+  position: relative;
+}
+
+.form__email, .form__password, .form__user-name {
   width: 469px;
   height: 67px;
   font-style: normal;
@@ -367,8 +414,31 @@ ul {
   border: none;
 }
 
-.form__email_invalid, .form__password_invalid {
+.form__email_invalid, .form__password_invalid, .form__user-name_invalid {
   border: solid 1px red;
+}
+
+.form__email:focus-visible, .form__password:focus-visible, .form__user-name:focus-visible {
+  outline: none;
+}
+
+.form__invalid-text {
+  color: red;
+  position: absolute;
+  font-size: 1.125rem;
+  right: 0;
+  bottom: -30px;
+  height: 10px;
+}
+
+.form__buttons-container {
+  position: relative;
+}
+
+.form__invalid__answer {
+  bottom: 0;
+  left: 0;
+  top: -35px;
 }
 
 .form__label-box {
@@ -376,11 +446,152 @@ ul {
 }
 
 .form__label-box label {
+  position: absolute;
+  top: -54px;
+  color: #785cad;
+  left: 6px;
   pointer-events: none;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 2.1875rem;
+  line-height: 1.04;
+}
+
+.form__link {
+  font-size: 1.5rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.form__img {
+  -ms-flex-item-align: baseline;
+      align-self: baseline;
+  width: 50vh;
+}
+
+.form__user-name:focus ~ .form__label-name label,
+.form__user-name:valid ~ .form__label-name label,
+.form__email:focus ~ .form__label-email label,
+.form__email:valid ~ .form__label-email label,
+.form__password:focus ~ .form__label-password label,
+.form__password:valid ~ .form__label-password label {
+  font-size: 1.125rem;
+  -webkit-transform: translateY(-50px);
+          transform: translateY(-50px);
 }
 
 .form-container {
-  padding-left: 290px;
-  padding-top: 265px;
+  padding-top: 13%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+@media (max-width: 1440px) {
+  .form__title {
+    font-size: 2.8125rem;
+  }
+}
+
+.games-wrap {
+  padding-left: 50px;
+  position: relative;
+}
+
+.games-wrap::before {
+  background-image: url("../assets/images/back-title-gray.svg");
+  position: absolute;
+  content: '';
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 500px;
+  height: 200px;
+  top: 0%;
+  left: 0;
+}
+
+.games-wrap__title {
+  padding-top: 15px;
+  margin-bottom: 50px;
+  position: relative;
+  z-index: 1000;
+}
+
+.games {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.minigame {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 80%;
+  margin-bottom: 50px;
+}
+
+.minigame__wrap {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.minigame__icon-wrap {
+  margin-right: 50px;
+}
+
+.minigame__title {
+  font-size: 1.5rem;
+  color: #785cad;
+  padding-bottom: 20px;
+}
+
+.minigame__start {
+  background-color: #a68efe;
+  margin-bottom: 5px;
+}
+
+.minigame__img {
+  width: 350px;
+}
+
+.footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding-right: 50px;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.footer__links {
+  width: 300px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 /*# sourceMappingURL=style.css.map */

@@ -1,4 +1,4 @@
-import { Navigation, Button } from '../../components';
+import { Button, Footer } from '../../components';
 
 export default class MainPage {
   constructor() {}
@@ -68,10 +68,13 @@ export default class MainPage {
     const component = document.createElement('div');
     component.className = 'main';
 
+    const footer = new Footer().render();
+
     component.append(
       this.createMainContent(),
       this.createMainBackground(),
       this.createLoginBtn(),
+      footer,
     );
 
     return component;
