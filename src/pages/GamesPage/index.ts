@@ -1,4 +1,4 @@
-import { GamesPreview } from '../../components';
+import { GamesPreview, Footer } from '../../components';
 
 export default class GamesPage {
   constructor() {}
@@ -42,9 +42,11 @@ export default class GamesPage {
     const games = document.createElement('div');
     games.className = 'games';
 
+    const footer = new Footer().render();
+
     games.append(this.createAudioBlock(), this.createSprintBlock());
 
-    component.append(this.createTitile('Minigames'), games);
+    component.append(this.createTitile('Minigames'), games, footer);
 
     return component;
   }
