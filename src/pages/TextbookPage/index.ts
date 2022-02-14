@@ -1,4 +1,5 @@
-import { getWords } from '../../api';
+import { getWord, getWords } from '../../api';
+import Word from '../../components/Word';
 
 const difficultyLevelsCount = 6;
 
@@ -65,9 +66,10 @@ export default class TextbookPage {
   private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string) {
     const words = await getWords(difficultyLevel, '4');
 
-    words.forEach((item) => {
+    words.forEach((item, index) => {
       const word = document.createElement('div');
       word.className = 'words__item';
+      word.setAttribute('data-id', item.id);
 
       const wordMeaning = document.createElement('h4');
       wordMeaning.textContent = item.word;
@@ -77,10 +79,27 @@ export default class TextbookPage {
       const wordTranslate = document.createElement('p');
       wordTranslate.textContent = item.wordTranslate;
       wordTranslate.className = 'words__translate';
+
       word.append(wordTranslate);
+      word.addEventListener('click', (event: Event) => {
+        const { currentTarget } = event;
+        const { id } = (currentTarget as HTMLElement).dataset;
+
+        this.loadCurrentWord(id);
+      });
+
+      if (index === 0) {
+        this.loadCurrentWord(words[index].id);
+      }
 
       wordsList.append(word);
     });
+  }
+
+  private async loadCurrentWord(id: string) {
+    const word: HTMLDivElement = document.querySelector('.word');
+    word.innerHTML = '';
+    word.append(new Word(id).render());
   }
 
   private async createWordsList(element: HTMLDivElement) {
@@ -91,11 +110,18 @@ export default class TextbookPage {
     this.loadWords(wordsList, '0');
   }
 
+  private async createCurrentWord(element: HTMLDivElement) {
+    const word = document.createElement('div');
+    word.className = 'word';
+    element.append(word);
+  }
+
   private createDictionary() {
     const dictionary = document.createElement('div');
     dictionary.className = 'words';
 
     this.createWordsList(dictionary);
+    this.createCurrentWord(dictionary);
 
     return dictionary;
   }
