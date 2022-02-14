@@ -26,9 +26,7 @@ export default class GamesPreview {
   private createPlayBtn() {
     const playBtn = new Button({
       label: 'play',
-      onClick: () => {
-        console.log('play');
-      },
+      onClick: this.onClick,
     }).render();
     playBtn.classList.add('main__start');
 
