@@ -124,8 +124,15 @@
 }
 
 .form-container {
-  padding-left: 290px;
-  padding-top: 265px;
+  padding-top: 13%;
   display: flex;
-  gap: 250px;
+  justify-content: space-around;
+}
+
+@media (max-width: 1440px) {
+  .form {
+    &__title {
+      font-size: $font-title;
+    }
+  }
 }

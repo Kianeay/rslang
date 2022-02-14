@@ -6,49 +6,40 @@ export default class LoginPage {
 
   private logoutNavImage: HTMLButtonElement;
 
-  private getEmailInput: () => HTMLInputElement;
+  private getEmailInput: () => HTMLInputElement = () => document.querySelector('.form__email');
 
-  private getPasswordInput: () => HTMLInputElement;
+  private getPasswordInput: () => HTMLInputElement = () => document.querySelector('.form__password');
 
-  private getNamedInput: () => HTMLInputElement;
+  private getNamedInput: () => HTMLInputElement = () => document.querySelector('.form__user-name');
 
-  private getLoginBtn: () => HTMLButtonElement;
+  private getLoginBtn: () => HTMLButtonElement = () => document.querySelector('.form__login-btn');
 
-  private getSignupBtn: () => HTMLButtonElement;
+  private getSignupBtn: () => HTMLButtonElement = () => document.querySelector('.form__signup-btn');
 
-  private getLogOutBtn: () => HTMLButtonElement;
+  private getLogOutBtn: () => HTMLButtonElement = () => document.querySelector('.form__logout-btn');
 
-  private getEmailMessage: () => HTMLSpanElement;
+  private getEmailMessage: () => HTMLSpanElement = () => document.querySelector('.form__invalid-email');
 
-  private getPasswordMessage: () => HTMLSpanElement;
+  private getPasswordMessage: () => HTMLSpanElement = () => document.querySelector('.form__invalid-password');
 
-  private getErrorMessage: () => HTMLSpanElement;
+  private getErrorMessage: () => HTMLSpanElement = () => document.querySelector('.form__invalid__answer');
 
   public logIn: boolean;
 
   constructor() {
     this.logoutNav = document.querySelector('.nav__logout');
     this.logoutNavImage = document.querySelector('.nav__logout-wrap');
-    this.getEmailInput = () => document.querySelector('.form__email');
-    this.getPasswordInput = () => document.querySelector('.form__password');
-    this.getNamedInput = () => document.querySelector('.form__user-name');
-    this.getLoginBtn = () => document.querySelector('.form__login-btn');
-    this.getSignupBtn = () => document.querySelector('.form__signup-btn');
-    this.getLogOutBtn = () => document.querySelector('.form__logout-btn');
-    this.getEmailMessage = () => document.querySelector('.form__invalid-email');
-    this.getPasswordMessage = () => document.querySelector('.form__invalid-password');
-    this.getErrorMessage = () => document.querySelector('.form__invalid__answer');
     this.logIn = false;
 
     this.logoutNav.addEventListener('click', this.logOutUser.bind(this));
     this.logoutNavImage.addEventListener('click', this.logOutUser.bind(this));
   }
 
-  async getUser() {
+  public async getUser() {
     const id = localStorage.getItem('userID');
     const token = localStorage.getItem('refreshToken');
     if (id && token) {
-      const user = await getUser(localStorage.getItem('userID'));
+      const user = await getUser(id);
       if (user) {
         this.clearInput();
         this.changeButtons();
@@ -62,8 +53,7 @@ export default class LoginPage {
       label: 'Log In',
       onClick: this.logInUser.bind(this),
     }).render();
-    logInBtn.classList.add('form__login-btn');
-    logInBtn.classList.add('button_colored');
+    logInBtn.classList.add('form__login-btn', 'button_colored');
     if (this.logIn) {
       logInBtn.classList.add('form__login-btn_scale-down');
     }
@@ -76,9 +66,7 @@ export default class LoginPage {
       label: 'Sign Up',
       onClick: this.signUpUser.bind(this),
     }).render();
-    lSignUpBtn.classList.add('form__signup-btn');
-    lSignUpBtn.classList.add('button_colored');
-    lSignUpBtn.classList.add('none');
+    lSignUpBtn.classList.add('form__signup-btn', 'button_colored', 'none');
     if (this.logIn) {
       lSignUpBtn.classList.add('form__signup-btn_scale-down');
     }
@@ -91,8 +79,7 @@ export default class LoginPage {
       label: 'Log Out',
       onClick: this.logOutUser.bind(this),
     }).render();
-    logOutBtn.classList.add('form__logout-btn');
-    logOutBtn.classList.add('button_colored');
+    logOutBtn.classList.add('form__logout-btn', 'button_colored');
     if (this.logIn) {
       logOutBtn.classList.add('form__logout-btn_scale-up');
     }
@@ -100,7 +87,7 @@ export default class LoginPage {
     return logOutBtn;
   }
 
-  async signUpUser() {
+  private async signUpUser() {
     const isCheck = this.checkInput();
     const error = this.getErrorMessage();
     if (isCheck) {
@@ -114,7 +101,7 @@ export default class LoginPage {
     }
   }
 
-  async logInUser() {
+  private async logInUser() {
     const isCheck = this.checkInput();
     const error = this.getErrorMessage();
     if (isCheck) {
@@ -167,7 +154,7 @@ export default class LoginPage {
     return emailInput;
   }
 
-  checkInput() {
+  private checkInput() {
     const emailElem = this.getEmailInput();
     const passwordElem = this.getPasswordInput();
     const userNameElem = this.getNamedInput();
@@ -178,7 +165,7 @@ export default class LoginPage {
       emailElem.classList.add('form__email_invalid');
       this.getEmailMessage().classList.remove('none');
     }
-    if (!email.length) {
+    if (!password.length) {
       passwordElem.classList.add('form__password_invalid');
       this.getPasswordMessage().classList.remove('none');
     }
@@ -190,7 +177,7 @@ export default class LoginPage {
     return false;
   }
 
-  logOutUser() {
+  private logOutUser() {
     this.logIn = false;
     this.changeButtons();
     localStorage.removeItem('userID');
@@ -198,7 +185,7 @@ export default class LoginPage {
     localStorage.removeItem('refreshToken');
   }
 
-  changeButtons() {
+  private changeButtons() {
     const loginBtn = this.getLoginBtn();
     const sighUpBtn = this.getSignupBtn();
     const logOutBtn = this.getLogOutBtn();
@@ -211,7 +198,7 @@ export default class LoginPage {
     this.logoutNavImage.classList.toggle('hidden');
   }
 
-  clearInput() {
+  private clearInput() {
     const emailElem = this.getEmailInput();
     const passwordElem = this.getPasswordInput();
     const nameElem = this.getNamedInput();
@@ -224,7 +211,7 @@ export default class LoginPage {
     }
   }
 
-  validateEmail(event: Event) {
+  private validateEmail(event: Event) {
     const emailElem = event.currentTarget as HTMLInputElement;
     const message = this.getEmailMessage();
     this.getErrorMessage().classList.add('none');
@@ -238,7 +225,7 @@ export default class LoginPage {
     }
   }
 
-  validatePassword(event: Event) {
+  private validatePassword(event: Event) {
     const passwordElem = event.currentTarget as HTMLInputElement;
     const message = this.getPasswordMessage();
     this.getErrorMessage().classList.add('none');
@@ -313,7 +300,7 @@ export default class LoginPage {
     return inputContainer;
   }
 
-  createTitle() {
+  private createTitle() {
     const title = document.createElement('p');
     title.className = 'form__title';
     title.textContent = 'RS Lang';
@@ -329,7 +316,7 @@ export default class LoginPage {
     return loginImg;
   }
 
-  createInvalidMessage(text: string, classElem: string) {
+  private createInvalidMessage(text: string, classElem: string) {
     const message = document.createElement('span');
     message.className = `form__invalid-text none ${classElem}`;
     message.textContent = text;
