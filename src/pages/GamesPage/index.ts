@@ -1,4 +1,4 @@
-import { GamesPreview } from '../../components';
+import { GamesPreview, Footer } from '../../components';
 
 export default class GamesPage {
   constructor() {}
@@ -27,11 +27,26 @@ export default class GamesPage {
     return sprintBlock;
   }
 
+  private createTitle(content: string) {
+    const title = document.createElement('h2');
+    title.className = 'games-wrap__title';
+    title.textContent = content;
+
+    return title;
+  }
+
   render() {
     const component = document.createElement('div');
-    component.className = 'games';
+    component.className = 'games-wrap';
 
-    component.append(this.createAudioBlock(), this.createSprintBlock());
+    const games = document.createElement('div');
+    games.className = 'games';
+
+    const footer = new Footer().render();
+
+    games.append(this.createAudioBlock(), this.createSprintBlock());
+
+    component.append(this.createTitle('Minigames'), games, footer);
 
     return component;
   }

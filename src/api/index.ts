@@ -119,9 +119,15 @@ const getTokens = async (id: string) => {
   }
 };
 
-const errorHandler = async (promise: Response, data: string) => {
+const errorHandler = async (
+  promise: Response,
+  data: string,
+  callback?: () => void,
+  callback404?: () => void,
+) => {
   switch (promise.status) {
     case 404:
+      if (callback404) callback404();
       console.error(`${data} not found`);
       break;
     case 401:
@@ -129,6 +135,7 @@ const errorHandler = async (promise: Response, data: string) => {
       await getTokens(localStorage.getItem('userID'));
       break;
     case 417:
+      if (callback) callback();
       console.error(`${data} has been create`);
       break;
     case 422:
@@ -138,7 +145,7 @@ const errorHandler = async (promise: Response, data: string) => {
       console.error('Bad request');
       break;
     case 403:
-      // logout => modal window signIn
+      if (callback) callback();
       console.error('incorect email or password');
       break;
     default:
@@ -166,7 +173,7 @@ const requestWrapper = async (url: string, options: OptionsObj, type: string) =>
 };
 
 // создание нового User
-export const createUser = async (userData: User) => {
+export const createUser = async (userData: User, callback: () => void) => {
   const response = await fetch(EndPoints.USERS_URL, {
     method: 'POST',
     headers: {
@@ -175,7 +182,7 @@ export const createUser = async (userData: User) => {
     body: JSON.stringify(userData),
   });
   if (!response.ok) {
-    errorHandler(response, 'user');
+    errorHandler(response, 'user', callback);
   } else {
     const content: User = await response.json();
     return content;
@@ -184,7 +191,7 @@ export const createUser = async (userData: User) => {
 };
 
 // Регистрация User
-export const signIn = async (userData: User) => {
+export const signIn = async (userData: User, callback: () => void, callback404: () => void) => {
   const response = await fetch(EndPoints.SIGNIN_URL, {
     method: 'POST',
     headers: {
@@ -194,7 +201,7 @@ export const signIn = async (userData: User) => {
     body: JSON.stringify(userData),
   });
   if (!response.ok) {
-    errorHandler(response, 'user');
+    errorHandler(response, 'user', callback, callback404);
   } else {
     const content: UserTokens = await response.json();
     setLocalTokens(content.token, content.refreshToken);

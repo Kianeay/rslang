@@ -24,6 +24,9 @@ h1 {
 
 h2 {
   margin: 0;
+  font-size: $font-title;
+  color: $violet;
+  text-transform: uppercase;
 }
 
 h3 {
@@ -55,6 +58,9 @@ ul {
   border-top-left-radius: 30px;
   border-bottom-right-radius: 30px;
   cursor: pointer;
+  &_colored {
+    background-color: $violet;
+  }
 }
 
 .wrapper {
