@@ -2,14 +2,23 @@ import { getWord, getWords } from '../../api';
 import Word from '../../components/Word';
 import DifficultyLevel from '../../components/difficultyLevel';
 
+let currentWord: Word = null;
+
 async function loadCurrentWord(id: string) {
   const word: HTMLDivElement = document.querySelector('.word');
-  word.innerHTML = '';
-  word.append(new Word(id).render());
+  if (!currentWord) {
+    currentWord = new Word();
+    word.append(currentWord.render());
+  }
+  currentWord.loadCurrentWord(id);
 }
 
 async function loadWords(wordsList: HTMLDivElement, difficultyLevel: string) {
   const words = await getWords(difficultyLevel, '4');
+
+  while (wordsList.firstChild) {
+    wordsList.removeChild(wordsList.firstChild);
+  }
 
   words.forEach((item, index) => {
     const word = document.createElement('div');
@@ -59,15 +68,14 @@ export default class TextbookPage {
 
   private changeActiveDifficultyLevel(level: string) {
     const wordsList: HTMLDivElement = document.querySelector('.words__list');
-    wordsList.innerHTML = '';
     loadWords(wordsList, level);
   }
 
   private async createWordsList(element: HTMLDivElement) {
     const wordsList = document.createElement('div');
     wordsList.className = 'words__list';
-    element.append(wordsList);
     loadWords(wordsList, '0');
+    element.append(wordsList);
   }
 
   private async createCurrentWord(element: HTMLDivElement) {
