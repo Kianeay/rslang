@@ -31,7 +31,7 @@ export default class DifficultyLevel {
     for (let i = 0; i < this.difficultyLevelsCount; i += 1) {
       const difficultyItem = document.createElement('li');
       difficultyItem.className = 'difficulty__item';
-      difficultyItem.textContent = String(i);
+      difficultyItem.textContent = String(i + 1);
       difficultyItem.setAttribute('data-num', String(i));
 
       if (i === 0) {
