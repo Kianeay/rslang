@@ -1,7 +1,45 @@
 import { getWord, getWords } from '../../api';
 import Word from '../../components/Word';
+import DifficultyLevel from '../../components/difficultyLevel';
 
-const difficultyLevelsCount = 6;
+async function loadCurrentWord(id: string) {
+  const word: HTMLDivElement = document.querySelector('.word');
+  word.innerHTML = '';
+  word.append(new Word(id).render());
+}
+
+async function loadWords(wordsList: HTMLDivElement, difficultyLevel: string) {
+  const words = await getWords(difficultyLevel, '4');
+
+  words.forEach((item, index) => {
+    const word = document.createElement('div');
+    word.className = 'words__item';
+    word.setAttribute('data-id', item.id);
+
+    const wordMeaning = document.createElement('h4');
+    wordMeaning.textContent = item.word;
+    wordMeaning.className = 'words__word';
+    word.append(wordMeaning);
+
+    const wordTranslate = document.createElement('p');
+    wordTranslate.textContent = item.wordTranslate;
+    wordTranslate.className = 'words__translate';
+
+    word.append(wordTranslate);
+    word.addEventListener('click', (event: Event) => {
+      const { currentTarget } = event;
+      const { id } = (currentTarget as HTMLElement).dataset;
+
+      loadCurrentWord(id);
+    });
+
+    if (index === 0) {
+      loadCurrentWord(words[index].id);
+    }
+
+    wordsList.append(word);
+  });
+}
 
 export default class TextbookPage {
   constructor() { }
@@ -15,99 +53,21 @@ export default class TextbookPage {
   }
 
   private createDifficultyLevels() {
-    const difficultyLevels = document.createElement('div');
-    difficultyLevels.className = 'difficulty';
-
-    const title = document.createElement('h3');
-    title.textContent = 'Vocabulary difficulty level';
-    title.className = 'difficulty__title';
-    difficultyLevels.append(title);
-
-    const difficultyList = document.createElement('ul');
-    difficultyList.className = 'difficulty__list';
-    for (let i = 0; i < difficultyLevelsCount; i += 1) {
-      const difficultyItem = document.createElement('li');
-      difficultyItem.className = 'difficulty__item';
-      difficultyItem.textContent = String(i);
-      difficultyItem.setAttribute('data-num', String(i));
-
-      if (i === 0) {
-        difficultyItem.classList.add('difficulty__item-active');
-      }
-
-      difficultyList.append(difficultyItem);
-      difficultyItem.addEventListener('click', (event: Event) => {
-        const { target } = event;
-
-        const difficultyLevel = (target as HTMLElement).dataset.num;
-        const wordsList: HTMLDivElement = document.querySelector('.words__list');
-
-        wordsList.innerHTML = '';
-        this.loadWords(wordsList, difficultyLevel);
-
-        this.changeActiveDifficultyLevel(target as HTMLElement);
-      });
-    }
-    difficultyLevels.append(difficultyList);
-
+    const difficultyLevels = new DifficultyLevel(this.changeActiveDifficultyLevel).render();
     return difficultyLevels;
   }
 
-  private changeActiveDifficultyLevel(element: HTMLElement) {
-    const parent = element.parentElement;
-
-    Array.from(parent.children).forEach((child) => {
-      child.classList.remove('difficulty__item-active');
-    });
-
-    element.classList.add('difficulty__item-active');
-  }
-
-  private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string) {
-    const words = await getWords(difficultyLevel, '4');
-
-    words.forEach((item, index) => {
-      const word = document.createElement('div');
-      word.className = 'words__item';
-      word.setAttribute('data-id', item.id);
-
-      const wordMeaning = document.createElement('h4');
-      wordMeaning.textContent = item.word;
-      wordMeaning.className = 'words__word';
-      word.append(wordMeaning);
-
-      const wordTranslate = document.createElement('p');
-      wordTranslate.textContent = item.wordTranslate;
-      wordTranslate.className = 'words__translate';
-
-      word.append(wordTranslate);
-      word.addEventListener('click', (event: Event) => {
-        const { currentTarget } = event;
-        const { id } = (currentTarget as HTMLElement).dataset;
-
-        this.loadCurrentWord(id);
-      });
-
-      if (index === 0) {
-        this.loadCurrentWord(words[index].id);
-      }
-
-      wordsList.append(word);
-    });
-  }
-
-  private async loadCurrentWord(id: string) {
-    const word: HTMLDivElement = document.querySelector('.word');
-    word.innerHTML = '';
-    word.append(new Word(id).render());
+  private changeActiveDifficultyLevel(level: string) {
+    const wordsList: HTMLDivElement = document.querySelector('.words__list');
+    wordsList.innerHTML = '';
+    loadWords(wordsList, level);
   }
 
   private async createWordsList(element: HTMLDivElement) {
     const wordsList = document.createElement('div');
     wordsList.className = 'words__list';
     element.append(wordsList);
-
-    this.loadWords(wordsList, '0');
+    loadWords(wordsList, '0');
   }
 
   private async createCurrentWord(element: HTMLDivElement) {
