@@ -1,6 +1,6 @@
 import { getWord, getWords } from '../../api';
 import Word from '../../components/Word';
-import DifficultyLevel from '../../components/difficultyLevel';
+import DifficultyLevel from '../../components/DifficultyLevel';
 
 let currentWord: Word = null;
 

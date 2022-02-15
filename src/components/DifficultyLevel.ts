@@ -1,10 +1,10 @@
 export default class DifficultyLevel {
   private difficultyLevelsCount = 6;
 
-  private callBack;
+  private callback: (level: string) => void;
 
-  constructor(f: (x: string) => void) {
-    this.callBack = f;
+  constructor(callback: (level: string) => void) {
+    this.callback = callback;
   }
 
   private changeActiveDifficultyLevel(element: HTMLElement) {
@@ -17,15 +17,15 @@ export default class DifficultyLevel {
     element.classList.add('difficulty__item-active');
   }
 
-  render() {
-    const difficultyLevels = document.createElement('div');
-    difficultyLevels.className = 'difficulty';
-
+  private createTitle() {
     const title = document.createElement('h3');
     title.textContent = 'Vocabulary difficulty level';
     title.className = 'difficulty__title';
-    difficultyLevels.append(title);
 
+    return title;
+  }
+
+  private creadteDifficultyList() {
     const difficultyList = document.createElement('ul');
     difficultyList.className = 'difficulty__list';
     for (let i = 0; i < this.difficultyLevelsCount; i += 1) {
@@ -40,14 +40,25 @@ export default class DifficultyLevel {
 
       difficultyList.append(difficultyItem);
     }
-    difficultyLevels.append(difficultyList);
+    return difficultyList;
+  }
+
+  render() {
+    const difficultyLevels = document.createElement('div');
+    difficultyLevels.className = 'difficulty';
+
+    difficultyLevels.append(
+      this.createTitle(),
+      this.creadteDifficultyList(),
+    );
+
     difficultyLevels.addEventListener('click', (event: Event) => {
       const { target } = event;
 
       if ((target as HTMLElement).classList.contains('difficulty__item')) {
         this.changeActiveDifficultyLevel(target as HTMLElement);
         const currentLevel = (target as HTMLElement).dataset.num;
-        this.callBack(currentLevel);
+        this.callback(currentLevel);
       }
     });
 
