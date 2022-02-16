@@ -1,4 +1,4 @@
-import { getWord } from '../api';
+import { getWord, EndPoints } from '../api';
 
 interface IWord {
   id: string,
@@ -24,6 +24,9 @@ export default class Word {
 
   async loadCurrentWord(id: string) {
     this.word = await getWord(id);
+
+    const image: HTMLImageElement = document.querySelector('.word__image');
+    image.src = EndPoints.BASE_URL + this.word.image;
 
     const title: HTMLElement = document.querySelector('.word__title');
     title.textContent = this.word.word;

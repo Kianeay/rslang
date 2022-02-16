@@ -1,4 +1,4 @@
-enum EndPoints {
+export enum EndPoints {
   BASE_URL = 'https://react-learnwords2022.herokuapp.com/',
   WORDS_URL = 'https://react-learnwords2022.herokuapp.com/words',
   USERS_URL = 'https://react-learnwords2022.herokuapp.com/users',
