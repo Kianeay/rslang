@@ -25,7 +25,7 @@ export default class DifficultyLevel {
     return title;
   }
 
-  private creadteDifficultyList() {
+  private createDifficultyList() {
     const difficultyList = document.createElement('ul');
     difficultyList.className = 'difficulty__list';
     for (let i = 0; i < this.difficultyLevelsCount; i += 1) {
@@ -49,7 +49,7 @@ export default class DifficultyLevel {
 
     difficultyLevels.append(
       this.createTitle(),
-      this.creadteDifficultyList(),
+      this.createDifficultyList(),
     );
 
     difficultyLevels.addEventListener('click', (event: Event) => {
@@ -58,6 +58,7 @@ export default class DifficultyLevel {
       if ((target as HTMLElement).classList.contains('difficulty__item')) {
         this.changeActiveDifficultyLevel(target as HTMLElement);
         const currentLevel = (target as HTMLElement).dataset.num;
+
         this.callback(currentLevel);
       }
     });
