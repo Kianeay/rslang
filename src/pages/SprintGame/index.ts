@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { Button, DifficultyLevel } from '../../components';
 import SprintHeader from './SprintHeader';
-import { getWord, getWords } from '../../api';
+import { getWords } from '../../api';
 import { IWord } from '../../types';
 
 interface WordPair {
@@ -13,11 +13,13 @@ interface WordPair {
 export default class SprintGame {
   private header: SprintHeader;
 
-  private wordEn: string;
+  private wordEn: Element;
 
-  private wordRu: string;
+  private wordRu: Element;
 
   private words: IWord[];
+
+  private wordsWrong: IWord[];
 
   private wordsArray: WordPair[] = [];
 
@@ -48,12 +50,46 @@ export default class SprintGame {
     const btnWrap = document.createElement('div');
     btnWrap.className = 'sprint__buttons';
 
-    const correctBtn = new Button({ label: 'correct' }).render();
-    const wrongBtn = new Button({ label: 'wrong' }).render();
+    const correctBtn = new Button({
+      label: 'correct',
+      onClick: this.onCorrectClick.bind(this),
+    }).render();
+    const wrongBtn = new Button({
+      label: 'wrong',
+      onClick: this.onWrongClick.bind(this),
+    }).render();
 
     btnWrap.append(correctBtn, wrongBtn);
 
     return btnWrap;
+  }
+
+  private onCorrectClick() {
+    if (this.wordsArray[this.currentWordIndex].correct) {
+      console.log('correct');
+    } else {
+      console.log('ne correct');
+    }
+
+    this.changeWordsContent();
+  }
+
+  private onWrongClick() {
+    if (this.wordsArray[this.currentWordIndex].correct) {
+      console.log('ne correct');
+    } else {
+      console.log('correct');
+    }
+
+    this.changeWordsContent();
+  }
+
+  private changeWordsContent() {
+    this.currentWordIndex += 1;
+    this.wordEn.textContent = `${this.wordsArray[this.currentWordIndex].word}`;
+    this.wordRu.textContent = `${
+      this.wordsArray[this.currentWordIndex].translate
+    }`;
   }
 
   private createWords() {
@@ -73,11 +109,11 @@ export default class SprintGame {
     const wordWrap = document.createElement('div');
     wordWrap.className = 'sprint__wrap';
 
-    const wordEn = document.createElement('span');
-    wordEn.className = 'sprint__word-en sprint__word';
-    wordEn.textContent = `${this.wordsArray[this.currentWordIndex].word}`;
+    this.wordEn = document.createElement('span');
+    this.wordEn.className = 'sprint__word-en sprint__word';
+    this.wordEn.textContent = `${this.wordsArray[this.currentWordIndex].word}`;
 
-    wordWrap.append(wordEn);
+    wordWrap.append(this.wordEn);
 
     return wordWrap;
   }
@@ -86,11 +122,13 @@ export default class SprintGame {
     const wordWrap = document.createElement('div');
     wordWrap.className = 'sprint__wrap';
 
-    const wordRu = document.createElement('span');
-    wordRu.className = 'sprint__word-ru sprint__word';
-    wordRu.textContent = `${this.wordsArray[this.currentWordIndex].translate}`;
+    this.wordRu = document.createElement('span');
+    this.wordRu.className = 'sprint__word-ru sprint__word';
+    this.wordRu.textContent = `${
+      this.wordsArray[this.currentWordIndex].translate
+    }`;
 
-    wordWrap.append(wordRu);
+    wordWrap.append(this.wordRu);
 
     return wordWrap;
   }
@@ -103,11 +141,13 @@ export default class SprintGame {
   async getWords(level: string) {
     this.levelElem.remove();
     const pageNum = this.randomInteger(0, 29).toString();
+    const pageNumWrong = this.randomInteger(0, 29).toString();
     this.words = await getWords(level, pageNum);
-    this.createWordsArray(this.words);
+    this.wordsWrong = await getWords(level, pageNumWrong);
+    this.createWordsArray();
   }
 
-  private createWordsArray(words: IWord[]) {
+  private createWordsArray() {
     // this.wordsArray = new Set();
     const correctWords = new Set();
     while (correctWords.size < 8) {
@@ -128,10 +168,10 @@ export default class SprintGame {
 
         this.wordsArray.push(pair);
       } else {
-        const num = this.randomInteger(0, 19);
+        // const num = this.randomInteger(0, 19);
         const pair = {
           word: this.words[+value].word,
-          translate: this.words[num].wordTranslate,
+          translate: this.wordsWrong[+value].wordTranslate,
           correct: false,
         };
 
