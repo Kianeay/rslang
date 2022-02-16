@@ -1,4 +1,4 @@
-enum EndPoints {
+export enum EndPoints {
   BASE_URL = 'https://react-learnwords2022.herokuapp.com/',
   WORDS_URL = 'https://react-learnwords2022.herokuapp.com/words',
   USERS_URL = 'https://react-learnwords2022.herokuapp.com/users',
@@ -240,7 +240,6 @@ export const removeUser = async (id: string) => {
 
 // Получить все слова с базы данных
 export const getWords = async (group: string, page: string) => {
-  //const response = await fetch(`${EndPoints.WORDS_URL}?` + new URLSearchParams({ group: group, page: page, }));
   const response = await fetch(`${EndPoints.WORDS_URL}?page=${page}&group=${group}`);
   if (!response.ok) {
     errorHandler(response, 'words');
