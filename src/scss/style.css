@@ -282,16 +282,16 @@ ul {
   background-position: left -35px;
 }
 
-.textbook .difficulty {
+.difficulty {
   padding-top: 20px;
 }
 
-.textbook .difficulty__title {
+.difficulty__title {
   font-size: 1.5rem;
   color: #5d6571;
 }
 
-.textbook .difficulty__list {
+.difficulty__list {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -299,7 +299,7 @@ ul {
   padding-top: 25px;
 }
 
-.textbook .difficulty__item {
+.difficulty__item {
   width: 73px;
   height: 73px;
   line-height: 73px;
@@ -312,11 +312,11 @@ ul {
   color: #ffffff;
 }
 
-.textbook .difficulty__item-active {
+.difficulty__item-active {
   background: #785cad;
 }
 
-.textbook .words {
+.words {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -325,7 +325,7 @@ ul {
   padding-top: 100px;
 }
 
-.textbook .words__list {
+.words__list {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -334,7 +334,7 @@ ul {
   gap: 22px;
 }
 
-.textbook .words__item {
+.words__item {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -355,19 +355,19 @@ ul {
   cursor: pointer;
 }
 
-.textbook .words__word {
+.words__word {
   font-weight: bold;
   font-size: 1.125rem;
   text-transform: uppercase;
   color: #785cad;
 }
 
-.textbook .words__translate {
+.words__translate {
   font-size: 1rem;
   color: #000000;
 }
 
-.textbook .word {
+.word {
   min-width: 35%;
   background-color: #eae8ed;
   -ms-flex-item-align: start;
@@ -376,11 +376,11 @@ ul {
   padding-bottom: 20px;
 }
 
-.textbook .word__image {
+.word__image {
   width: 100%;
 }
 
-.textbook .word__title {
+.word__title {
   padding-left: 35px;
   padding-top: 20px;
   font-weight: bold;
@@ -389,7 +389,7 @@ ul {
   text-transform: capitalize;
 }
 
-.textbook .word__transcription {
+.word__transcription {
   padding-left: 35px;
   font-weight: bold;
   font-size: 1.125rem;
@@ -398,20 +398,20 @@ ul {
   color: #785cad;
 }
 
-.textbook .word__translate {
+.word__translate {
   padding-left: 35px;
   font-size: 1.125rem;
   line-height: 2.1875rem;
 }
 
-.textbook .word__meaning {
+.word__meaning {
   padding-left: 35px;
   font-weight: 500;
   font-size: 1rem;
   line-height: 1.5rem;
 }
 
-.textbook .word__meaning-translate {
+.word__meaning-translate {
   padding-left: 35px;
   font-weight: 300;
   font-size: 1rem;
@@ -419,7 +419,7 @@ ul {
   color: #000000;
 }
 
-.textbook .word__example-paragraph {
+.word__example-paragraph {
   padding-top: 20px;
   padding-left: 35px;
   font-weight: 500;
@@ -427,14 +427,14 @@ ul {
   line-height: 2.1875rem;
 }
 
-.textbook .word__example {
+.word__example {
   padding-left: 35px;
   font-weight: 500;
   font-size: 1rem;
   line-height: 2.1875rem;
 }
 
-.textbook .word__example-translate {
+.word__example-translate {
   padding-left: 35px;
   font-weight: 300;
   font-size: 1rem;
