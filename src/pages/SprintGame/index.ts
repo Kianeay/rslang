@@ -17,6 +17,12 @@ export default class SprintGame {
 
   private wordRu: Element;
 
+  private correctBtn: HTMLButtonElement;
+
+  private wrongBtn: HTMLButtonElement;
+
+  private equally: Element;
+
   private words: IWord[];
 
   private wordsWrong: IWord[];
@@ -50,38 +56,76 @@ export default class SprintGame {
     const btnWrap = document.createElement('div');
     btnWrap.className = 'sprint__buttons';
 
-    const correctBtn = new Button({
+    this.correctBtn = new Button({
       label: 'correct',
       onClick: this.onCorrectClick.bind(this),
     }).render();
-    const wrongBtn = new Button({
+    this.wrongBtn = new Button({
       label: 'wrong',
       onClick: this.onWrongClick.bind(this),
     }).render();
 
-    btnWrap.append(correctBtn, wrongBtn);
+    btnWrap.append(this.correctBtn, this.wrongBtn);
 
     return btnWrap;
   }
 
   private onCorrectClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
-      console.log('correct');
-    } else {
-      console.log('ne correct');
-    }
+      this.equally.classList.add('green');
 
-    this.changeWordsContent();
+      this.correctBtn.disabled = true;
+      this.wrongBtn.disabled = true;
+
+      setTimeout(() => {
+        this.equally.classList.remove('green');
+        this.changeWordsContent();
+
+        this.correctBtn.disabled = false;
+        this.wrongBtn.disabled = false;
+      }, 1500);
+    } else {
+      this.equally.classList.add('red');
+
+      this.correctBtn.disabled = true;
+      this.wrongBtn.disabled = true;
+
+      setTimeout(() => {
+        this.equally.classList.remove('red');
+        this.changeWordsContent();
+
+        this.correctBtn.disabled = false;
+        this.wrongBtn.disabled = false;
+      }, 1500);
+    }
   }
 
   private onWrongClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
-      console.log('ne correct');
-    } else {
-      console.log('correct');
-    }
+      this.equally.classList.add('red');
+      this.correctBtn.disabled = true;
+      this.wrongBtn.disabled = true;
 
-    this.changeWordsContent();
+      setTimeout(() => {
+        this.equally.classList.remove('red');
+        this.changeWordsContent();
+
+        this.correctBtn.disabled = false;
+        this.wrongBtn.disabled = false;
+      }, 1500);
+    } else {
+      this.equally.classList.add('green');
+      this.correctBtn.disabled = true;
+      this.wrongBtn.disabled = true;
+
+      setTimeout(() => {
+        this.equally.classList.remove('green');
+        this.changeWordsContent();
+
+        this.correctBtn.disabled = false;
+        this.wrongBtn.disabled = false;
+      }, 1500);
+    }
   }
 
   private changeWordsContent() {
@@ -96,11 +140,11 @@ export default class SprintGame {
     const words = document.createElement('div');
     words.className = 'sprint__words';
 
-    const equally = document.createElement('span');
-    equally.className = 'sprint__equally';
-    equally.textContent = '=';
+    this.equally = document.createElement('span');
+    this.equally.className = 'sprint__equally';
+    this.equally.textContent = '=';
 
-    words.append(this.createWordEn(), equally, this.createWordRu());
+    words.append(this.createWordEn(), this.equally, this.createWordRu());
 
     return words;
   }
