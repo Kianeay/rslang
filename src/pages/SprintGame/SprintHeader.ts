@@ -36,11 +36,11 @@ export default class SprintHeader {
     scoreWrap.className = 'sprint__score-wrap';
 
     const score = document.createElement('span');
-    score.className = 'sprint__time';
-    score.textContent = 'time:';
+    score.className = 'sprint__score';
+    score.textContent = 'score:';
 
     const scoreCount = document.createElement('span');
-    scoreCount.className = 'sprint__time-count';
+    scoreCount.className = 'sprint__score-count';
     scoreCount.textContent = `${this.scoreCount}`;
     this.scoreElem = scoreCount;
 
