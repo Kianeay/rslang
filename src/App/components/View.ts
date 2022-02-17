@@ -1,5 +1,11 @@
 import Controller from './Controller';
-import { MainPage, TextbookPage, GamesPage, LoginPage } from '../../pages';
+import {
+  MainPage,
+  TextbookPage,
+  GamesPage,
+  LoginPage,
+  SprintGame,
+} from '../../pages';
 import { Navigation } from '../../components';
 
 export default class View {
@@ -37,6 +43,10 @@ export default class View {
 
       case 'login':
         this.appPage = this.loginPage.render();
+        break;
+
+      case 'sprint':
+        this.appPage = new SprintGame().render();
         break;
 
       default:

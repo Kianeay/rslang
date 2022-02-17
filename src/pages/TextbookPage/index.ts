@@ -1,11 +1,11 @@
-import { getWord, getWords } from '../../api';
-import Word from '../../components/Word';
+import { getWords } from '../../api';
+import { Word } from '../../components';
 import DifficultyLevel from '../../components/DifficultyLevel';
 
 export default class TextbookPage {
   private currentWord: Word = null;
 
-  constructor() { }
+  constructor() {}
 
   private async loadCurrentWord(id: string) {
     const word: HTMLDivElement = document.querySelector('.word');
@@ -62,8 +62,9 @@ export default class TextbookPage {
   }
 
   private createDifficultyLevels() {
-    const difficultyLevels = new DifficultyLevel(this.changeActiveDifficultyLevel.bind(this))
-      .render();
+    const difficultyLevels = new DifficultyLevel(
+      this.changeActiveDifficultyLevel.bind(this),
+    ).render();
     return difficultyLevels;
   }
 

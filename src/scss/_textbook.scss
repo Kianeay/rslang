@@ -1,155 +1,155 @@
 .textbook {
-    padding-left: 50px;
-    padding-right: 50px;
-    position: relative;
-    background-size: contain;
+  padding-left: 50px;
+  padding-right: 50px;
+  position: relative;
+  background-size: contain;
 
-    &__title {
-      font-size: $font-title;
-      color: $violet;
-      padding-top: 15px;
-      background-image: url('../assets/images/gray-back.svg');
-      background-repeat: no-repeat;
-      background-position: left -35px;
-    }
+  &__title {
+    font-size: $font-title;
+    color: $violet;
+    padding-top: 15px;
+    background-image: url('../assets/images/gray-back.svg');
+    background-repeat: no-repeat;
+    background-position: left -35px;
+  }
+}
 
-    .difficulty {
-      padding-top: 20px;
+.difficulty {
+  padding-top: 20px;
 
-      &__title {
-        font-size: $font-big;
-        color: $gray;
-      }
+  &__title {
+    font-size: $font-big;
+    color: $gray;
+  }
 
-      &__list {
-        display: flex;
-        gap: 25px;
-        padding-top: 25px;
-      }
+  &__list {
+    display: flex;
+    gap: 25px;
+    padding-top: 25px;
+  }
 
-      &__item {
-        width: 73px;
-        height: 73px;
-        line-height: 73px;
-        background-color: $light-violet;
-        border-radius: 50%;
-        cursor: pointer;
-        text-align: center;
-        font-weight: bold;
-        font-size: 48px;
-        color: $white;
-      }
+  &__item {
+    width: 73px;
+    height: 73px;
+    line-height: 73px;
+    background-color: $light-violet;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    font-size: 48px;
+    color: $white;
+  }
 
-      &__item-active {
-        background: $violet;
-      }
-    }
-    
-    .words {
-      display: flex;
-      column-gap: 20px;
-      padding-top: 100px;
+  &__item-active {
+    background: $violet;
+  }
+}
 
-      &__list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 22px;
-      }
+.words {
+  display: flex;
+  column-gap: 20px;
+  padding-top: 100px;
 
-      &__item {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 256px;
-        height: 100px;
-        background-color: $light-gray;
-        border-radius: 16px;
-        cursor: pointer;
-      }
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+  }
 
-      &__word {
-        font-weight: bold;
-        font-size: $font-med;
-        text-transform: uppercase;
-        color: $violet;
-      }
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 256px;
+    height: 100px;
+    background-color: $light-gray;
+    border-radius: 16px;
+    cursor: pointer;
+  }
 
-      &__translate {
-        font-size: $font-sm;
-        color: $black;
-      }
-    }
+  &__word {
+    font-weight: bold;
+    font-size: $font-med;
+    text-transform: uppercase;
+    color: $violet;
+  }
 
-    .word {
-      min-width: 35%;
-      background-color: $light-gray;      
-      align-self: start;
-      padding-bottom: 20px;
+  &__translate {
+    font-size: $font-sm;
+    color: $black;
+  }
+}
 
-      &__image {
-        width: 100%;
-      }
+.word {
+  min-width: 35%;
+  background-color: $light-gray;
+  align-self: start;
+  padding-bottom: 20px;
 
-      &__title {
-        padding-left: 35px;
-        padding-top: 20px;
-        font-weight: bold;
-        font-size: $font-med;
-        line-height: $font-s-big;
-        text-transform: capitalize;
-      }
+  &__image {
+    width: 100%;
+  }
 
-      &__transcription {
-        padding-left: 35px;
-        font-weight: bold;
-        font-size: $font-med;
-        line-height: $font-s-big;
-        letter-spacing: 2px;
-        color: $violet;
-      }
+  &__title {
+    padding-left: 35px;
+    padding-top: 20px;
+    font-weight: bold;
+    font-size: $font-med;
+    line-height: $font-s-big;
+    text-transform: capitalize;
+  }
 
-      &__translate {
-        padding-left: 35px;
-        font-size: $font-med;
-        line-height: $font-s-big;
-      }
+  &__transcription {
+    padding-left: 35px;
+    font-weight: bold;
+    font-size: $font-med;
+    line-height: $font-s-big;
+    letter-spacing: 2px;
+    color: $violet;
+  }
 
-      &__meaning {
-        padding-left: 35px;
-        font-weight: 500;
-        font-size: $font-sm;
-        line-height: $font-big;
-      }
+  &__translate {
+    padding-left: 35px;
+    font-size: $font-med;
+    line-height: $font-s-big;
+  }
 
-      &__meaning-translate {
-        padding-left: 35px;
-        font-weight: 300;
-        font-size: $font-sm;
-        line-height: $font-big;
-        color: $black;
-      }
+  &__meaning {
+    padding-left: 35px;
+    font-weight: 500;
+    font-size: $font-sm;
+    line-height: $font-big;
+  }
 
-      &__example-paragraph {
-        padding-top: 20px;
-        padding-left: 35px;
-        font-weight: 500;
-        font-size: $font-sm;
-        line-height: $font-s-big;
-      }
+  &__meaning-translate {
+    padding-left: 35px;
+    font-weight: 300;
+    font-size: $font-sm;
+    line-height: $font-big;
+    color: $black;
+  }
 
-      &__example {
-        padding-left: 35px;
-        font-weight: 500;
-        font-size: $font-sm;
-        line-height: $font-s-big;
-      }
+  &__example-paragraph {
+    padding-top: 20px;
+    padding-left: 35px;
+    font-weight: 500;
+    font-size: $font-sm;
+    line-height: $font-s-big;
+  }
 
-      &__example-translate {
-        padding-left: 35px;
-        font-weight: 300;
-        font-size: $font-sm;
-        line-height: $font-s-big;
-      }
-    }
+  &__example {
+    padding-left: 35px;
+    font-weight: 500;
+    font-size: $font-sm;
+    line-height: $font-s-big;
+  }
+
+  &__example-translate {
+    padding-left: 35px;
+    font-weight: 300;
+    font-size: $font-sm;
+    line-height: $font-s-big;
+  }
 }
