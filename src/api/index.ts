@@ -43,7 +43,7 @@ type Headers = {
 };
 
 type OptionalObj = {
-  [key: string]: string;
+  [key: string]: string | boolean | number;
 };
 
 type MongoDB_ObjectAnd = {
@@ -77,7 +77,8 @@ type UsersWordParameter = {
 
 type UserStatistic = {
   learnedWords: number;
-  options?: OptionalObj;
+  // newWords: number;
+  optional?: OptionalObj;
 };
 
 type UserSettings = {
@@ -406,7 +407,7 @@ export const getAggregatedWord = async (id: string, wordId: string) => {
 // Получить статистику User
 export const getUserStatistics = async (id: string) => {
   const response = await requestWrapper(
-    `${EndPoints.USERS_URL}/${id}/statistics}`,
+    `${EndPoints.USERS_URL}/${id}/statistics`,
     {},
     'user statistics',
   );
@@ -419,7 +420,7 @@ export const changeUserStatistics = async (
   statistic: UserStatistic,
 ) => {
   const response = await requestWrapper(
-    `${EndPoints.USERS_URL}/${id}/statistics}`,
+    `${EndPoints.USERS_URL}/${id}/statistics`,
     {
       method: 'PUT',
       headers: {
