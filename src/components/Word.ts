@@ -38,7 +38,7 @@ export default class Word {
     translate.textContent = this.word.wordTranslate;
 
     const meaning: HTMLElement = document.querySelector('.word__meaning');
-    meaning.textContent = this.word.textMeaning;
+    meaning.innerHTML = this.word.textMeaning;
 
     const meaningTranslate: HTMLElement = document.querySelector('.word__meaning-translate');
     meaningTranslate.textContent = this.word.textMeaningTranslate;
@@ -47,7 +47,7 @@ export default class Word {
     exampleParagraph.textContent = 'Example';
 
     const example: HTMLElement = document.querySelector('.word__example');
-    example.textContent = this.word.textExample;
+    example.innerHTML = this.word.textExample;
 
     const exampleTranslate: HTMLElement = document.querySelector('.word__example-translate');
     exampleTranslate.textContent = this.word.textExampleTranslate;
