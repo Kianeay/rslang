@@ -1,5 +1,5 @@
-import { getWord, getWords } from '../../api';
-import Word from '../../components/Word';
+import { getWords } from '../../api';
+import { Word } from '../../components';
 import DifficultyLevel from '../../components/DifficultyLevel';
 import Pagination from '../../components/Pagination';
 
@@ -67,10 +67,11 @@ export default class TextbookPage {
   }
 
   private createDifficultyLevels() {
-    const difficultyLevels = new DifficultyLevel(this.changeActiveDifficultyLevel.bind(this))
-      .render();
-
+    const difficultyLevels = new DifficultyLevel(
+      this.changeActiveDifficultyLevel.bind(this),
+    ).render();
     this.difficultyLevel = '0';
+
     return difficultyLevels;
   }
 

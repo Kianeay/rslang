@@ -22,6 +22,9 @@ export default class GamesPage {
       title: 'Sprint',
       text: sprintText,
       imgName: 'sprint.svg',
+      onClick: () => {
+        location.hash = '#sprint';
+      },
     }).render();
 
     return sprintBlock;

@@ -6,27 +6,27 @@ export enum EndPoints {
 }
 
 type Words = {
-  id: string,
-  group: number,
-  page: number,
-  word: string,
-  image: string,
-  audio: string,
-  audioMeaning: string,
-  audioExample: string,
-  textMeaning: string,
-  textExample: string,
-  transcription: string,
-  wordTranslate: string,
-  textMeaningTranslate: string,
-  textExampleTranslate: string
-}
+  id: string;
+  group: number;
+  page: number;
+  word: string;
+  image: string;
+  audio: string;
+  audioMeaning: string;
+  audioExample: string;
+  textMeaning: string;
+  textExample: string;
+  transcription: string;
+  wordTranslate: string;
+  textMeaningTranslate: string;
+  textExampleTranslate: string;
+};
 
 type User = {
   name?: string;
   email: string;
   password: string;
-}
+};
 
 type UserTokens = {
   message: string;
@@ -34,30 +34,34 @@ type UserTokens = {
   refreshToken: string;
   userId: string;
   name: string;
-}
+};
 
 type Headers = {
   Authorization?: string;
   Accept?: string;
   'Content-Type'?: string;
-}
+};
 
 type OptionalObj = {
   [key: string]: string;
-}
+};
 
 type MongoDB_ObjectAnd = {
-  '$and': OptionalObj[];
-}
+  $and: OptionalObj[];
+};
 type MongoDB_ObjectOr = {
-  '$or': OptionalObj[];
-}
+  $or: OptionalObj[];
+};
 
 type MongoDB_ObjectOrAnd = {
-  '$or': MongoDB_ObjectAnd[];
-}
+  $or: MongoDB_ObjectAnd[];
+};
 
-type MongoDB_Object = OptionalObj | MongoDB_ObjectAnd | MongoDB_ObjectOr | MongoDB_ObjectOrAnd;
+type MongoDB_Object =
+  | OptionalObj
+  | MongoDB_ObjectAnd
+  | MongoDB_ObjectOr
+  | MongoDB_ObjectOrAnd;
 
 interface OptionsObj {
   method?: string;
@@ -69,17 +73,17 @@ interface OptionsObj {
 type UsersWordParameter = {
   difficulty: string;
   optional?: OptionalObj;
-}
+};
 
 type UserStatistic = {
   learnedWords: number;
   options?: OptionalObj;
-}
+};
 
 type UserSettings = {
   wordsPerDay: number;
   options?: OptionalObj;
-}
+};
 
 const setLocalTokens = (token: string, refreshToken: string) => {
   localStorage.setItem('token', token);
@@ -93,7 +97,9 @@ const load = async (url: string, options: OptionsObj) => {
   if (makeOpt.headers) {
     makeOpt.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
   } else {
-    makeOpt.headers = { Authorization: `Bearer ${localStorage.getItem('token')}` };
+    makeOpt.headers = {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    };
   }
   try {
     const promise = await fetch(url, makeOpt);
@@ -153,7 +159,11 @@ const errorHandler = async (
   }
 };
 
-const requestWrapper = async (url: string, options: OptionsObj, type: string) => {
+const requestWrapper = async (
+  url: string,
+  options: OptionsObj,
+  type: string,
+) => {
   try {
     let response = await load(url, options);
     if (!response.ok && response.status === 401) {
@@ -191,7 +201,11 @@ export const createUser = async (userData: User, callback: () => void) => {
 };
 
 // Регистрация User
-export const signIn = async (userData: User, callback: () => void, callback404: () => void) => {
+export const signIn = async (
+  userData: User,
+  callback: () => void,
+  callback404: () => void,
+) => {
   const response = await fetch(EndPoints.SIGNIN_URL, {
     method: 'POST',
     headers: {
@@ -213,26 +227,38 @@ export const signIn = async (userData: User, callback: () => void, callback404: 
 
 // Получить User
 export const getUser = async (id: string) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}`, {}, 'user');
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}`,
+    {},
+    'user',
+  );
   return response;
 };
 
 // Изменить пользователя
 export const changeUserParameters = async (id: string, userData: User) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}`,
+    {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(userData),
     },
-    body: JSON.stringify(userData),
-  }, 'user');
+    'user',
+  );
   return response;
 };
 
 // Удалить пользователя
 export const removeUser = async (id: string) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}`, { method: 'DELETE' }, 'user');
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}`,
+    { method: 'DELETE' },
+    'user',
+  );
   if (response) {
     console.log('The user has been deleted');
   }
@@ -240,7 +266,9 @@ export const removeUser = async (id: string) => {
 
 // Получить все слова с базы данных
 export const getWords = async (group: string, page: string) => {
-  const response = await fetch(`${EndPoints.WORDS_URL}?page=${page}&group=${group}`);
+  const response = await fetch(
+    `${EndPoints.WORDS_URL}?page=${page}&group=${group}`,
+  );
   if (!response.ok) {
     errorHandler(response, 'words');
   } else {
@@ -264,13 +292,21 @@ export const getWord = async (id: string) => {
 
 // Получить все слова User
 export const getUserWords = async (id: string) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words`, {}, 'user Words');
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}/words`,
+    {},
+    'user Words',
+  );
   return response;
 };
 
 // Получить слово Юзера по ID
 export const getUserWordsId = async (id: string, wordId: string) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words/${wordId}`, {}, 'user Words');
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}/words/${wordId}`,
+    {},
+    'user Words',
+  );
   return response;
 };
 
@@ -280,14 +316,18 @@ export const createUserWords = async (
   wordId: string,
   userWordParameter: UsersWordParameter,
 ) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words/${wordId}`, {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}/words/${wordId}`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userWordParameter),
     },
-    body: JSON.stringify(userWordParameter),
-  }, 'user words');
+    'user words',
+  );
   return response;
 };
 
@@ -297,20 +337,28 @@ export const changeUserWord = async (
   wordId: string,
   userWordParameter: UsersWordParameter,
 ) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words/${wordId}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}/words/${wordId}`,
+    {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userWordParameter),
     },
-    body: JSON.stringify(userWordParameter),
-  }, 'user words');
+    'user words',
+  );
   return response;
 };
 
 // Удалить слово пользователя
 export const removeUserWord = async (id: string, wordId: string) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/words/${wordId}`, { method: 'DELETE' }, 'user words');
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}/words/${wordId}`,
+    { method: 'DELETE' },
+    'user words',
+  );
   if (response) {
     console.log('The words has been deleted');
   }
@@ -327,53 +375,90 @@ const makeUrl = (baseUrl: string, options: OptionalObj) => {
 };
 
 // Cгруппировать слова
-export const getAggregatedWords = async (id: string, group = '', page = '', wordsPerPage = '', filterObj: MongoDB_Object = {}) => {
+export const getAggregatedWords = async (
+  id: string,
+  group = '',
+  page = '',
+  wordsPerPage = '',
+  filterObj: MongoDB_Object = {},
+) => {
   const filter = JSON.stringify(filterObj) || '';
-  const url = makeUrl(`${EndPoints.USERS_URL}/${id}/aggregatedWords`, { page, filter, group, wordsPerPage });
+  const url = makeUrl(`${EndPoints.USERS_URL}/${id}/aggregatedWords`, {
+    page,
+    filter,
+    group,
+    wordsPerPage,
+  });
   const response = await requestWrapper(url, {}, 'user Words');
   return response;
 };
 
 // Cгруппировать слово
 export const getAggregatedWord = async (id: string, wordId: string) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/aggregatedWords/${wordId}`, {}, 'user Words');
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}/aggregatedWords/${wordId}`,
+    {},
+    'user Words',
+  );
   return response;
 };
 
 // Получить статистику User
 export const getUserStatistics = async (id: string) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/statistics}`, {}, 'user statistics');
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}/statistics}`,
+    {},
+    'user statistics',
+  );
   return response;
 };
 
 // Исправить статистику User
-export const changeUserStatistics = async (id: string, statistic: UserStatistic) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/statistics}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+export const changeUserStatistics = async (
+  id: string,
+  statistic: UserStatistic,
+) => {
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}/statistics}`,
+    {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(statistic),
     },
-    body: JSON.stringify(statistic),
-  }, 'user statistics');
+    'user statistics',
+  );
   return response;
 };
 
 // Получить настройки User
 export const getUserSettings = async (id: string) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/settings}`, {}, 'user settings');
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}/settings}`,
+    {},
+    'user settings',
+  );
   return response;
 };
 
 // Исправить настройки User
-export const changeUserSettings = async (id: string, settings: UserSettings) => {
-  const response = await requestWrapper(`${EndPoints.USERS_URL}/${id}/statistics}`, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
+export const changeUserSettings = async (
+  id: string,
+  settings: UserSettings,
+) => {
+  const response = await requestWrapper(
+    `${EndPoints.USERS_URL}/${id}/statistics}`,
+    {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(settings),
     },
-    body: JSON.stringify(settings),
-  }, 'user statistics');
+    'user statistics',
+  );
   return response;
 };

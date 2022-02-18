@@ -1,26 +1,10 @@
 import { getWord, EndPoints } from '../api';
-
-interface IWord {
-  id: string,
-  group: number,
-  page: number,
-  word: string,
-  image: string,
-  audio: string,
-  audioMeaning: string,
-  audioExample: string,
-  textMeaning: string,
-  textExample: string,
-  transcription: string,
-  wordTranslate: string,
-  textMeaningTranslate: string,
-  textExampleTranslate: string,
-}
+import { IWord } from '../types';
 
 export default class Word {
   private word: IWord;
 
-  constructor() { }
+  constructor() {}
 
   async loadCurrentWord(id: string) {
     this.word = await getWord(id);
@@ -31,7 +15,9 @@ export default class Word {
     const title: HTMLElement = document.querySelector('.word__title');
     title.textContent = this.word.word;
 
-    const transcription: HTMLElement = document.querySelector('.word__transcription');
+    const transcription: HTMLElement = document.querySelector(
+      '.word__transcription',
+    );
     transcription.textContent = this.word.transcription;
 
     const translate: HTMLElement = document.querySelector('.word__translate');
@@ -40,16 +26,22 @@ export default class Word {
     const meaning: HTMLElement = document.querySelector('.word__meaning');
     meaning.innerHTML = this.word.textMeaning;
 
-    const meaningTranslate: HTMLElement = document.querySelector('.word__meaning-translate');
+    const meaningTranslate: HTMLElement = document.querySelector(
+      '.word__meaning-translate',
+    );
     meaningTranslate.textContent = this.word.textMeaningTranslate;
 
-    const exampleParagraph: HTMLElement = document.querySelector('.word__example-paragraph');
+    const exampleParagraph: HTMLElement = document.querySelector(
+      '.word__example-paragraph',
+    );
     exampleParagraph.textContent = 'Example';
 
     const example: HTMLElement = document.querySelector('.word__example');
     example.innerHTML = this.word.textExample;
 
-    const exampleTranslate: HTMLElement = document.querySelector('.word__example-translate');
+    const exampleTranslate: HTMLElement = document.querySelector(
+      '.word__example-translate',
+    );
     exampleTranslate.textContent = this.word.textExampleTranslate;
   }
 
