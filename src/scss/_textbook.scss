@@ -153,3 +153,55 @@
       }
     }
 }
+
+.pagination {
+  display: flex;
+  margin-top: 20px;
+  column-gap: 25px;
+
+  &__item {
+    display: none;
+    width: 35px;
+    height: 35px;       
+    line-height: 35px;
+    text-align: center;
+    background-color: $light-gray;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    color: $gray;
+  }
+
+  &__item-visible {
+    display: block;
+  }
+
+  &__item-visible:hover {
+    background-color: $active-gray;
+  }
+
+  &__item-active {
+    background-color: $active-gray;
+  }
+
+  &__control {
+    width: 35px;
+    height: 35px;       
+    line-height: 35px;
+    text-align: center;
+    background-color: $light-gray;  
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+    color: $gray;
+  }
+
+  &__control:hover {
+    background-color: $active-gray;
+    color: $white;
+  }
+
+  &__control-middle {
+    border-radius: 4px;
+  }
+}

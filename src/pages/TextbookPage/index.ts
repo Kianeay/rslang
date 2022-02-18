@@ -1,9 +1,14 @@
 import { getWord, getWords } from '../../api';
 import Word from '../../components/Word';
 import DifficultyLevel from '../../components/DifficultyLevel';
+import Pagination from '../../components/Pagination';
 
 export default class TextbookPage {
   private currentWord: Word = null;
+
+  private difficultyLevel: string;
+
+  private pagination: Pagination;
 
   constructor() { }
 
@@ -16,8 +21,8 @@ export default class TextbookPage {
     this.currentWord.loadCurrentWord(id);
   }
 
-  private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string) {
-    const words = await getWords(difficultyLevel, '4');
+  private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string, page: string) {
+    const words = await getWords(difficultyLevel, page);
 
     while (wordsList.firstChild) {
       wordsList.removeChild(wordsList.firstChild);
@@ -64,18 +69,22 @@ export default class TextbookPage {
   private createDifficultyLevels() {
     const difficultyLevels = new DifficultyLevel(this.changeActiveDifficultyLevel.bind(this))
       .render();
+
+    this.difficultyLevel = '0';
     return difficultyLevels;
   }
 
   private changeActiveDifficultyLevel(level: string) {
     const wordsList: HTMLDivElement = document.querySelector('.words__list');
-    this.loadWords(wordsList, level);
+    this.difficultyLevel = level;
+    this.loadWords(wordsList, level, '0');
+    this.pagination.refreshActivePage('0');
   }
 
-  private async createWordsList(element: HTMLDivElement) {
+  private createWordsList(element: HTMLDivElement) {
     const wordsList = document.createElement('div');
     wordsList.className = 'words__list';
-    this.loadWords(wordsList, '0');
+    this.loadWords(wordsList, '0', '0');
     element.append(wordsList);
   }
 
@@ -95,6 +104,13 @@ export default class TextbookPage {
     return dictionary;
   }
 
+  private createPagination() {
+    const pagination = new Pagination(this.changePage.bind(this));
+
+    this.pagination = pagination;
+    return pagination.render();
+  }
+
   private createGamesList() {
     const gamesList = document.createElement('div');
     gamesList.className = 'games-list';
@@ -107,6 +123,11 @@ export default class TextbookPage {
     return gamesList;
   }
 
+  private changePage(page: string) {
+    const wordsList: HTMLDivElement = document.querySelector('.words__list');
+    this.loadWords(wordsList, this.difficultyLevel, page);
+  }
+
   render() {
     const component = document.createElement('div');
     component.className = 'textbook';
@@ -115,6 +136,7 @@ export default class TextbookPage {
       this.createTitle(),
       this.createDifficultyLevels(),
       this.createDictionary(),
+      this.createPagination(),
       this.createGamesList(),
     );
 
