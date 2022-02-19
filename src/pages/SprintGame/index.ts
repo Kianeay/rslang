@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { Button, DifficultyLevel } from '../../components';
 import SprintHeader from './SprintHeader';
+import GameStat from './GameStat';
 import {
   getWords,
   createUserWords,
@@ -12,7 +13,7 @@ import {
 } from '../../api';
 import { IWord } from '../../types';
 
-interface WordPair {
+export interface WordPair {
   word: string;
   translate: string;
   correct: boolean;
@@ -50,9 +51,9 @@ export default class SprintGame {
 
   private userId: string = localStorage.getItem('userID') || null;
 
-  private correctAnswers: Number[] = [];
+  private correctAnswers: number[] = [];
 
-  private wrongAnswers: Number[] = [];
+  private wrongAnswers: number[] = [];
 
   private rowAnswer: number = 0;
 
@@ -406,8 +407,8 @@ export default class SprintGame {
     this.levelElem.remove();
     const pageNum = this.randomInteger(0, 29).toString();
     const pageNumWrong = this.randomInteger(0, 29).toString();
-    // this.words = await getWords(level, pageNum);
-    this.words = await getWords('0', '0');
+    this.words = await getWords(level, pageNum);
+    // this.words = await getWords('0', '0');
 
     this.wordsWrong = await getWords(level, pageNumWrong);
     this.createWordsArray();
@@ -473,7 +474,21 @@ export default class SprintGame {
 
   private stopGame() {
     this.sprintWrap.remove();
-    this.component.textContent = `correct: ${this.correctAnswers}, wrong: ${this.wrongAnswers}`;
+    //  this.component.textContent = `correct: ${this.correctAnswers}, wrong: ${this.wrongAnswers}`;
+    const stat = new GameStat({
+      correct: this.correctAnswers,
+      wrong: this.wrongAnswers,
+      words: this.wordsArray,
+    }).render();
+    this.component.append(stat);
+  }
+
+  private createTitle(content: string) {
+    const title = document.createElement('h2');
+    title.className = 'sprint__title';
+    title.textContent = content;
+
+    return title;
   }
 
   render() {
@@ -481,7 +496,7 @@ export default class SprintGame {
     this.component.className = 'sprint';
     this.levelElem = new DifficultyLevel(this.getWords.bind(this)).render();
 
-    this.component.append(this.levelElem);
+    this.component.append(this.createTitle('Sprint'), this.levelElem);
     return this.component;
   }
 }
