@@ -43,8 +43,33 @@ type Headers = {
 };
 
 type OptionalObj = {
-  [key: string]: string;
+  [key: string]: string | boolean | number;
 };
+
+interface WordStat {
+  status?: string;
+  new?: boolean;
+
+  sprint?: {
+    correctAnswers: number;
+  };
+
+  audio?: {
+    correctAnswers: number;
+  };
+}
+
+interface GameStat {
+  learned: number;
+  correctAnswers: number;
+  count: number;
+}
+
+interface OptionalObjStat {
+  new: number;
+  sprint: GameStat;
+  audio: GameStat;
+}
 
 type MongoDB_ObjectAnd = {
   $and: OptionalObj[];
@@ -72,12 +97,11 @@ interface OptionsObj {
 
 type UsersWordParameter = {
   difficulty: string;
-  optional?: OptionalObj;
+  optional?: WordStat;
 };
 
 type UserStatistic = {
-  learnedWords: number;
-  options?: OptionalObj;
+  optional?: OptionalObjStat;
 };
 
 type UserSettings = {
@@ -406,7 +430,7 @@ export const getAggregatedWord = async (id: string, wordId: string) => {
 // Получить статистику User
 export const getUserStatistics = async (id: string) => {
   const response = await requestWrapper(
-    `${EndPoints.USERS_URL}/${id}/statistics}`,
+    `${EndPoints.USERS_URL}/${id}/statistics`,
     {},
     'user statistics',
   );
@@ -419,7 +443,7 @@ export const changeUserStatistics = async (
   statistic: UserStatistic,
 ) => {
   const response = await requestWrapper(
-    `${EndPoints.USERS_URL}/${id}/statistics}`,
+    `${EndPoints.USERS_URL}/${id}/statistics`,
     {
       method: 'PUT',
       headers: {
