@@ -50,8 +50,12 @@ export default class SprintGame {
 
   private userId: string = localStorage.getItem('userID') || null;
 
+  private correctAnswers: Number[] = [];
+
+  private wrongAnswers: Number[] = [];
+
   constructor() {
-    this.header = new SprintHeader();
+    this.header = new SprintHeader(this.stopGame.bind(this));
   }
 
   private createMain() {
@@ -227,12 +231,13 @@ export default class SprintGame {
 
   private onCorrectClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
+      this.correctAnswers.push(this.currentWordIndex);
+
       if (this.userId) {
         this.createWordStat(true);
       }
 
       this.question.classList.add('green');
-
       this.correctBtn.disabled = true;
       this.wrongBtn.disabled = true;
 
@@ -245,6 +250,8 @@ export default class SprintGame {
         this.wrongBtn.disabled = false;
       }, 1500);
     } else {
+      this.wrongAnswers.push(this.currentWordIndex);
+
       if (this.userId) {
         this.createWordStat(false);
       }
@@ -267,6 +274,8 @@ export default class SprintGame {
 
   private onWrongClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
+      this.wrongAnswers.push(this.currentWordIndex);
+
       if (this.userId) {
         this.createWordStat(false);
       }
@@ -284,6 +293,8 @@ export default class SprintGame {
         this.wrongBtn.disabled = false;
       }, 1500);
     } else {
+      this.correctAnswers.push(this.currentWordIndex);
+
       if (this.userId) {
         this.createWordStat(true);
       }
@@ -306,8 +317,7 @@ export default class SprintGame {
   private changeWordsContent() {
     this.currentWordIndex += 1;
     if (this.currentWordIndex === 20) {
-      this.sprintWrap.remove();
-      this.component.textContent = '20 слов кончиллись';
+      this.stopGame();
       return;
     }
     this.wordEn.textContent = `${this.wordsArray[this.currentWordIndex].word}`;
@@ -428,6 +438,12 @@ export default class SprintGame {
     this.sprintWrap.append(header, this.createMain());
 
     this.component.append(this.sprintWrap);
+    this.header.setTimer();
+  }
+
+  private stopGame() {
+    this.sprintWrap.remove();
+    this.component.textContent = `correct: ${this.correctAnswers}, wrong: ${this.wrongAnswers}`;
   }
 
   render() {

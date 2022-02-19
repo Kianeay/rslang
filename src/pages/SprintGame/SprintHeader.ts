@@ -1,3 +1,5 @@
+import SprintGame from '.';
+
 export default class SprintHeader {
   private timeCount = 30;
 
@@ -11,7 +13,9 @@ export default class SprintHeader {
 
   private plusScoreElem: Element;
 
-  constructor() {}
+  constructor(private stop: () => void) {
+    this.stop = stop;
+  }
 
   private createTimer() {
     const timeWrap = document.createElement('div');
@@ -23,7 +27,7 @@ export default class SprintHeader {
 
     const timeCount = document.createElement('span');
     timeCount.className = 'sprint__time-count';
-    timeCount.textContent = `${this.timeCount}`;
+    timeCount.textContent = '30';
     this.timeElem = timeCount;
 
     timeWrap.append(time, timeCount);
@@ -41,12 +45,23 @@ export default class SprintHeader {
 
     const scoreCount = document.createElement('span');
     scoreCount.className = 'sprint__score-count';
-    scoreCount.textContent = `${this.scoreCount}`;
+    scoreCount.textContent = '0';
     this.scoreElem = scoreCount;
 
     scoreWrap.append(score, scoreCount);
 
     return scoreWrap;
+  }
+
+  setTimer() {
+    const start = () => {
+      this.timeElem.textContent = `${+this.timeElem.textContent - 1}`;
+      if (+this.timeElem.textContent === 0) {
+        this.stop();
+      }
+    };
+
+    setInterval(start, 1000);
   }
 
   render() {
@@ -55,7 +70,7 @@ export default class SprintHeader {
 
     const plusScore = document.createElement('p');
     plusScore.className = 'sprint__plus-score';
-    plusScore.textContent = `+${this.plusScoreCount}`;
+    plusScore.textContent = '+10';
     this.plusScoreElem = plusScore;
 
     header.append(this.createTimer(), plusScore, this.createScore());
