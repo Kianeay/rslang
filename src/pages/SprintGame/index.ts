@@ -32,6 +32,8 @@ export default class SprintGame {
 
   private equally: Element;
 
+  private question: Element;
+
   private words: IWord[];
 
   private wordsWrong: IWord[];
@@ -41,6 +43,8 @@ export default class SprintGame {
   private levelElem: Element;
 
   private component: Element;
+
+  private sprintWrap: Element;
 
   private currentWordIndex: number = 0;
 
@@ -54,11 +58,11 @@ export default class SprintGame {
     const main = document.createElement('div');
     main.className = 'sprint__main';
 
-    const question = document.createElement('span');
-    question.className = 'sprint__question';
-    question.textContent = '?';
+    this.question = document.createElement('span');
+    this.question.className = 'sprint__question';
+    this.question.textContent = '?';
 
-    main.append(this.createWords(), question, this.createButtons());
+    main.append(this.createWords(), this.question, this.createButtons());
 
     return main;
   }
@@ -227,13 +231,13 @@ export default class SprintGame {
         this.createWordStat(true);
       }
 
-      this.equally.classList.add('green');
+      this.question.classList.add('green');
 
       this.correctBtn.disabled = true;
       this.wrongBtn.disabled = true;
 
       setTimeout(() => {
-        this.equally.classList.remove('green');
+        this.question.classList.remove('green');
 
         this.changeWordsContent();
 
@@ -241,13 +245,17 @@ export default class SprintGame {
         this.wrongBtn.disabled = false;
       }, 1500);
     } else {
-      this.equally.classList.add('red');
+      if (this.userId) {
+        this.createWordStat(false);
+      }
+
+      this.question.classList.add('red');
 
       this.correctBtn.disabled = true;
       this.wrongBtn.disabled = true;
 
       setTimeout(() => {
-        this.equally.classList.remove('red');
+        this.question.classList.remove('red');
 
         this.changeWordsContent();
 
@@ -259,27 +267,16 @@ export default class SprintGame {
 
   private onWrongClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
-      const UserWords = {
-        optional: {
-          status: 'difficult' || 'learned' || 'simple',
-          newWord: true,
+      if (this.userId) {
+        this.createWordStat(false);
+      }
 
-          sprint: {
-            correctAnswers: 2,
-          },
-
-          audio: {
-            correctAnswers: 2,
-          },
-        },
-      };
-
-      this.equally.classList.add('red');
+      this.question.classList.add('red');
       this.correctBtn.disabled = true;
       this.wrongBtn.disabled = true;
 
       setTimeout(() => {
-        this.equally.classList.remove('red');
+        this.question.classList.remove('red');
 
         this.changeWordsContent();
 
@@ -291,12 +288,12 @@ export default class SprintGame {
         this.createWordStat(true);
       }
 
-      this.equally.classList.add('green');
+      this.question.classList.add('green');
       this.correctBtn.disabled = true;
       this.wrongBtn.disabled = true;
 
       setTimeout(() => {
-        this.equally.classList.remove('green');
+        this.question.classList.remove('green');
 
         this.changeWordsContent();
 
@@ -308,6 +305,11 @@ export default class SprintGame {
 
   private changeWordsContent() {
     this.currentWordIndex += 1;
+    if (this.currentWordIndex === 20) {
+      this.sprintWrap.remove();
+      this.component.textContent = '20 слов кончиллись';
+      return;
+    }
     this.wordEn.textContent = `${this.wordsArray[this.currentWordIndex].word}`;
     this.wordRu.textContent = `${
       this.wordsArray[this.currentWordIndex].translate
@@ -420,12 +422,12 @@ export default class SprintGame {
   private startGame() {
     const header = this.header.render();
 
-    const sprintWrap = document.createElement('div');
-    sprintWrap.className = 'sprint__wrapper';
+    this.sprintWrap = document.createElement('div');
+    this.sprintWrap.className = 'sprint__wrapper';
 
-    sprintWrap.append(header, this.createMain());
+    this.sprintWrap.append(header, this.createMain());
 
-    this.component.append(sprintWrap);
+    this.component.append(this.sprintWrap);
   }
 
   render() {
