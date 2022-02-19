@@ -64,6 +64,10 @@ export default class SprintHeader {
     setInterval(start, 1000);
   }
 
+  updateScore() {
+    this.scoreElem.textContent = `${+this.scoreElem.textContent + 10}`;
+  }
+
   render() {
     const header = document.createElement('div');
     header.className = 'sprint__header';

@@ -232,6 +232,7 @@ export default class SprintGame {
   private onCorrectClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
       this.correctAnswers.push(this.currentWordIndex);
+      this.header.updateScore();
 
       if (this.userId) {
         this.createWordStat(true);
@@ -294,6 +295,7 @@ export default class SprintGame {
       }, 1500);
     } else {
       this.correctAnswers.push(this.currentWordIndex);
+      this.header.updateScore();
 
       if (this.userId) {
         this.createWordStat(true);
