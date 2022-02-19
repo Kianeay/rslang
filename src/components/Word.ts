@@ -1,10 +1,20 @@
-import { getWord, EndPoints } from '../api';
+import { getWord, createUserWords, EndPoints } from '../api';
 import { IWord } from '../types';
+import { Button } from '../components';
 
 export default class Word {
   private word: IWord;
 
-  constructor() {}
+  constructor() { }
+
+  private async workWithDifficultWords(event: Event) {
+    const { currentTarget } = event;
+    const { word } = (currentTarget as HTMLElement).dataset;
+
+    const user = localStorage.getItem('userID');
+
+    await createUserWords(user, word, { difficulty: 'hard' });
+  }
 
   async loadCurrentWord(id: string) {
     this.word = await getWord(id);
@@ -43,6 +53,9 @@ export default class Word {
       '.word__example-translate',
     );
     exampleTranslate.textContent = this.word.textExampleTranslate;
+
+    const difficultButton: HTMLElement = document.querySelector('.word__difficult');
+    difficultButton.setAttribute('data-word', this.word.id);
   }
 
   render() {
@@ -84,6 +97,18 @@ export default class Word {
     const exampleTranslate = document.createElement('p');
     exampleTranslate.className = 'word__example-translate';
     component.append(exampleTranslate);
+
+    const user = localStorage.getItem('userID');
+    if (user) {
+      const hardWordButton = new Button({
+        label: 'It\'s difficult',
+        onClick: (event: Event) => {
+          this.workWithDifficultWords(event);
+        },
+      }).render();
+      hardWordButton.classList.add('word__difficult');
+      component.append(hardWordButton);
+    }
 
     return component;
   }

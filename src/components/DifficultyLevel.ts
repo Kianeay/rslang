@@ -40,6 +40,18 @@ export default class DifficultyLevel {
 
       difficultyList.append(difficultyItem);
     }
+
+    const user = localStorage.getItem('userID');
+    if (user) {
+      const difficultyItem = document.createElement('li');
+      difficultyItem.className = 'difficulty__item';
+      difficultyItem.classList.add('difficulty__item-hard');
+      difficultyItem.textContent = '!!!';
+      difficultyItem.setAttribute('data-num', 'hard');
+
+      difficultyList.append(difficultyItem);
+    }
+
     return difficultyList;
   }
 

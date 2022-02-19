@@ -1,7 +1,14 @@
-import { getWords } from '../../api';
+import { getWords, getWord, getUserWords, getAggregatedWords } from '../../api';
 import { Word } from '../../components';
 import DifficultyLevel from '../../components/DifficultyLevel';
 import Pagination from '../../components/Pagination';
+import { IWord } from '../../types';
+
+interface userWord {
+  userId: string,
+  wordId: string,
+  difficulty: string,
+}
 
 export default class TextbookPage {
   private currentWord: Word = null;
@@ -28,6 +35,9 @@ export default class TextbookPage {
       wordsList.removeChild(wordsList.firstChild);
     }
 
+    const pagination = document.querySelector('.pagination');
+    pagination.classList.remove('pagination-invisible');
+
     words.forEach((item, index) => {
       const word = document.createElement('div');
       word.className = 'words__item';
@@ -41,8 +51,8 @@ export default class TextbookPage {
       const wordTranslate = document.createElement('p');
       wordTranslate.textContent = item.wordTranslate;
       wordTranslate.className = 'words__translate';
-
       word.append(wordTranslate);
+
       word.addEventListener('click', (event: Event) => {
         const { currentTarget } = event;
         const { id } = (currentTarget as HTMLElement).dataset;
@@ -56,6 +66,63 @@ export default class TextbookPage {
 
       wordsList.append(word);
     });
+  }
+
+  private async loadHardWords(wordsList: HTMLDivElement) {
+    const user = localStorage.getItem('userID');
+
+    while (wordsList.firstChild) {
+      wordsList.removeChild(wordsList.firstChild);
+    }
+
+    const pagination = document.querySelector('.pagination');
+    pagination.classList.add('pagination-invisible');
+
+    if (user) {
+      const uWords: userWord[] = await getUserWords(user);
+      const hardWords: Array<string> = [];
+
+      uWords.forEach((item) => {
+        if (item.difficulty === 'hard') {
+          hardWords.push(item.wordId);
+        }
+      });
+
+      hardWords.forEach((item) => {
+        this.createHardWord(wordsList, item);
+      });
+    }
+  }
+
+  private async createHardWord(wordslist: HTMLElement, id: string) {
+    const hardWord = await getWord(id);
+
+    const word = document.createElement('div');
+    word.className = 'words__item';
+    word.setAttribute('data-id', hardWord.id);
+
+    const wordMeaning = document.createElement('h4');
+    wordMeaning.textContent = hardWord.word;
+    wordMeaning.className = 'words__word';
+    word.append(wordMeaning);
+
+    const wordTranslate = document.createElement('p');
+    wordTranslate.textContent = hardWord.wordTranslate;
+    wordTranslate.className = 'words__translate';
+    word.append(wordTranslate);
+
+    word.addEventListener('click', (event: Event) => {
+      const { currentTarget } = event;
+      const { id } = (currentTarget as HTMLElement).dataset;
+
+      this.loadCurrentWord(id);
+    });
+
+    if (wordslist.children.length === 0) {
+      this.loadCurrentWord(hardWord.id);
+    }
+
+    wordslist.append(word);
   }
 
   private createTitle() {
@@ -77,9 +144,14 @@ export default class TextbookPage {
 
   private changeActiveDifficultyLevel(level: string) {
     const wordsList: HTMLDivElement = document.querySelector('.words__list');
-    this.difficultyLevel = level;
-    this.loadWords(wordsList, level, '0');
-    this.pagination.refreshActivePage('0');
+
+    if (level !== 'hard') {
+      this.difficultyLevel = level;
+      this.loadWords(wordsList, level, '0');
+      this.pagination.refreshActivePage('0');
+    } else {
+      this.loadHardWords(wordsList);
+    }
   }
 
   private createWordsList(element: HTMLDivElement) {

@@ -41,8 +41,12 @@
     color: $white;
   }
 
+  &__item-hard {
+     background-color: $orchid;
+  }
+
   &__item-active {
-    background: $violet;
+    background-color: $violet;
   }
 }
 
@@ -50,11 +54,12 @@
   display: flex;
   column-gap: 20px;
   padding-top: 100px;
+  align-items: flex-start;
 
   &__list {
     display: flex;
     flex-wrap: wrap;
-    gap: 22px;
+    gap: 22px;    
   }
 
   &__item {
@@ -203,5 +208,9 @@
 
   &__control-middle {
     border-radius: 4px;
+  }
+
+  &-invisible {
+    display: none;
   }
 }
