@@ -491,12 +491,29 @@ export default class SprintGame {
     return title;
   }
 
+  private createLoginBtn() {
+    const loginBtn = new Button({
+      label: 'Log in',
+      onClick: () => {
+        location.hash = '#login';
+      },
+    }).render();
+    loginBtn.classList.add('main__login');
+
+    return loginBtn;
+  }
+
   render() {
     this.component = document.createElement('div');
     this.component.className = 'sprint';
     this.levelElem = new DifficultyLevel(this.getWords.bind(this)).render();
 
     this.component.append(this.createTitle('Sprint'), this.levelElem);
+
+    if (localStorage.getItem('userID')) {
+      this.component.append(this.createLoginBtn());
+    }
+
     return this.component;
   }
 }

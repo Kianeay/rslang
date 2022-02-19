@@ -5,6 +5,7 @@ import {
   GamesPage,
   LoginPage,
   SprintGame,
+  StatisticsPage,
 } from '../../pages';
 import { Navigation } from '../../components';
 
@@ -38,7 +39,7 @@ export default class View {
         break;
 
       case 'statistics':
-        //  this.appPage = ;
+        this.appPage = new StatisticsPage().render();
         break;
 
       case 'login':

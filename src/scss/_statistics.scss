@@ -1,4 +1,4 @@
-.games-wrap {
+.statistics {
   padding-left: 50px;
   position: relative;
   display: flex;
@@ -23,41 +23,5 @@
     margin-bottom: 50px;
     position: relative;
     z-index: 1000;
-  }
-}
-
-.games {
-  display: flex;
-  flex-direction: column;
-}
-
-.minigame {
-  display: flex;
-  width: 80%;
-  margin-bottom: 50px;
-
-  &__wrap {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  &__icon-wrap {
-    margin-right: 50px;
-  }
-
-  &__title {
-    font-size: $font-big;
-    color: $violet;
-    padding-bottom: 20px;
-  }
-
-  &__start {
-    background-color: $light-violet;
-    margin-bottom: 5px;
-  }
-
-  &__img {
-    width: 350px;
   }
 }
