@@ -32,20 +32,20 @@ export default class GameStat {
     const statWrap = document.createElement('div');
     statWrap.className = 'game-stat__stat-wrap';
 
-    const accuracy = ` ${Math.round(
+    const accuracy = `${Math.round(
       (this.data.correct.length /
         (this.data.correct.length + this.data.wrong.length)) *
         100,
     )}%`;
 
-    statWrap.append(this.createStatBlock(accuracy, 'Accuracy'));
+    statWrap.append(this.createStatBlock(accuracy || '0', 'Accuracy'));
 
     const answersWrap = document.createElement('div');
     answersWrap.className = 'game-stat__wrap';
 
     const mistakeTitle = document.createElement('p');
     mistakeTitle.className = 'game-stat__subtitle';
-    mistakeTitle.textContent = 'Mistakes';
+    mistakeTitle.textContent = `Mistakes - ${this.data.wrong.length}`;
 
     answersWrap.append(mistakeTitle);
 
@@ -59,7 +59,7 @@ export default class GameStat {
 
     const correctTitle = document.createElement('p');
     correctTitle.className = 'game-stat__subtitle';
-    correctTitle.textContent = 'Correct answers';
+    correctTitle.textContent = `Correct answers - ${this.data.correct.length}`;
 
     answersWrap.append(correctTitle);
 
