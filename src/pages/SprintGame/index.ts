@@ -54,6 +54,8 @@ export default class SprintGame {
 
   private wrongAnswers: Number[] = [];
 
+  private rowAnswer: number = 0;
+
   constructor() {
     this.header = new SprintHeader(this.stopGame.bind(this));
   }
@@ -232,7 +234,18 @@ export default class SprintGame {
   private onCorrectClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
       this.correctAnswers.push(this.currentWordIndex);
-      this.header.updateScore();
+      this.rowAnswer += 1;
+
+      if (this.rowAnswer >= 3 && this.rowAnswer <= 5) {
+        this.header.updateScore(20);
+        this.header.updatePlusScore(20);
+      } else if (this.rowAnswer >= 6) {
+        this.header.updateScore(30);
+        this.header.updatePlusScore(30);
+      } else {
+        this.header.updateScore(10);
+        this.header.updatePlusScore(10);
+      }
 
       if (this.userId) {
         this.createWordStat(true);
@@ -252,6 +265,8 @@ export default class SprintGame {
       }, 1500);
     } else {
       this.wrongAnswers.push(this.currentWordIndex);
+      this.rowAnswer = 0;
+      this.header.updatePlusScore(10);
 
       if (this.userId) {
         this.createWordStat(false);
@@ -276,6 +291,8 @@ export default class SprintGame {
   private onWrongClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
       this.wrongAnswers.push(this.currentWordIndex);
+      this.rowAnswer = 0;
+      this.header.updatePlusScore(10);
 
       if (this.userId) {
         this.createWordStat(false);
@@ -295,7 +312,18 @@ export default class SprintGame {
       }, 1500);
     } else {
       this.correctAnswers.push(this.currentWordIndex);
-      this.header.updateScore();
+      this.rowAnswer += 1;
+
+      if (this.rowAnswer >= 3 && this.rowAnswer <= 5) {
+        this.header.updateScore(20);
+        this.header.updatePlusScore(20);
+      } else if (this.rowAnswer >= 6) {
+        this.header.updateScore(30);
+        this.header.updatePlusScore(30);
+      } else {
+        this.header.updateScore(10);
+        this.header.updatePlusScore(10);
+      }
 
       if (this.userId) {
         this.createWordStat(true);

@@ -64,8 +64,12 @@ export default class SprintHeader {
     setInterval(start, 1000);
   }
 
-  updateScore() {
-    this.scoreElem.textContent = `${+this.scoreElem.textContent + 10}`;
+  updateScore(num: number) {
+    this.scoreElem.textContent = `${+this.scoreElem.textContent + num}`;
+  }
+
+  updatePlusScore(num: number) {
+    this.plusScoreElem.textContent = `+${num}`;
   }
 
   render() {
