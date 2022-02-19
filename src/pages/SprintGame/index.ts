@@ -81,65 +81,95 @@ export default class SprintGame {
     return btnWrap;
   }
 
-  //! !!!!!!!!!!!!!!!!!!!!!
-  private async createUserWord() {
+  // статистика по конкретному слову
+  private async createWordStat(correct: boolean) {
+    // есть ли уже статистика по слову
     const word = await getUserWordsId(
       this.userId,
       this.wordsArray[this.currentWordIndex].id,
     );
+    // если на слово праавильно ответили
+    if (correct) {
+      if (!word) {
+        await createUserWords(
+          this.userId,
+          this.wordsArray[this.currentWordIndex].id,
+          {
+            difficulty: 'easy',
+            optional: {
+              status: 'simple',
+              new: true,
 
-    console.log(`word ${word}`);
+              sprint: {
+                correctAnswers: 1,
+              },
 
-    if (!word) {
-      this.addStatistics();
+              audio: {
+                correctAnswers: 0,
+              },
+            },
+          },
+        );
+      } else if (
+        word.optional.sprint.correctAnswers +
+          word.optional.audio.correctAnswers >
+        2
+      ) {
+        await changeUserWord(
+          this.userId,
+          this.wordsArray[this.currentWordIndex].id,
+          {
+            difficulty: 'weak',
+            optional: {
+              status: 'learned',
 
+              sprint: {
+                correctAnswers: (word.optional.sprint.correctAnswers += 1),
+              },
+            },
+          },
+        );
+      } else {
+        await changeUserWord(
+          this.userId,
+          this.wordsArray[this.currentWordIndex].id,
+          {
+            difficulty: 'weak',
+            optional: {
+              new: true,
+              sprint: {
+                correctAnswers: word.optional.sprint
+                  ? (word.optional.sprint.correctAnswers += 1)
+                  : 1,
+              },
+            },
+          },
+        );
+      }
+    } else if (!word) {
       await createUserWords(
         this.userId,
         this.wordsArray[this.currentWordIndex].id,
         {
-          difficulty: 'weak',
+          difficulty: 'easy',
           optional: {
-            learned: false,
-            sprint: 1,
-            new: false,
-          },
-        },
-      );
-    } else if (word.optional.sprint > 3) {
-      await changeUserWord(
-        this.userId,
-        this.wordsArray[this.currentWordIndex].id,
-        {
-          difficulty: 'weak',
-          optional: {
-            learned: true,
-            sprint: (word.optional.sprint += 1),
-            new: false,
-          },
-        },
-      );
-    } else {
-      await changeUserWord(
-        this.userId,
-        this.wordsArray[this.currentWordIndex].id,
-        {
-          difficulty: 'weak',
-          optional: {
-            learned: false,
-            sprint: (word.optional.sprint += 1),
-            new: false,
+            status: 'simple',
+            new: true,
+
+            sprint: {
+              correctAnswers: 0,
+            },
+
+            audio: {
+              correctAnswers: 0,
+            },
           },
         },
       );
     }
-    console.log(
-      await getUserWordsId(
-        this.userId,
-        this.wordsArray[this.currentWordIndex].id,
-      ),
-    );
   }
 
+  // статистика общая
   private async addStatistics() {
     const word = await getUserWordsId(
       this.userId,
@@ -150,17 +180,40 @@ export default class SprintGame {
 
     if (!word) {
       if (statistics) {
-        console.log('static');
         await changeUserStatistics(this.userId, {
-          learnedWords: statistics.learnedWords,
-          optional: { newWords: (statistics.newWords += 1) },
+          optional: {
+            new: (statistics.optional.new += 1),
+
+            sprint: {
+              learned: 10,
+              correctAnswers: 12,
+              count: 100,
+            },
+
+            audio: {
+              learned: 10,
+              correctAnswers: 10,
+              count: 100,
+            },
+          },
         });
       } else {
-        console.log('ne static');
-
         await changeUserStatistics(this.userId, {
-          learnedWords: 0,
-          optional: { newWords: 0 },
+          optional: {
+            new: 50,
+
+            sprint: {
+              learned: 10,
+              correctAnswers: 12,
+              count: 100,
+            },
+
+            audio: {
+              learned: 10,
+              correctAnswers: 10,
+              count: 100,
+            },
+          },
         });
       }
     }
@@ -171,7 +224,7 @@ export default class SprintGame {
   private onCorrectClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
       if (this.userId) {
-        this.createUserWord();
+        this.createWordStat(true);
       }
 
       this.equally.classList.add('green');
@@ -181,14 +234,13 @@ export default class SprintGame {
 
       setTimeout(() => {
         this.equally.classList.remove('green');
+
         this.changeWordsContent();
 
         this.correctBtn.disabled = false;
         this.wrongBtn.disabled = false;
       }, 1500);
     } else {
-      this.addStatistics();
-
       this.equally.classList.add('red');
 
       this.correctBtn.disabled = true;
@@ -196,6 +248,7 @@ export default class SprintGame {
 
       setTimeout(() => {
         this.equally.classList.remove('red');
+
         this.changeWordsContent();
 
         this.correctBtn.disabled = false;
@@ -206,7 +259,20 @@ export default class SprintGame {
 
   private onWrongClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
-      this.addStatistics();
+      const UserWords = {
+        optional: {
+          status: 'difficult' || 'learned' || 'simple',
+          newWord: true,
+
+          sprint: {
+            correctAnswers: 2,
+          },
+
+          audio: {
+            correctAnswers: 2,
+          },
+        },
+      };
 
       this.equally.classList.add('red');
       this.correctBtn.disabled = true;
@@ -214,13 +280,16 @@ export default class SprintGame {
 
       setTimeout(() => {
         this.equally.classList.remove('red');
+
         this.changeWordsContent();
 
         this.correctBtn.disabled = false;
         this.wrongBtn.disabled = false;
       }, 1500);
     } else {
-      this.createUserWord();
+      if (this.userId) {
+        this.createWordStat(true);
+      }
 
       this.equally.classList.add('green');
       this.correctBtn.disabled = true;
@@ -228,6 +297,7 @@ export default class SprintGame {
 
       setTimeout(() => {
         this.equally.classList.remove('green');
+
         this.changeWordsContent();
 
         this.correctBtn.disabled = false;

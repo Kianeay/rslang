@@ -46,6 +46,31 @@ type OptionalObj = {
   [key: string]: string | boolean | number;
 };
 
+interface WordStat {
+  status?: string;
+  new?: boolean;
+
+  sprint?: {
+    correctAnswers: number;
+  };
+
+  audio?: {
+    correctAnswers: number;
+  };
+}
+
+interface GameStat {
+  learned: number;
+  correctAnswers: number;
+  count: number;
+}
+
+interface OptionalObjStat {
+  new: number;
+  sprint: GameStat;
+  audio: GameStat;
+}
+
 type MongoDB_ObjectAnd = {
   $and: OptionalObj[];
 };
@@ -72,13 +97,11 @@ interface OptionsObj {
 
 type UsersWordParameter = {
   difficulty: string;
-  optional?: OptionalObj;
+  optional?: WordStat;
 };
 
 type UserStatistic = {
-  learnedWords: number;
-  // newWords: number;
-  optional?: OptionalObj;
+  optional?: OptionalObjStat;
 };
 
 type UserSettings = {
