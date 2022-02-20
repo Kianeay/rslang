@@ -37,6 +37,7 @@
     background-color: $light-violet;
     font-size: $font-med;
     padding-left: 50px;
+    z-index: 2000;
 
     &::before {
       content: url('../assets/images/user.svg');

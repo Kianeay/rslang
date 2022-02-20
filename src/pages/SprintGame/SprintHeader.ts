@@ -27,7 +27,7 @@ export default class SprintHeader {
 
     const timeCount = document.createElement('span');
     timeCount.className = 'sprint__time-count';
-    timeCount.textContent = '10';
+    timeCount.textContent = '30';
     this.timeElem = timeCount;
 
     timeWrap.append(time, timeCount);

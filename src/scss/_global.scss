@@ -58,8 +58,14 @@ ul {
   border-top-left-radius: 30px;
   border-bottom-right-radius: 30px;
   cursor: pointer;
+
   &_colored {
     background-color: $violet;
+  }
+
+  &:hover {
+    background-color: orchid;
+    transition: all ease-in-out 1s;
   }
 }
 
