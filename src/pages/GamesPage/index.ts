@@ -10,6 +10,9 @@ export default class GamesPage {
       title: 'Audio challenge',
       text: audioText,
       imgName: 'listen.svg',
+      onClick: () => {
+        location.hash = '#audioChallenge';
+      },
     }).render();
 
     return audioBlock;

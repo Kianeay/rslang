@@ -6,6 +6,7 @@ import {
   LoginPage,
   SprintGame,
   StatisticsPage,
+  AudioChallenge,
 } from '../../pages';
 import { Navigation } from '../../components';
 
@@ -48,6 +49,10 @@ export default class View {
 
       case 'sprint':
         this.appPage = new SprintGame().render();
+        break;
+
+      case 'audioChallenge':
+        this.appPage = new AudioChallenge().render();
         break;
 
       default:
