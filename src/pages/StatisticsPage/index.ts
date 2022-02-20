@@ -1,6 +1,11 @@
 import { Button, Footer } from '../../components';
+import { getUserStatistics, OptionalObjStat } from '../../api';
 
 export default class StatisticsPage {
+  private userStat: OptionalObjStat;
+
+  private userId: string = localStorage.getItem('userId');
+
   constructor() {}
 
   private createTitle(content: string) {
@@ -94,7 +99,13 @@ export default class StatisticsPage {
     return component;
   }
 
+  private async getStatistics() {
+    this.userStat = await getUserStatistics(this.userId);
+    console.log(this.userStat);
+  }
+
   render() {
+    this.getStatistics();
     const component = document.createElement('div');
     component.className = 'statistics';
 
