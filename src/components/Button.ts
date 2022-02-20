@@ -1,12 +1,12 @@
 interface ButtonProps {
   label: string;
-  onClick?: () => void;
+  onClick?: (event?: Event) => void;
 }
 
 export default class Button {
   private readonly label: string = '';
 
-  private readonly onClick: () => void;
+  private readonly onClick: (event?: Event) => void;
 
   constructor(props: ButtonProps) {
     this.label = props.label;
