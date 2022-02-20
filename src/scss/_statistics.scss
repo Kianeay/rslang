@@ -25,10 +25,15 @@
     z-index: 1000;
   }
 
+  &__subtitle {
+    color: $gray;
+    font-size: $font-big;
+  }
+
   &__general {
     display: flex;
     gap: 100px;
-    padding-top: 100px;
+
     padding-bottom: 100px;
     justify-content: center;
   }
@@ -68,6 +73,14 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    border-radius: 10px;
+
+    &__title {
+      padding-bottom: 20px;
+      text-transform: uppercase;
+      color: $violet;
+      font-weight: bold;
+    }
   }
 
   &__game-wrap {
@@ -78,5 +91,6 @@
   &__main {
     width: 80%;
     margin: 0 auto;
+    padding-bottom: 100px;
   }
 }
