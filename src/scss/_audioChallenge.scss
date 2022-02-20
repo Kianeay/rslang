@@ -1,0 +1,39 @@
+.challenge {
+  padding-top: 13%;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+  &__answers {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+  }
+  &__answer{
+    border: 1px solid $violet;
+    border-radius: 7px;
+    padding: 7px 30px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.1;
+    font-size: $font-s-big;
+    color: $violet;
+  }
+  &__correct-answer {
+    border: solid 2px green;
+  }
+  &__incorrect-answer {
+    border: solid 2px red;
+  }
+  &__play-audio {
+    margin-top: 60px;
+    margin-bottom: 60px;
+    background-image: url("../assets/images/challenge-play.svg");
+    width: 142px;
+    height: 114px;
+    background-size: contain;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    border: none;
+    background-color: transparent;
+  }
+}

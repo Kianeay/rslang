@@ -5,3 +5,4 @@ export { default as GamesPreview } from './GamesPreview';
 export { default as Footer } from './Footer';
 export { default as DifficultyLevel } from './DifficultyLevel';
 export { default as Word } from './Word';
+export { default as Result } from './Result';
