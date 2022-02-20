@@ -65,7 +65,7 @@ interface GameStat {
   count: number;
 }
 
-interface OptionalObjStat {
+export interface OptionalObjStat {
   new: number;
   sprint: GameStat;
   audio: GameStat;

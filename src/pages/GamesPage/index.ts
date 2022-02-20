@@ -63,7 +63,7 @@ export default class GamesPage {
 
     component.append(this.createTitle('Minigames'), games, footer);
 
-    if (localStorage.getItem('userID')) {
+    if (!localStorage.getItem('userID')) {
       component.append(this.createLoginBtn());
     }
 
