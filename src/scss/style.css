@@ -111,6 +111,8 @@ ul {
   width: 240px;
   -webkit-transition: all 1.5s;
   transition: all 1.5s;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
 }
 
 .nav__close-wrap {
@@ -312,8 +314,12 @@ ul {
   color: #ffffff;
 }
 
+.difficulty__item-hard {
+  background-color: #d2448d;
+}
+
 .difficulty__item-active {
-  background: #785cad;
+  background-color: #785cad;
 }
 
 .words {
@@ -323,6 +329,9 @@ ul {
   -webkit-column-gap: 20px;
           column-gap: 20px;
   padding-top: 100px;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }
 
 .words__list {
@@ -365,6 +374,14 @@ ul {
 .words__translate {
   font-size: 1rem;
   color: #000000;
+}
+
+.words__item-hard {
+  background-color: #d2448d;
+}
+
+.words__item-hard .words__word {
+  color: #eae8ed;
 }
 
 .word {
@@ -439,6 +456,65 @@ ul {
   font-weight: 300;
   font-size: 1rem;
   line-height: 2.1875rem;
+}
+
+.pagination {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-top: 20px;
+  -webkit-column-gap: 25px;
+          column-gap: 25px;
+}
+
+.pagination__item {
+  display: none;
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  background-color: #eae8ed;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #5d6571;
+}
+
+.pagination__item-visible {
+  display: block;
+}
+
+.pagination__item-visible:hover {
+  background-color: #C8D1DD;
+}
+
+.pagination__item-active {
+  background-color: #C8D1DD;
+}
+
+.pagination__control {
+  width: 35px;
+  height: 35px;
+  line-height: 35px;
+  text-align: center;
+  background-color: #eae8ed;
+  border-radius: 50%;
+  font-weight: bold;
+  cursor: pointer;
+  color: #5d6571;
+}
+
+.pagination__control:hover {
+  background-color: #C8D1DD;
+  color: #ffffff;
+}
+
+.pagination__control-middle {
+  border-radius: 4px;
+}
+
+.pagination-invisible {
+  display: none;
 }
 
 .form {
@@ -938,6 +1014,9 @@ ul {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  -ms-flex-negative: 0;
+      flex-shrink: 0;
+  height: 40vh;
 }
 
 .game-stat__title {
