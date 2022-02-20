@@ -14,15 +14,20 @@ export default class AudioChallenge extends GameAudioCall {
         case 'Digit1':
           super.checkAnswer(document.querySelector('.challenge__answer-1'));
           break;
-        case 'Digit2': super.checkAnswer(document.querySelector('.challenge__answer-2'));
+        case 'Digit2':
+          super.checkAnswer(document.querySelector('.challenge__answer-2'));
           break;
-        case 'Digit3': super.checkAnswer(document.querySelector('.challenge__answer-3'));
+        case 'Digit3':
+          super.checkAnswer(document.querySelector('.challenge__answer-3'));
           break;
-        case 'Digit4': super.checkAnswer(document.querySelector('.challenge__answer-4'));
+        case 'Digit4':
+          super.checkAnswer(document.querySelector('.challenge__answer-4'));
           break;
-        case 'Space': this.roundGame();
+        case 'Space':
+          this.roundGame();
           break;
-        default: break;
+        default:
+          break;
       }
     };
     this.isListener = false;
@@ -58,7 +63,11 @@ export default class AudioChallenge extends GameAudioCall {
     }
     const correctArr = this.arrayGame.filter((item) => item.correctAnswer > 0); // исправить!!!!
     const wrongArr = this.arrayGame.filter((item) => item.correctAnswer === 0);
-    const result = new Result(this.roundGame.bind(this), correctArr, wrongArr).render();
+    const result = new Result(
+      this.roundGame.bind(this),
+      correctArr,
+      wrongArr,
+    ).render();
 
     container.append(result);
   }
@@ -77,7 +86,7 @@ export default class AudioChallenge extends GameAudioCall {
 
   private createNextButton() {
     const button = new Button({
-      label: 'I don\'t no',
+      label: "I don't no",
       onClick: this.roundGame.bind(this),
     }).render();
     button.classList.add('challenge__button');
@@ -110,10 +119,22 @@ export default class AudioChallenge extends GameAudioCall {
     arrNum = [...arrNum.sort(() => Math.random() - 0.5)];
 
     div.append(
-      this.createAnswerDiv(`1. ${this.arrayGame[arrNum[0]].wordTranslate}`, 'challenge__answer-1'),
-      this.createAnswerDiv(`2. ${this.arrayGame[arrNum[1]].wordTranslate}`, 'challenge__answer-2'),
-      this.createAnswerDiv(`3. ${this.arrayGame[arrNum[2]].wordTranslate}`, 'challenge__answer-3'),
-      this.createAnswerDiv(`4. ${this.arrayGame[arrNum[3]].wordTranslate}`, 'challenge__answer-4'),
+      this.createAnswerDiv(
+        `1. ${this.arrayGame[arrNum[0]].wordTranslate}`,
+        'challenge__answer-1',
+      ),
+      this.createAnswerDiv(
+        `2. ${this.arrayGame[arrNum[1]].wordTranslate}`,
+        'challenge__answer-2',
+      ),
+      this.createAnswerDiv(
+        `3. ${this.arrayGame[arrNum[2]].wordTranslate}`,
+        'challenge__answer-3',
+      ),
+      this.createAnswerDiv(
+        `4. ${this.arrayGame[arrNum[3]].wordTranslate}`,
+        'challenge__answer-4',
+      ),
     );
 
     container.append(

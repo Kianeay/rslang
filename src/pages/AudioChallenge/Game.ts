@@ -1,3 +1,5 @@
+/* eslint-disable function-paren-newline */
+/* eslint-disable implicit-arrow-linebreak */
 import {
   getWords,
   getUserWordsId,
@@ -10,7 +12,7 @@ import { IWord } from '../../types/index';
 
 type AudioCall = {
   correctAnswer: number;
-}
+};
 
 export type AudioCallWords = IWord & AudioCall;
 export default class GameAudioCall {
@@ -48,14 +50,16 @@ export default class GameAudioCall {
   protected async getArrayGame() {
     let arrNum = Array.from({ length: 20 }, () => this.getRandomNum(600));
     arrNum = [...this.checkArray(arrNum, 600)];
-    this.arrayGame = arrNum.map((item) => Object.assign(this.data[item], { correctAnswer: 0 }));
+    this.arrayGame = arrNum.map((item) =>
+      Object.assign(this.data[item], { correctAnswer: 0 }),
+    );
   }
 
   protected getRandomNum(num: number) {
     return Math.floor(Math.random() * num);
   }
 
-  protected checkArray(array: number[], max: number):number[] {
+  protected checkArray(array: number[], max: number): number[] {
     const arr = [...array];
     for (let i = 0; i <= arr.length - 1; i += 1) {
       if (arr.indexOf(arr[i], i + 1) > 0) {
@@ -78,7 +82,9 @@ export default class GameAudioCall {
   protected showAnswer() {
     if (this.currentIndexWord >= 0) {
       const correctWord = this.arrayGame[this.currentIndexWord].wordTranslate;
-      const answers = document.querySelectorAll('.challenge__answer') as NodeListOf<HTMLElement>; // eslint-disable-line no-undef
+      const answers = document.querySelectorAll(
+        '.challenge__answer',
+      ) as NodeListOf<HTMLElement>; // eslint-disable-line no-undef
       let correct: HTMLElement;
       answers.forEach((item) => {
         if (correctWord === item.textContent.split('.')[1].trim()) {
@@ -104,7 +110,9 @@ export default class GameAudioCall {
   }
 
   protected playAudio() {
-    const buttonPlay = document.querySelector('.challenge__play-audio') as HTMLButtonElement;
+    const buttonPlay = document.querySelector(
+      '.challenge__play-audio',
+    ) as HTMLButtonElement;
     const src = this.arrayGame[this.currentIndexWord].audio;
     const audio = new Audio();
     audio.src = `https://react-learnwords2022.herokuapp.com/${src}`;
@@ -207,53 +215,54 @@ export default class GameAudioCall {
 
   // статистика общая
   private async addStatistics() {
-    const word = await getUserWordsId(
-      this.userId,
-      this.arrayGame[this.currentIndexWord].id,
-    );
-
     const statistics = await getUserStatistics(this.userId);
 
-    if (!word) {
-      if (statistics) {
-        await changeUserStatistics(this.userId, {
-          optional: {
-            new: (statistics.optional.new += 1),
+    /*  if (statistics) {
+      await changeUserStatistics(this.userId, {
+        optional: {
+          new: 0,
 
-            sprint: {
-              learned: 10,
-              correctAnswers: 12,
-              count: 100,
-            },
-
-            audio: {
-              learned: 10,
-              correctAnswers: 10,
-              count: 100,
-            },
+          sprint: {
+            learned: statistics.optional.sprint.learned + this.learnedWord,
+            correctAnswers:
+              statistics.optional.sprint.correctAnswers +
+              this.correctAnswers.length,
+            count:
+              statistics.optional.sprint.count +
+              this.correctAnswers.length +
+              this.wrongAnswers.length,
+            row: statistics.optional.sprint.row + this.rowAnswer,
           },
-        });
-      } else {
-        await changeUserStatistics(this.userId, {
-          optional: {
-            new: 50,
 
-            sprint: {
-              learned: 10,
-              correctAnswers: 12,
-              count: 100,
-            },
-
-            audio: {
-              learned: 10,
-              correctAnswers: 10,
-              count: 100,
-            },
+          audio: {
+            learned: statistics.optional.audio.learned,
+            correctAnswers: statistics.optional.audio.correctAnswers,
+            count: statistics.optional.audio.count,
+            row: statistics.optional.audio.row,
           },
-        });
-      }
+        },
+      });
+    } else {
+      await changeUserStatistics(this.userId, {
+        optional: {
+          new: 0,
+
+          sprint: {
+            learned: this.learnedWord,
+            correctAnswers: this.correctAnswers.length,
+            count: 20,
+            row: this.rowAnswer,
+          },
+
+          audio: {
+            learned: 0,
+            correctAnswers: 0,
+            count: 0,
+            row: 0,
+          },
+        },
+      });
     }
-
-    // console.log(await getUserStatistics(this.userId));
+  } */
   }
 }
