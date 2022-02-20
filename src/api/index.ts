@@ -67,8 +67,8 @@ interface GameStat {
 
 export interface OptionalObjStat {
   new: number;
-  sprint: GameStat;
-  audio: GameStat;
+  sprint?: GameStat;
+  audio?: GameStat;
 }
 
 type MongoDB_ObjectAnd = {
