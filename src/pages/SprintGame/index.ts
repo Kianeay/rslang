@@ -543,7 +543,7 @@ export default class SprintGame {
 
     this.component.append(this.createTitle('Sprint'), this.levelElem);
 
-    if (localStorage.getItem('userID')) {
+    if (!localStorage.getItem('userID')) {
       this.component.append(this.createLoginBtn());
     }
 

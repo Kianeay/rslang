@@ -2,7 +2,23 @@ import { Button, Footer } from '../../components';
 import { getUserStatistics, OptionalObjStat } from '../../api';
 
 export default class StatisticsPage {
-  private userStat: { optional: OptionalObjStat };
+  private userStat: { optional: OptionalObjStat } = {
+    optional: {
+      new: 0,
+      sprint: {
+        learned: 0,
+        correctAnswers: 0,
+        count: 0,
+        row: 0,
+      },
+      audio: {
+        learned: 0,
+        correctAnswers: 0,
+        count: 0,
+        row: 0,
+      },
+    },
+  };
 
   private userId: string = localStorage.getItem('userID');
 
@@ -58,19 +74,21 @@ export default class StatisticsPage {
 
     const learnedNum = `${
       this.userStat.optional.sprint.learned +
-      this.userStat.optional.audio.learned
+        this.userStat.optional.audio.learned || 0
     }`;
 
     const learned = this.createStatBlock(learnedNum, 'Learned words');
     learned.classList.add('statistics__stat-big');
 
-    const accuracyNum = `${Math.round(
-      ((this.userStat.optional.sprint.correctAnswers +
-        this.userStat.optional.audio.correctAnswers) /
-        (this.userStat.optional.sprint.count +
-          this.userStat.optional.audio.count)) *
-        100,
-    )}%`;
+    const accuracyNum = `${
+      Math.round(
+        ((this.userStat.optional.sprint.correctAnswers +
+          this.userStat.optional.audio.correctAnswers) /
+          (this.userStat.optional.sprint.count +
+            this.userStat.optional.audio.count)) *
+          100,
+      ) || 0
+    }%`;
 
     const accuracy = this.createStatBlock(accuracyNum, 'Accuracy');
     accuracy.classList.add('statistics__stat-big');
@@ -151,7 +169,10 @@ export default class StatisticsPage {
   }
 
   private async getStatistics() {
-    this.userStat = await getUserStatistics(this.userId);
+    const result = await getUserStatistics(this.userId);
+    if (result) {
+      this.userStat = result;
+    }
   }
 
   render() {
