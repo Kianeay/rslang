@@ -42,6 +42,8 @@ export default class SprintGame {
 
   private wordsArray: WordPair[] = [];
 
+  private correctWordsArray: WordPair[] = [];
+
   private levelElem: Element;
 
   private component: Element;
@@ -478,7 +480,7 @@ export default class SprintGame {
         this.wordsArray.push(pair);
       }
     });
-
+    this.correctWordsArray = JSON.parse(JSON.stringify(this.wordsArray));
     this.shuffleObject(this.wordsArray);
     console.log(this.wordsArray);
     this.startGame();
@@ -510,7 +512,7 @@ export default class SprintGame {
     const stat = new GameStat({
       correct: this.correctAnswers,
       wrong: this.wrongAnswers,
-      words: this.wordsArray,
+      words: this.correctWordsArray,
       row: this.rowAnswer,
     }).render();
     this.component.append(stat);

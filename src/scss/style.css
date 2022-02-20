@@ -65,6 +65,12 @@ ul {
   background-color: #785cad;
 }
 
+.button:hover {
+  background-color: orchid;
+  -webkit-transition: all ease-in-out 1s;
+  transition: all ease-in-out 1s;
+}
+
 .wrapper {
   display: -webkit-box;
   display: -ms-flexbox;
