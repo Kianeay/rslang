@@ -1,4 +1,4 @@
-import { getWords, getWord, getUserWords, getAggregatedWords } from '../../api';
+import { getWords, getWord, getUserWords, getUserWordsId } from '../../api';
 import { Word } from '../../components';
 import DifficultyLevel from '../../components/DifficultyLevel';
 import Pagination from '../../components/Pagination';
@@ -65,6 +65,7 @@ export default class TextbookPage {
       }
 
       wordsList.append(word);
+      this.loadWordStatus(word);
     });
   }
 
@@ -99,7 +100,9 @@ export default class TextbookPage {
 
     const word = document.createElement('div');
     word.className = 'words__item';
+    word.classList.add('words__item-hard');
     word.setAttribute('data-id', hardWord.id);
+    word.setAttribute('data-status', 'hard');
 
     const wordMeaning = document.createElement('h4');
     wordMeaning.textContent = hardWord.word;
@@ -123,6 +126,19 @@ export default class TextbookPage {
     }
 
     wordslist.append(word);
+  }
+
+  private async loadWordStatus(word: HTMLDivElement) {
+    const user = localStorage.getItem('userID');
+    const { id } = word.dataset;
+
+    const userWord: userWord = await getUserWordsId(user, id);
+    if (userWord) {
+      if (userWord.difficulty === 'hard') {
+        word.classList.add('words__item-hard');
+        word.setAttribute('data-status', userWord.difficulty);
+      }
+    }
   }
 
   private createTitle() {

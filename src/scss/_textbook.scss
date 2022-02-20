@@ -42,7 +42,7 @@
   }
 
   &__item-hard {
-     background-color: $orchid;
+     background-color: $pink;
   }
 
   &__item-active {
@@ -84,6 +84,14 @@
   &__translate {
     font-size: $font-sm;
     color: $black;
+  }
+
+  &__item-hard {
+    background-color: $pink;
+
+    .words__word {
+      color: $light-gray;
+    }
   }
 }
 
