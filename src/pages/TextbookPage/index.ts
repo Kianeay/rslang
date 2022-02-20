@@ -1,11 +1,23 @@
-import { getWords } from '../../api';
+import { getWords, getWord, getUserWords, getUserWordsId, UsersWordParameter, WordStat } from '../../api';
 import { Word } from '../../components';
 import DifficultyLevel from '../../components/DifficultyLevel';
+import Pagination from '../../components/Pagination';
+import { IWord } from '../../types';
+
+interface userWord {
+  userId: string,
+  wordId: string,
+  optional: WordStat,
+}
 
 export default class TextbookPage {
   private currentWord: Word = null;
 
-  constructor() {}
+  private difficultyLevel: string;
+
+  private pagination: Pagination;
+
+  constructor() { }
 
   private async loadCurrentWord(id: string) {
     const word: HTMLDivElement = document.querySelector('.word');
@@ -16,12 +28,15 @@ export default class TextbookPage {
     this.currentWord.loadCurrentWord(id);
   }
 
-  private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string) {
-    const words = await getWords(difficultyLevel, '4');
+  private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string, page: string) {
+    const words = await getWords(difficultyLevel, page);
 
     while (wordsList.firstChild) {
       wordsList.removeChild(wordsList.firstChild);
     }
+
+    const pagination = document.querySelector('.pagination');
+    pagination.classList.remove('pagination-invisible');
 
     words.forEach((item, index) => {
       const word = document.createElement('div');
@@ -36,8 +51,8 @@ export default class TextbookPage {
       const wordTranslate = document.createElement('p');
       wordTranslate.textContent = item.wordTranslate;
       wordTranslate.className = 'words__translate';
-
       word.append(wordTranslate);
+
       word.addEventListener('click', (event: Event) => {
         const { currentTarget } = event;
         const { id } = (currentTarget as HTMLElement).dataset;
@@ -50,7 +65,80 @@ export default class TextbookPage {
       }
 
       wordsList.append(word);
+      this.loadWordStatus(word);
     });
+  }
+
+  private async loadHardWords(wordsList: HTMLDivElement) {
+    const user = localStorage.getItem('userID');
+
+    while (wordsList.firstChild) {
+      wordsList.removeChild(wordsList.firstChild);
+    }
+
+    const pagination = document.querySelector('.pagination');
+    pagination.classList.add('pagination-invisible');
+
+    if (user) {
+      const uWords: userWord[] = await getUserWords(user);
+      const hardWords: Array<string> = [];
+
+      uWords.forEach((item) => {
+        if (item.optional.status === 'difficult') {
+          hardWords.push(item.wordId);
+        }
+      });
+
+      hardWords.forEach((item) => {
+        this.createHardWord(wordsList, item);
+      });
+    }
+  }
+
+  private async createHardWord(wordslist: HTMLElement, id: string) {
+    const hardWord = await getWord(id);
+
+    const word = document.createElement('div');
+    word.className = 'words__item';
+    word.classList.add('words__item-hard');
+    word.setAttribute('data-id', hardWord.id);
+    word.setAttribute('data-status', 'hard');
+
+    const wordMeaning = document.createElement('h4');
+    wordMeaning.textContent = hardWord.word;
+    wordMeaning.className = 'words__word';
+    word.append(wordMeaning);
+
+    const wordTranslate = document.createElement('p');
+    wordTranslate.textContent = hardWord.wordTranslate;
+    wordTranslate.className = 'words__translate';
+    word.append(wordTranslate);
+
+    word.addEventListener('click', (event: Event) => {
+      const { currentTarget } = event;
+      const { id } = (currentTarget as HTMLElement).dataset;
+
+      this.loadCurrentWord(id);
+    });
+
+    if (wordslist.children.length === 0) {
+      this.loadCurrentWord(hardWord.id);
+    }
+
+    wordslist.append(word);
+  }
+
+  private async loadWordStatus(word: HTMLDivElement) {
+    const user = localStorage.getItem('userID');
+    const { id } = word.dataset;
+
+    const userWord: userWord = await getUserWordsId(user, id);
+    if (userWord) {
+      if (userWord.optional.status === 'difficult') {
+        word.classList.add('words__item-hard');
+        word.setAttribute('data-status', userWord.optional.status);
+      }
+    }
   }
 
   private createTitle() {
@@ -65,18 +153,27 @@ export default class TextbookPage {
     const difficultyLevels = new DifficultyLevel(
       this.changeActiveDifficultyLevel.bind(this),
     ).render();
+    this.difficultyLevel = '0';
+
     return difficultyLevels;
   }
 
   private changeActiveDifficultyLevel(level: string) {
     const wordsList: HTMLDivElement = document.querySelector('.words__list');
-    this.loadWords(wordsList, level);
+
+    if (level !== 'hard') {
+      this.difficultyLevel = level;
+      this.loadWords(wordsList, level, '0');
+      this.pagination.refreshActivePage('0');
+    } else {
+      this.loadHardWords(wordsList);
+    }
   }
 
-  private async createWordsList(element: HTMLDivElement) {
+  private createWordsList(element: HTMLDivElement) {
     const wordsList = document.createElement('div');
     wordsList.className = 'words__list';
-    this.loadWords(wordsList, '0');
+    this.loadWords(wordsList, '0', '0');
     element.append(wordsList);
   }
 
@@ -96,6 +193,13 @@ export default class TextbookPage {
     return dictionary;
   }
 
+  private createPagination() {
+    const pagination = new Pagination(this.changePage.bind(this));
+
+    this.pagination = pagination;
+    return pagination.render();
+  }
+
   private createGamesList() {
     const gamesList = document.createElement('div');
     gamesList.className = 'games-list';
@@ -108,6 +212,11 @@ export default class TextbookPage {
     return gamesList;
   }
 
+  private changePage(page: string) {
+    const wordsList: HTMLDivElement = document.querySelector('.words__list');
+    this.loadWords(wordsList, this.difficultyLevel, page);
+  }
+
   render() {
     const component = document.createElement('div');
     component.className = 'textbook';
@@ -116,6 +225,7 @@ export default class TextbookPage {
       this.createTitle(),
       this.createDifficultyLevels(),
       this.createDictionary(),
+      this.createPagination(),
       this.createGamesList(),
     );
 

@@ -57,6 +57,8 @@ export default class SprintGame {
 
   private rowAnswer: number = 0;
 
+  private learnedWord: number = 0;
+
   constructor() {
     this.header = new SprintHeader(this.stopGame.bind(this));
   }
@@ -126,6 +128,9 @@ export default class SprintGame {
           word.optional.audio.correctAnswers >
         2
       ) {
+        if (word.optional.sprint.correctAnswers === 2) {
+          this.learnedWord += 1;
+        }
         await changeUserWord(
           this.userId,
           this.wordsArray[this.currentWordIndex].id,
@@ -189,44 +194,51 @@ export default class SprintGame {
 
     const statistics = await getUserStatistics(this.userId);
 
-    if (!word) {
-      if (statistics) {
-        await changeUserStatistics(this.userId, {
-          optional: {
-            new: (statistics.optional.new += 1),
+    if (statistics) {
+      await changeUserStatistics(this.userId, {
+        optional: {
+          new: 0,
 
-            sprint: {
-              learned: 10,
-              correctAnswers: 12,
-              count: 100,
-            },
-
-            audio: {
-              learned: 10,
-              correctAnswers: 10,
-              count: 100,
-            },
+          sprint: {
+            learned: statistics.optional.sprint.learned + this.learnedWord,
+            correctAnswers:
+              statistics.optional.sprint.correctAnswers +
+              this.correctAnswers.length,
+            count:
+              statistics.optional.sprint.count +
+              this.correctAnswers.length +
+              this.wrongAnswers.length,
+            row: statistics.optional.sprint.row + this.rowAnswer,
           },
-        });
-      } else {
-        await changeUserStatistics(this.userId, {
-          optional: {
-            new: 50,
 
-            sprint: {
-              learned: 10,
-              correctAnswers: 12,
-              count: 100,
-            },
-
-            audio: {
-              learned: 10,
-              correctAnswers: 10,
-              count: 100,
-            },
+          audio: {
+            learned: statistics.optional.audio.learned,
+            correctAnswers: statistics.optional.audio.correctAnswers,
+            count: statistics.optional.audio.count,
+            row: statistics.optional.audio.row,
           },
-        });
-      }
+        },
+      });
+    } else {
+      await changeUserStatistics(this.userId, {
+        optional: {
+          new: 0,
+
+          sprint: {
+            learned: this.learnedWord,
+            correctAnswers: this.correctAnswers.length,
+            count: 20,
+            row: this.rowAnswer,
+          },
+
+          audio: {
+            learned: 0,
+            correctAnswers: 0,
+            count: 0,
+            row: 0,
+          },
+        },
+      });
     }
 
     // console.log(await getUserStatistics(this.userId));
@@ -473,6 +485,7 @@ export default class SprintGame {
   }
 
   private stopGame() {
+    this.addStatistics();
     this.sprintWrap.remove();
     //  this.component.textContent = `correct: ${this.correctAnswers}, wrong: ${this.wrongAnswers}`;
     const stat = new GameStat({

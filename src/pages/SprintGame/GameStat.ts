@@ -32,13 +32,15 @@ export default class GameStat {
     const statWrap = document.createElement('div');
     statWrap.className = 'game-stat__stat-wrap';
 
-    const accuracy = `${Math.round(
-      (this.data.correct.length /
-        (this.data.correct.length + this.data.wrong.length)) *
-        100,
-    )}%`;
+    const accuracy = `${
+      Math.round(
+        (this.data.correct.length /
+          (this.data.correct.length + this.data.wrong.length)) *
+          100,
+      ) || 0
+    }%`;
 
-    statWrap.append(this.createStatBlock(accuracy || '0', 'Accuracy'));
+    statWrap.append(this.createStatBlock(accuracy, 'Accuracy'));
 
     const answersWrap = document.createElement('div');
     answersWrap.className = 'game-stat__wrap';

@@ -1,10 +1,30 @@
-import { getWord, EndPoints } from '../api';
+import { getWord, createUserWords, changeUserWord, EndPoints } from '../api';
 import { IWord } from '../types';
+import { Button } from '../components';
 
 export default class Word {
   private word: IWord;
 
-  constructor() {}
+  constructor() { }
+
+  private async workWithDifficultWords(event: Event) {
+    const { currentTarget } = event;
+    const { word } = (currentTarget as HTMLElement).dataset;
+
+    const user = localStorage.getItem('userID');
+
+    const options = {
+      status: 'difficult',
+      newWord: 'false',
+      sprint: { correctAnswers: 0 },
+      audio: { correctAnswers: 0 },
+    };
+
+    const response = await changeUserWord(user, word, { optional: options });
+    if (!response) {
+      await createUserWords(user, word, { optional: options });
+    }
+  }
 
   async loadCurrentWord(id: string) {
     this.word = await getWord(id);
@@ -24,7 +44,7 @@ export default class Word {
     translate.textContent = this.word.wordTranslate;
 
     const meaning: HTMLElement = document.querySelector('.word__meaning');
-    meaning.textContent = this.word.textMeaning;
+    meaning.innerHTML = this.word.textMeaning;
 
     const meaningTranslate: HTMLElement = document.querySelector(
       '.word__meaning-translate',
@@ -37,12 +57,15 @@ export default class Word {
     exampleParagraph.textContent = 'Example';
 
     const example: HTMLElement = document.querySelector('.word__example');
-    example.textContent = this.word.textExample;
+    example.innerHTML = this.word.textExample;
 
     const exampleTranslate: HTMLElement = document.querySelector(
       '.word__example-translate',
     );
     exampleTranslate.textContent = this.word.textExampleTranslate;
+
+    const difficultButton: HTMLElement = document.querySelector('.word__difficult');
+    difficultButton.setAttribute('data-word', this.word.id);
   }
 
   render() {
@@ -84,6 +107,18 @@ export default class Word {
     const exampleTranslate = document.createElement('p');
     exampleTranslate.className = 'word__example-translate';
     component.append(exampleTranslate);
+
+    const user = localStorage.getItem('userID');
+    if (user) {
+      const hardWordButton = new Button({
+        label: 'It\'s difficult',
+        onClick: (event: Event) => {
+          this.workWithDifficultWords(event);
+        },
+      }).render();
+      hardWordButton.classList.add('word__difficult');
+      component.append(hardWordButton);
+    }
 
     return component;
   }

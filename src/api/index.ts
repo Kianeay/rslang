@@ -46,7 +46,7 @@ type OptionalObj = {
   [key: string]: string | boolean | number;
 };
 
-interface WordStat {
+export interface WordStat {
   status?: string;
   new?: boolean;
 
@@ -63,12 +63,13 @@ interface GameStat {
   learned: number;
   correctAnswers: number;
   count: number;
+  row: number;
 }
 
 export interface OptionalObjStat {
   new: number;
-  sprint: GameStat;
-  audio: GameStat;
+  sprint?: GameStat;
+  audio?: GameStat;
 }
 
 type MongoDB_ObjectAnd = {
@@ -95,8 +96,8 @@ interface OptionsObj {
   filter?: MongoDB_Object;
 }
 
-type UsersWordParameter = {
-  difficulty: string;
+export type UsersWordParameter = {
+  difficulty?: string;
   optional?: WordStat;
 };
 

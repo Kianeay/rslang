@@ -2,9 +2,9 @@ import { Button, Footer } from '../../components';
 import { getUserStatistics, OptionalObjStat } from '../../api';
 
 export default class StatisticsPage {
-  private userStat: OptionalObjStat;
+  private userStat: { optional: OptionalObjStat };
 
-  private userId: string = localStorage.getItem('userId');
+  private userId: string = localStorage.getItem('userID');
 
   constructor() {}
 
@@ -56,10 +56,23 @@ export default class StatisticsPage {
     const generalWrap = document.createElement('div');
     generalWrap.className = 'statistics__general';
 
-    const learned = this.createStatBlock('0', 'Learned words');
+    const learnedNum = `${
+      this.userStat.optional.sprint.learned +
+      this.userStat.optional.audio.learned
+    }`;
+
+    const learned = this.createStatBlock(learnedNum, 'Learned words');
     learned.classList.add('statistics__stat-big');
 
-    const accuracy = this.createStatBlock('0', 'Accuracy');
+    const accuracyNum = `${Math.round(
+      ((this.userStat.optional.sprint.correctAnswers +
+        this.userStat.optional.audio.correctAnswers) /
+        (this.userStat.optional.sprint.count +
+          this.userStat.optional.audio.count)) *
+        100,
+    )}%`;
+
+    const accuracy = this.createStatBlock(accuracyNum, 'Accuracy');
     accuracy.classList.add('statistics__stat-big');
 
     generalWrap.append(learned, accuracy);
@@ -68,8 +81,8 @@ export default class StatisticsPage {
     gamesWrap.className = 'statistics__games';
 
     gamesWrap.append(
-      this.createGameBlock('Audio challenge'),
-      this.createGameBlock('Sprint'),
+      this.createGameBlock('Audio challenge', 'audio'),
+      this.createGameBlock('Sprint', 'sprint'),
     );
 
     component.append(subtitle, generalWrap, gamesWrap);
@@ -77,7 +90,7 @@ export default class StatisticsPage {
     return component;
   }
 
-  private createGameBlock(label: string) {
+  private createGameBlock(label: string, game: string) {
     const component = document.createElement('div');
     component.className = 'statistics__game';
 
@@ -88,11 +101,49 @@ export default class StatisticsPage {
     const statWrap = document.createElement('div');
     statWrap.className = 'statistics__game-wrap';
 
-    statWrap.append(
-      this.createStatBlock('0', 'Learned words'),
-      this.createStatBlock('0', 'Accuracy'),
-      this.createStatBlock('0', 'In a row'),
-    );
+    if (game === 'sprint') {
+      statWrap.append(
+        this.createStatBlock(
+          `${this.userStat.optional.sprint.learned || 0}`,
+          'Learned words',
+        ),
+        this.createStatBlock(
+          `${
+            Math.round(
+              (this.userStat.optional.sprint.correctAnswers /
+                this.userStat.optional.sprint.count) *
+                100,
+            ) || 0
+          }%`,
+          'Accuracy',
+        ),
+        this.createStatBlock(
+          `${this.userStat.optional.sprint.row || 0}`,
+          'In a row',
+        ),
+      );
+    } else {
+      statWrap.append(
+        this.createStatBlock(
+          `${this.userStat.optional.audio.learned || 0}`,
+          'Learned words',
+        ),
+        this.createStatBlock(
+          `${
+            Math.round(
+              (this.userStat.optional.audio.correctAnswers /
+                this.userStat.optional.audio.count) *
+                100,
+            ) || 0
+          }%`,
+          'Accuracy',
+        ),
+        this.createStatBlock(
+          `${this.userStat.optional.audio.row || 0}`,
+          'In a row',
+        ),
+      );
+    }
 
     component.append(title, statWrap);
 
@@ -101,17 +152,20 @@ export default class StatisticsPage {
 
   private async getStatistics() {
     this.userStat = await getUserStatistics(this.userId);
-    console.log(this.userStat);
   }
 
   render() {
-    this.getStatistics();
     const component = document.createElement('div');
     component.className = 'statistics';
-
     const footer = new Footer().render();
 
-    component.append(this.createTitle('Statistics'), this.createMain(), footer);
+    this.getStatistics().then(() => {
+      component.append(
+        this.createTitle('Statistics'),
+        this.createMain(),
+        footer,
+      );
+    });
 
     if (!localStorage.getItem('userID')) {
       component.append(this.createLoginBtn());
