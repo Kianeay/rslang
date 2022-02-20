@@ -1,4 +1,4 @@
-import { GamesPreview, Footer } from '../../components';
+import { GamesPreview, Footer, Button } from '../../components';
 
 export default class GamesPage {
   constructor() {}
@@ -38,6 +38,18 @@ export default class GamesPage {
     return title;
   }
 
+  private createLoginBtn() {
+    const loginBtn = new Button({
+      label: 'Log in',
+      onClick: () => {
+        location.hash = '#login';
+      },
+    }).render();
+    loginBtn.classList.add('main__login');
+
+    return loginBtn;
+  }
+
   render() {
     const component = document.createElement('div');
     component.className = 'games-wrap';
@@ -50,6 +62,10 @@ export default class GamesPage {
     games.append(this.createAudioBlock(), this.createSprintBlock());
 
     component.append(this.createTitle('Minigames'), games, footer);
+
+    if (localStorage.getItem('userID')) {
+      component.append(this.createLoginBtn());
+    }
 
     return component;
   }

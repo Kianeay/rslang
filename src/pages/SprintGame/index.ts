@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { Button, DifficultyLevel } from '../../components';
 import SprintHeader from './SprintHeader';
+import GameStat from './GameStat';
 import {
   getWords,
   createUserWords,
@@ -12,7 +13,7 @@ import {
 } from '../../api';
 import { IWord } from '../../types';
 
-interface WordPair {
+export interface WordPair {
   word: string;
   translate: string;
   correct: boolean;
@@ -50,8 +51,14 @@ export default class SprintGame {
 
   private userId: string = localStorage.getItem('userID') || null;
 
+  private correctAnswers: number[] = [];
+
+  private wrongAnswers: number[] = [];
+
+  private rowAnswer: number = 0;
+
   constructor() {
-    this.header = new SprintHeader();
+    this.header = new SprintHeader(this.stopGame.bind(this));
   }
 
   private createMain() {
@@ -227,12 +234,25 @@ export default class SprintGame {
 
   private onCorrectClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
+      this.correctAnswers.push(this.currentWordIndex);
+      this.rowAnswer += 1;
+
+      if (this.rowAnswer >= 3 && this.rowAnswer <= 5) {
+        this.header.updateScore(20);
+        this.header.updatePlusScore(20);
+      } else if (this.rowAnswer >= 6) {
+        this.header.updateScore(30);
+        this.header.updatePlusScore(30);
+      } else {
+        this.header.updateScore(10);
+        this.header.updatePlusScore(10);
+      }
+
       if (this.userId) {
         this.createWordStat(true);
       }
 
       this.question.classList.add('green');
-
       this.correctBtn.disabled = true;
       this.wrongBtn.disabled = true;
 
@@ -245,6 +265,10 @@ export default class SprintGame {
         this.wrongBtn.disabled = false;
       }, 1500);
     } else {
+      this.wrongAnswers.push(this.currentWordIndex);
+      this.rowAnswer = 0;
+      this.header.updatePlusScore(10);
+
       if (this.userId) {
         this.createWordStat(false);
       }
@@ -267,6 +291,10 @@ export default class SprintGame {
 
   private onWrongClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
+      this.wrongAnswers.push(this.currentWordIndex);
+      this.rowAnswer = 0;
+      this.header.updatePlusScore(10);
+
       if (this.userId) {
         this.createWordStat(false);
       }
@@ -284,6 +312,20 @@ export default class SprintGame {
         this.wrongBtn.disabled = false;
       }, 1500);
     } else {
+      this.correctAnswers.push(this.currentWordIndex);
+      this.rowAnswer += 1;
+
+      if (this.rowAnswer >= 3 && this.rowAnswer <= 5) {
+        this.header.updateScore(20);
+        this.header.updatePlusScore(20);
+      } else if (this.rowAnswer >= 6) {
+        this.header.updateScore(30);
+        this.header.updatePlusScore(30);
+      } else {
+        this.header.updateScore(10);
+        this.header.updatePlusScore(10);
+      }
+
       if (this.userId) {
         this.createWordStat(true);
       }
@@ -306,8 +348,7 @@ export default class SprintGame {
   private changeWordsContent() {
     this.currentWordIndex += 1;
     if (this.currentWordIndex === 20) {
-      this.sprintWrap.remove();
-      this.component.textContent = '20 слов кончиллись';
+      this.stopGame();
       return;
     }
     this.wordEn.textContent = `${this.wordsArray[this.currentWordIndex].word}`;
@@ -366,8 +407,8 @@ export default class SprintGame {
     this.levelElem.remove();
     const pageNum = this.randomInteger(0, 29).toString();
     const pageNumWrong = this.randomInteger(0, 29).toString();
-    // this.words = await getWords(level, pageNum);
-    this.words = await getWords('0', '0');
+    this.words = await getWords(level, pageNum);
+    // this.words = await getWords('0', '0');
 
     this.wordsWrong = await getWords(level, pageNumWrong);
     this.createWordsArray();
@@ -428,6 +469,38 @@ export default class SprintGame {
     this.sprintWrap.append(header, this.createMain());
 
     this.component.append(this.sprintWrap);
+    this.header.setTimer();
+  }
+
+  private stopGame() {
+    this.sprintWrap.remove();
+    //  this.component.textContent = `correct: ${this.correctAnswers}, wrong: ${this.wrongAnswers}`;
+    const stat = new GameStat({
+      correct: this.correctAnswers,
+      wrong: this.wrongAnswers,
+      words: this.wordsArray,
+    }).render();
+    this.component.append(stat);
+  }
+
+  private createTitle(content: string) {
+    const title = document.createElement('h2');
+    title.className = 'sprint__title';
+    title.textContent = content;
+
+    return title;
+  }
+
+  private createLoginBtn() {
+    const loginBtn = new Button({
+      label: 'Log in',
+      onClick: () => {
+        location.hash = '#login';
+      },
+    }).render();
+    loginBtn.classList.add('main__login');
+
+    return loginBtn;
   }
 
   render() {
@@ -435,7 +508,12 @@ export default class SprintGame {
     this.component.className = 'sprint';
     this.levelElem = new DifficultyLevel(this.getWords.bind(this)).render();
 
-    this.component.append(this.levelElem);
+    this.component.append(this.createTitle('Sprint'), this.levelElem);
+
+    if (localStorage.getItem('userID')) {
+      this.component.append(this.createLoginBtn());
+    }
+
     return this.component;
   }
 }
