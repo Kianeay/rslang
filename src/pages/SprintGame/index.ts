@@ -204,13 +204,18 @@ export default class SprintGame {
             correctAnswers:
               statistics.optional.sprint.correctAnswers +
               this.correctAnswers.length,
-            count: statistics.optional.sprint.count + 20,
+            count:
+              statistics.optional.sprint.count +
+              this.correctAnswers.length +
+              this.wrongAnswers.length,
+            row: statistics.optional.sprint.row + this.rowAnswer,
           },
 
           audio: {
             learned: statistics.optional.audio.learned,
             correctAnswers: statistics.optional.audio.correctAnswers,
             count: statistics.optional.audio.count,
+            row: statistics.optional.audio.row,
           },
         },
       });
@@ -223,12 +228,14 @@ export default class SprintGame {
             learned: this.learnedWord,
             correctAnswers: this.correctAnswers.length,
             count: 20,
+            row: this.rowAnswer,
           },
 
           audio: {
             learned: 0,
             correctAnswers: 0,
             count: 0,
+            row: 0,
           },
         },
       });
