@@ -1,4 +1,4 @@
-import { getWord, createUserWords, EndPoints } from '../api';
+import { getWord, createUserWords, changeUserWord, EndPoints } from '../api';
 import { IWord } from '../types';
 import { Button } from '../components';
 
@@ -13,7 +13,17 @@ export default class Word {
 
     const user = localStorage.getItem('userID');
 
-    await createUserWords(user, word, { difficulty: 'hard' });
+    const options = {
+      status: 'difficult',
+      newWord: 'false',
+      sprint: { correctAnswers: 0 },
+      audio: { correctAnswers: 0 },
+    };
+
+    const response = await changeUserWord(user, word, { optional: options });
+    if (!response) {
+      await createUserWords(user, word, { optional: options });
+    }
   }
 
   async loadCurrentWord(id: string) {

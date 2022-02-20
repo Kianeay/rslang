@@ -1,4 +1,4 @@
-import { getWords, getWord, getUserWords, getUserWordsId } from '../../api';
+import { getWords, getWord, getUserWords, getUserWordsId, UsersWordParameter, WordStat } from '../../api';
 import { Word } from '../../components';
 import DifficultyLevel from '../../components/DifficultyLevel';
 import Pagination from '../../components/Pagination';
@@ -7,7 +7,7 @@ import { IWord } from '../../types';
 interface userWord {
   userId: string,
   wordId: string,
-  difficulty: string,
+  optional: WordStat,
 }
 
 export default class TextbookPage {
@@ -84,7 +84,7 @@ export default class TextbookPage {
       const hardWords: Array<string> = [];
 
       uWords.forEach((item) => {
-        if (item.difficulty === 'hard') {
+        if (item.optional.status === 'difficult') {
           hardWords.push(item.wordId);
         }
       });
@@ -134,9 +134,9 @@ export default class TextbookPage {
 
     const userWord: userWord = await getUserWordsId(user, id);
     if (userWord) {
-      if (userWord.difficulty === 'hard') {
+      if (userWord.optional.status === 'difficult') {
         word.classList.add('words__item-hard');
-        word.setAttribute('data-status', userWord.difficulty);
+        word.setAttribute('data-status', userWord.optional.status);
       }
     }
   }
