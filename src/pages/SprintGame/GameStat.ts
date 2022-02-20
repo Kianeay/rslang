@@ -5,6 +5,7 @@ interface GameStatProps {
   correct: number[];
   wrong: number[];
   words: WordPair[];
+  row: number;
 }
 
 export default class GameStat {
@@ -40,7 +41,10 @@ export default class GameStat {
       ) || 0
     }%`;
 
-    statWrap.append(this.createStatBlock(accuracy, 'Accuracy'));
+    statWrap.append(
+      this.createStatBlock(accuracy, 'Accuracy'),
+      this.createStatBlock(`${this.data.row}`, 'In a row'),
+    );
 
     const answersWrap = document.createElement('div');
     answersWrap.className = 'game-stat__wrap';
@@ -52,11 +56,29 @@ export default class GameStat {
     answersWrap.append(mistakeTitle);
 
     this.data.wrong.forEach((el) => {
-      const word = document.createElement('p');
-      word.className = 'game-stat__word';
-      word.textContent = `${this.data.words[el].word} - ${this.data.words[el].translate}`;
+      const wordsWrap = document.createElement('div');
+      wordsWrap.className = 'game-stat__word-wrap';
 
-      answersWrap.append(word);
+      const btn = document.createElement('button');
+      btn.className = 'game-stat__sound';
+
+      btn.addEventListener('click', () => {
+        const audio = new Audio();
+        audio.src = `https://react-learnwords2022.herokuapp.com/${this.data.words[el].audio}`;
+        audio.play();
+      });
+
+      const word = document.createElement('span');
+      word.className = 'game-stat__word';
+      word.textContent = `${this.data.words[el].word} `;
+
+      const translate = document.createElement('span');
+      translate.className = 'game-stat__translate';
+      translate.textContent = ` - ${this.data.words[el].translate}`;
+
+      wordsWrap.append(btn, word, translate);
+
+      answersWrap.append(wordsWrap);
     });
 
     const correctTitle = document.createElement('p');
@@ -66,11 +88,29 @@ export default class GameStat {
     answersWrap.append(correctTitle);
 
     this.data.correct.forEach((el) => {
-      const word = document.createElement('p');
-      word.className = 'game-stat__word';
-      word.textContent = `${this.data.words[el].word} - ${this.data.words[el].translate}`;
+      const wordsWrap = document.createElement('div');
+      wordsWrap.className = 'game-stat__word-wrap';
 
-      answersWrap.append(word);
+      const btn = document.createElement('button');
+      btn.className = 'game-stat__sound';
+
+      btn.addEventListener('click', () => {
+        const audio = new Audio();
+        audio.src = `https://react-learnwords2022.herokuapp.com/${this.data.words[el].audio}`;
+        audio.play();
+      });
+
+      const word = document.createElement('span');
+      word.className = 'game-stat__word';
+      word.textContent = `${this.data.words[el].word} `;
+
+      const translate = document.createElement('span');
+      translate.className = 'game-stat__translate';
+      translate.textContent = ` - ${this.data.words[el].translate}`;
+
+      wordsWrap.append(btn, word, translate);
+
+      answersWrap.append(wordsWrap);
     });
 
     main.append(statWrap, answersWrap);
