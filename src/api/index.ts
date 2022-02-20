@@ -63,6 +63,7 @@ interface GameStat {
   learned: number;
   correctAnswers: number;
   count: number;
+  row: number;
 }
 
 export interface OptionalObjStat {
