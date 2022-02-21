@@ -136,8 +136,11 @@ export default class TextbookPage {
     if (userWord) {
       if (userWord.optional.status === 'difficult') {
         word.classList.add('words__item-hard');
-        word.setAttribute('data-status', userWord.optional.status);
       }
+      if (userWord.optional.status === 'learned') {
+        word.classList.add('words__item-learned');
+      }
+      word.setAttribute('data-status', userWord.optional.status);
     }
   }
 

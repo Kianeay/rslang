@@ -93,6 +93,14 @@
       color: $light-gray;
     }
   }
+
+  &__item-learned {
+    background-color: $light-green;
+
+    .words__word {
+      color: $black;
+    }
+  }
 }
 
 .word {
@@ -164,6 +172,17 @@
     font-weight: 300;
     font-size: $font-sm;
     line-height: $font-s-big;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+  }
+
+  .word__learned {
+    background-color: $light-green;
+    color: $black;
   }
 }
 

@@ -26,6 +26,25 @@ export default class Word {
     }
   }
 
+  private async workWithLearnedWords(event: Event) {
+    const { currentTarget } = event;
+    const { word } = (currentTarget as HTMLElement).dataset;
+
+    const user = localStorage.getItem('userID');
+
+    const response = await changeUserWord(user, word, { optional: { status: 'learned' } });
+    if (!response) {
+      const options = {
+        status: 'learned',
+        newWord: 'false',
+        sprint: { correctAnswers: 0 },
+        audio: { correctAnswers: 0 },
+      };
+
+      await createUserWords(user, word, { optional: options });
+    }
+  }
+
   async loadCurrentWord(id: string) {
     this.word = await getWord(id);
 
@@ -66,6 +85,9 @@ export default class Word {
 
     const difficultButton: HTMLElement = document.querySelector('.word__difficult');
     difficultButton.setAttribute('data-word', this.word.id);
+
+    const learnedButton: HTMLElement = document.querySelector('.word__learned');
+    learnedButton.setAttribute('data-word', this.word.id);
   }
 
   render() {
@@ -110,6 +132,8 @@ export default class Word {
 
     const user = localStorage.getItem('userID');
     if (user) {
+      const buttonsWrapper = document.createElement('div');
+      buttonsWrapper.className = 'word__buttons';
       const hardWordButton = new Button({
         label: 'It\'s difficult',
         onClick: (event: Event) => {
@@ -117,7 +141,18 @@ export default class Word {
         },
       }).render();
       hardWordButton.classList.add('word__difficult');
-      component.append(hardWordButton);
+      buttonsWrapper.append(hardWordButton);
+
+      const learnedWordButton = new Button({
+        label: 'I know it!',
+        onClick: (event: Event) => {
+          this.workWithLearnedWords(event);
+        },
+      }).render();
+      learnedWordButton.classList.add('word__learned');
+      buttonsWrapper.append(learnedWordButton);
+
+      component.append(buttonsWrapper);
     }
 
     return component;
