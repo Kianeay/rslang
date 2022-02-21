@@ -190,8 +190,11 @@ export default class Result {
       this.createTitle(),
       this.createContainer(),
       this.buttonContainer(),
-      this.createLoginBtn(),
     );
+
+    if (!localStorage.getItem('userID')) {
+      result.append(this.createLoginBtn());
+    }
 
     return result;
   }

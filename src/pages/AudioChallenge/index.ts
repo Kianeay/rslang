@@ -208,8 +208,11 @@ export default class AudioChallenge extends GameAudioCall {
       this.createAudioButton(),
       div,
       this.createNextButton(),
-      this.createLoginBtn(),
     );
+
+    if (!localStorage.getItem('userID')) {
+      container.append(this.createLoginBtn());
+    }
 
     return container;
   }
