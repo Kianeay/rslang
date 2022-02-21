@@ -8,7 +8,10 @@ export default class Controller {
   private view = new View(this, this.root);
 
   constructor(private root: Element) {
-    window.addEventListener('hashchange', () => this.changePage(location.hash));
+    window.addEventListener('hashchange', () => {
+      this.changePage(location.hash);
+      localStorage.setItem('page', location.hash.slice(1));
+    });
 
     this.checkPage();
   }

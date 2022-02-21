@@ -434,17 +434,6 @@ export default class SprintGame {
     return Math.floor(rand);
   }
 
-  async getWords(level: string) {
-    this.levelElem.remove();
-    const pageNum = this.randomInteger(0, 29).toString();
-    const pageNumWrong = this.randomInteger(0, 29).toString();
-    this.words = await getWords(level, pageNum);
-    // this.words = await getWords('0', '0');
-
-    this.wordsWrong = await getWords(level, pageNumWrong);
-    this.createWordsArray();
-  }
-
   private createWordsArray() {
     // this.wordsArray = new Set();
     const correctWords = new Set();
@@ -493,6 +482,45 @@ export default class SprintGame {
     }
   }
 
+  private createTitle(content: string) {
+    const title = document.createElement('h2');
+    title.className = 'sprint__title';
+    title.textContent = content;
+
+    return title;
+  }
+
+  private createLoginBtn() {
+    const loginBtn = new Button({
+      label: 'Log in',
+      onClick: () => {
+        location.hash = '#login';
+      },
+    }).render();
+    loginBtn.classList.add('main__login');
+
+    return loginBtn;
+  }
+
+  async getWords(level: string) {
+    this.levelElem.remove();
+    const pageNum = this.randomInteger(0, 29).toString();
+    const pageNumWrong = this.randomInteger(0, 29).toString();
+    this.words = await getWords(level, pageNum);
+    // this.words = await getWords('0', '0');
+
+    this.wordsWrong = await getWords(level, pageNumWrong);
+    this.createWordsArray();
+  }
+
+  async getWordsTextBook(level: string, page: string) {
+    this.levelElem.remove();
+    const pageNumWrong = this.randomInteger(0, 29).toString();
+    this.words = await getWords(level, page);
+    this.wordsWrong = await getWords(level, pageNumWrong);
+    this.createWordsArray();
+  }
+
   private startGame() {
     const header = this.header.render();
 
@@ -518,32 +546,19 @@ export default class SprintGame {
     this.component.append(stat);
   }
 
-  private createTitle(content: string) {
-    const title = document.createElement('h2');
-    title.className = 'sprint__title';
-    title.textContent = content;
-
-    return title;
-  }
-
-  private createLoginBtn() {
-    const loginBtn = new Button({
-      label: 'Log in',
-      onClick: () => {
-        location.hash = '#login';
-      },
-    }).render();
-    loginBtn.classList.add('main__login');
-
-    return loginBtn;
-  }
-
   render() {
     this.component = document.createElement('div');
     this.component.className = 'sprint';
     this.levelElem = new DifficultyLevel(this.getWords.bind(this)).render();
 
-    this.component.append(this.createTitle('Sprint'), this.levelElem);
+    if (localStorage.getItem('page') === 'textbook') {
+      this.component.append(this.createTitle('Sprint'));
+      const level = localStorage.getItem('textbook-difficulty');
+      const page = localStorage.getItem('textbook-page');
+      this.getWordsTextBook(level, page);
+    } else {
+      this.component.append(this.createTitle('Sprint'), this.levelElem);
+    }
 
     if (!localStorage.getItem('userID')) {
       this.component.append(this.createLoginBtn());
