@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 const path = require('path');
 const webpack = require('webpack');
+const HTMLWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: './src/index.ts',
@@ -31,12 +34,20 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HTMLWebpackPlugin({
+      template: './index.html',
+    }),
+    new CleanWebpackPlugin(),
+    new CopyWebpackPlugin({ patterns: [{ from: 'src/assets', to: './src/assets' },
+      { from: 'src/scss/style.css', to: './src/scss' }] }),
+  ],
   resolve: {
     extensions: ['*', '.js', '.tsx', '.ts', '.css', '.scss'],
   },
   output: {
-    path: path.resolve(__dirname, 'dist/'),
-    publicPath: '/dist/',
+    path: path.resolve(__dirname, 'dist'),
+    // publicPath: '/dist/',
     filename: 'bundle.js',
   },
   devServer: {
