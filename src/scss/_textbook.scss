@@ -132,6 +132,12 @@
     text-transform: capitalize;
   }
 
+  &__wrapper {
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 15px;
+  }
+
   &__transcription {
     padding-left: 35px;
     font-weight: bold;
@@ -145,6 +151,19 @@
     padding-left: 35px;
     font-size: $font-med;
     line-height: $font-s-big;
+  }
+
+  &__sound {
+    width: 30px;
+    height: 30px;
+    background-image: url(../assets/images/textbook-sound.svg);
+    background-repeat: no-repeat;
+    background-size: contain;    
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
   }
 
   &__meaning {

@@ -5,7 +5,20 @@ import { Button } from '../components';
 export default class Word {
   private word: IWord;
 
-  constructor() { }
+  private sound: string;
+
+  private audioMeaning: string;
+
+  private audioExample: string;
+
+  private audio;
+
+  private count: number;
+
+  constructor() {
+    this.audio = new Audio();
+    this.count = 0;
+  }
 
   private changeWordInList(id: string, status: string) {
     const level = document.querySelector('.difficulty__item-active');
@@ -121,6 +134,7 @@ export default class Word {
 
   async loadCurrentWord(id: string, options: WordStat = {}) {
     this.word = await getWord(id);
+    this.count = 0;
 
     const image: HTMLImageElement = document.querySelector('.word__image');
     image.src = EndPoints.BASE_URL + this.word.image;
@@ -132,6 +146,11 @@ export default class Word {
       '.word__transcription',
     );
     transcription.textContent = this.word.transcription;
+
+    const sound: HTMLElement = document.querySelector('.word__sound');
+    this.sound = this.word.audio;
+    this.audioMeaning = this.word.audioMeaning;
+    this.audioExample = this.word.audioExample;
 
     const translate: HTMLElement = document.querySelector('.word__translate');
     translate.textContent = this.word.wordTranslate;
@@ -181,6 +200,29 @@ export default class Word {
     }
   }
 
+  private async playSound() {
+    this.audio.src = EndPoints.BASE_URL + this.sound;
+    this.audio.load();
+    this.audio.play();
+
+    this.audio.addEventListener('ended', () => {
+      console.log(this.count);
+      this.count += 1;
+      if (this.count === 1) {
+        this.audio.src = EndPoints.BASE_URL + this.audioMeaning;
+      }
+      if (this.count === 2) {
+        this.audio.src = EndPoints.BASE_URL + this.audioExample;
+      }
+
+      this.audio.load();
+      this.audio.play();
+      if (this.count > 2) {
+        this.audio.pause();
+      }
+    });
+  }
+
   render() {
     const component = document.createElement('div');
     component.className = 'word__container';
@@ -193,9 +235,19 @@ export default class Word {
     title.className = 'word__title';
     component.append(title);
 
+    const wrapper = document.createElement('div');
+    wrapper.className = 'word__wrapper';
+
     const transcription = document.createElement('p');
     transcription.className = 'word__transcription';
-    component.append(transcription);
+    wrapper.append(transcription);
+
+    const sound = document.createElement('img');
+    sound.className = 'word__sound';
+    sound.addEventListener('click', () => { this.playSound(); });
+    wrapper.append(sound);
+
+    component.append(wrapper);
 
     const translate = document.createElement('p');
     translate.className = 'word__translate';
