@@ -130,17 +130,17 @@ export default class MainPage {
     wrapper.append(
       aboutTitle,
       this.createImageBlock(
-        '',
+        'kate',
         'Teamlead. Developed app structure, routing. Created main page, menu, games and statistics page, implemented sprint game.',
         'Ekaterina',
       ),
       this.createImageBlock(
-        '',
+        'artem_1',
         'Created login page, implemented API requests methods and authorization logic, developed audio-challenge game.',
         'Artem',
       ),
       this.createImageBlock(
-        '',
+        'lena',
         'Created textbook page, word list, learned words ',
         'Elena',
       ),
