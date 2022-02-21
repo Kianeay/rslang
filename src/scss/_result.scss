@@ -1,6 +1,7 @@
 .result {
   margin: 0 auto;
   max-width: 100%;
+  width: 1200px;
   &__title {
     display: flex;
     flex-direction: column;
@@ -99,5 +100,13 @@
     display: flex;
     gap: 30px;
     justify-content: center;
+  }
+}
+
+@media (max-width: 1440px) {
+  .result {
+    margin: 0 auto;
+    max-width: 100%;
+    width: 1000px;
   }
 }

@@ -1,14 +1,20 @@
 import GameAudioCall, { AudioCallWords } from './Game';
 import { DifficultyLevel, Button, Result } from '../../components/index';
-import SprintHeader from '../SprintGame/SprintHeader';
 
 export default class AudioChallenge extends GameAudioCall {
   private listeners: (event: KeyboardEvent) => void;
 
+  private answerCheck: (event: Event) => void;
+
+  private spaceListener: (event: KeyboardEvent) => void;
+
   private isListener: boolean;
+
+  private intervalId: NodeJS.Timer; // eslint-disable-line no-undef
 
   constructor() {
     super();
+    this.isListener = false;
     this.listeners = (event: KeyboardEvent) => {
       switch (event.code) {
         case 'Digit1':
@@ -23,14 +29,25 @@ export default class AudioChallenge extends GameAudioCall {
         case 'Digit4':
           super.checkAnswer(document.querySelector('.challenge__answer-4'));
           break;
-        case 'Space':
-          this.roundGame();
-          break;
         default:
           break;
       }
+      clearInterval(this.intervalId);
+      this.removeListeners();
     };
-    this.isListener = false;
+
+    this.spaceListener = (event: KeyboardEvent) => {
+      if (event.code === 'Space' && event.repeat === false) {
+        this.roundGame();
+      }
+    };
+
+    this.answerCheck = (event: Event) => {
+      clearInterval(this.intervalId);
+      const element = event.currentTarget as HTMLDivElement;
+      super.checkAnswer(element);
+      this.removeListeners();
+    };
   }
 
   private roundGame() {
@@ -40,19 +57,39 @@ export default class AudioChallenge extends GameAudioCall {
     }
     if (this.isAnswer) {
       this.isAnswer = false;
+      super.changeButton();
       if (this.currentIndexWord < 19) {
         this.currentIndexWord += 1;
         this.renderGameRound();
         super.playAudio();
+        this.setTimer();
+        const score = document.querySelector('.sprint__score-count');
+        super.updateScorePlus();
+        score.textContent = `${this.score}`;
       } else {
+        this.score = 0;
+        this.scoreUpdate = 10;
         this.currentIndexWord = -1;
         this.showResult();
         this.isAnswer = true;
-        document.removeEventListener('keydown', this.listeners);
+        document.removeEventListener('keydown', this.spaceListener);
       }
     } else {
+      this.isAnswer = true;
+      this.removeListeners();
+      clearInterval(this.intervalId);
+      this.changeButton();
       super.showAnswer();
     }
+  }
+
+  private removeListeners() {
+    this.isListener = false;
+    document.removeEventListener('keydown', this.listeners);
+    const buttons = document.querySelectorAll(
+      '.challenge__answer',
+    ) as NodeListOf<HTMLDivElement>; // eslint-disable-line no-undef
+    buttons.forEach((item) => item.removeEventListener('click', this.answerCheck));
   }
 
   private showResult() {
@@ -61,25 +98,24 @@ export default class AudioChallenge extends GameAudioCall {
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
-    const correctArr = this.arrayGame.filter((item) => item.correctAnswer > 0); // исправить!!!!
-    const wrongArr = this.arrayGame.filter((item) => item.correctAnswer === 0);
+
     const result = new Result(
-      this.roundGame.bind(this),
-      correctArr,
-      wrongArr,
+      this.startGame.bind(this),
+      this.correctArr(),
+      this.wrongArr(),
+      this.greatestSeries,
     ).render();
 
     container.append(result);
+
+    super.addStatistics();
   }
 
   private createAnswerDiv(text: string, answerClass: string) {
     const div = document.createElement('div');
     div.className = `challenge__answer ${answerClass}`;
     div.textContent = text;
-    div.addEventListener('click', (event: Event) => {
-      const element = event.currentTarget as HTMLDivElement;
-      super.checkAnswer(element);
-    });
+    div.addEventListener('click', this.answerCheck);
 
     return div;
   }
@@ -104,21 +140,38 @@ export default class AudioChallenge extends GameAudioCall {
     return button;
   }
 
-  private renderGameRound() {
-    const header = new SprintHeader(() => console.log(111)).render();
-    const container = document.querySelector('.challenge');
+  private setTimer() {
+    const timeElem = document.querySelector('.sprint__time-count');
+    timeElem.textContent = '15';
+    const start = () => {
+      timeElem.textContent = `${+timeElem.textContent - 1}`.padStart(2, '0');
+      if (+timeElem.textContent === 0) {
+        this.clearTimer();
+      }
+    };
+    this.intervalId = setInterval(start, 1000);
+  }
 
-    const div = document.createElement('div');
+  private clearTimer() {
+    clearInterval(this.intervalId);
+    this.showAnswer();
+    this.isAnswer = true;
+    super.changeButton();
+    this.removeListeners();
+  }
+
+  private renderGameRound() {
+    const container = document.querySelector('.challenge__answers');
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
-    div.className = 'challenge__answers';
+
     let arrNum = Array.from({ length: 3 }, () => super.getRandomNum(20));
     arrNum.push(this.currentIndexWord);
     arrNum = [...super.checkArray(arrNum, 20)];
     arrNum = [...arrNum.sort(() => Math.random() - 0.5)];
 
-    div.append(
+    container.append(
       this.createAnswerDiv(
         `1. ${this.arrayGame[arrNum[0]].wordTranslate}`,
         'challenge__answer-1',
@@ -137,20 +190,51 @@ export default class AudioChallenge extends GameAudioCall {
       ),
     );
 
+    return container;
+  }
+
+  private renderGame() {
+    const container = document.querySelector('.challenge');
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+    const div = document.createElement('div');
+    div.className = 'challenge__answers';
+
     container.append(
-      header,
+      this.header.render(),
       this.createAudioButton(),
       div,
       this.createNextButton(),
+      this.createLoginBtn(),
     );
 
     return container;
   }
 
+  private createLoginBtn() {
+    const loginBtn = new Button({
+      label: 'Log in',
+      onClick: () => {
+        location.hash = '#login';
+      },
+    }).render();
+    loginBtn.classList.add('main__login');
+
+    return loginBtn;
+  }
+
+  private startGame() {
+    this.renderGame();
+    this.roundGame();
+    document.addEventListener('keydown', this.spaceListener);
+    document.addEventListener('keyup', (event) => event.preventDefault());
+  }
+
   private async getWord(level: string) {
     await super.getWords(level);
     await super.getArrayGame();
-    this.roundGame();
+    this.startGame();
   }
 
   render() {
@@ -158,7 +242,10 @@ export default class AudioChallenge extends GameAudioCall {
     container.className = 'challenge';
     const words = new DifficultyLevel(this.getWord.bind(this)).render();
 
-    container.append(words);
+    container.append(
+      words,
+      this.createLoginBtn(),
+    );
 
     return container;
   }
