@@ -24,6 +24,10 @@ export default class Word {
     if (!response) {
       await createUserWords(user, word, { optional: options });
     }
+
+    (currentTarget as HTMLElement).textContent = 'It\'s simple';
+    (currentTarget as HTMLElement).classList.add('word__simple');
+    (currentTarget as HTMLElement).classList.remove('word__difficult');
   }
 
   private async workWithLearnedWords(event: Event) {
@@ -83,11 +87,14 @@ export default class Word {
     );
     exampleTranslate.textContent = this.word.textExampleTranslate;
 
-    const difficultButton: HTMLElement = document.querySelector('.word__difficult');
-    difficultButton.setAttribute('data-word', this.word.id);
+    const user = localStorage.getItem('userID');
+    if (user) {
+      const difficultButton: HTMLElement = document.querySelector('.word__difficult');
+      difficultButton.setAttribute('data-word', this.word.id);
 
-    const learnedButton: HTMLElement = document.querySelector('.word__learned');
-    learnedButton.setAttribute('data-word', this.word.id);
+      const learnedButton: HTMLElement = document.querySelector('.word__learned');
+      learnedButton.setAttribute('data-word', this.word.id);
+    }
   }
 
   render() {

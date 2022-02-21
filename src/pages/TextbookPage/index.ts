@@ -31,6 +31,12 @@ export default class TextbookPage {
   private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string, page: string) {
     const words = await getWords(difficultyLevel, page);
 
+    const user = localStorage.getItem('userID');
+    let userWords: userWord[];
+    if (user) {
+      userWords = await getUserWords(user);
+    }
+
     while (wordsList.firstChild) {
       wordsList.removeChild(wordsList.firstChild);
     }
@@ -42,6 +48,11 @@ export default class TextbookPage {
       const word = document.createElement('div');
       word.className = 'words__item';
       word.setAttribute('data-id', item.id);
+
+      const options = userWords.find((userItem) => userItem.wordId === item.id);
+      if (options) {
+        this.setWordStatus(word, options.optional);
+      }
 
       const wordMeaning = document.createElement('h4');
       wordMeaning.textContent = item.word;
@@ -65,7 +76,6 @@ export default class TextbookPage {
       }
 
       wordsList.append(word);
-      this.loadWordStatus(word);
     });
   }
 
@@ -128,20 +138,14 @@ export default class TextbookPage {
     wordslist.append(word);
   }
 
-  private async loadWordStatus(word: HTMLDivElement) {
-    const user = localStorage.getItem('userID');
-    const { id } = word.dataset;
-
-    const userWord: userWord = await getUserWordsId(user, id);
-    if (userWord) {
-      if (userWord.optional.status === 'difficult') {
-        word.classList.add('words__item-hard');
-      }
-      if (userWord.optional.status === 'learned') {
-        word.classList.add('words__item-learned');
-      }
-      word.setAttribute('data-status', userWord.optional.status);
+  private async setWordStatus(word: HTMLDivElement, options: WordStat) {
+    if (options.status === 'difficult') {
+      word.classList.add('words__item-hard');
     }
+    if (options.status === 'learned') {
+      word.classList.add('words__item-learned');
+    }
+    word.setAttribute('data-status', options.status);
   }
 
   private createTitle() {
