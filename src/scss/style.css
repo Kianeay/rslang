@@ -991,6 +991,26 @@ ul {
   left: 0;
 }
 
+.sprint__icon-wrap {
+  position: absolute;
+  top: 50px;
+  right: 250px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 20px;
+}
+
+.sprint__sound {
+  width: 30px;
+  cursor: pointer;
+}
+
+.sprint__screen {
+  width: 30px;
+  cursor: pointer;
+}
+
 .sprint__title {
   position: absolute;
   top: 20px;
