@@ -12,6 +12,7 @@ import {
   Pagination,
   GamesPreview,
   Footer,
+  Button,
 } from '../../components';
 
 import { IWord } from '../../types';
@@ -308,6 +309,18 @@ export default class TextbookPage {
     this.loadWords(wordsList, this.difficultyLevel, page);
   }
 
+  private createLoginBtn() {
+    const loginBtn = new Button({
+      label: 'Log in',
+      onClick: () => {
+        location.hash = '#login';
+      },
+    }).render();
+    loginBtn.classList.add('main__login');
+
+    return loginBtn;
+  }
+
   render() {
     const component = document.createElement('div');
     component.className = 'textbook';
@@ -322,6 +335,10 @@ export default class TextbookPage {
       this.createGamesList(),
       footer,
     );
+
+    if (!localStorage.getItem('userID')) {
+      component.append(this.createLoginBtn());
+    }
 
     return component;
   }
