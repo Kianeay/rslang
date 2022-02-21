@@ -11,6 +11,7 @@ import {
   DifficultyLevel,
   Pagination,
   GamesPreview,
+  Footer,
 } from '../../components';
 
 import { IWord } from '../../types';
@@ -311,12 +312,15 @@ export default class TextbookPage {
     const component = document.createElement('div');
     component.className = 'textbook';
 
+    const footer = new Footer().render();
+
     component.append(
       this.createTitle(),
       this.createDifficultyLevels(),
       this.createDictionary(),
       this.createPagination(),
       this.createGamesList(),
+      footer,
     );
 
     return component;
