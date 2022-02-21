@@ -143,7 +143,9 @@ const getTokens = async (id: string) => {
     },
   });
   if (!response.ok) {
-    console.log('Вывести сообщение с просьбой войти или зарегистрироваться');
+    localStorage.removeItem('userID');
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
   } else {
     const content: UserTokens = await response.json();
     setLocalTokens(content.token, content.refreshToken);
@@ -159,7 +161,7 @@ const errorHandler = async (
   switch (promise.status) {
     case 404:
       if (callback404) callback404();
-      console.error(`${data} not found`);
+      // console.error(`${data} not found`);
       break;
     case 401:
       console.log('change token');
@@ -167,17 +169,17 @@ const errorHandler = async (
       break;
     case 417:
       if (callback) callback();
-      console.error(`${data} has been create`);
+      // console.error(`${data} has been create`);
       break;
     case 422:
-      console.error('Incorrect e-mail or password');
+      // console.error('Incorrect e-mail or password');
       break;
     case 400:
-      console.error('Bad request');
+      // console.error('Bad request');
       break;
     case 403:
       if (callback) callback();
-      console.error('incorect email or password');
+      // console.error('incorect email or password');
       break;
     default:
       console.error('uncaught error');
