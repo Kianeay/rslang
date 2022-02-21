@@ -25,7 +25,7 @@ export default class GameAudioCall {
 
   protected isAnswer: boolean;
 
-  private userId: string = localStorage.getItem('userID') || null;
+  protected userId: string = localStorage.getItem('userID') || null;
 
   protected currentSeries: number;
 
@@ -36,6 +36,8 @@ export default class GameAudioCall {
   protected correctArr = () => this.arrayGame.filter((item) => item.correctAnswer > 0);
 
   protected wrongArr = () => this.arrayGame.filter((item) => item.correctAnswer === 0);
+
+  // protected learnedWords = () => this.arrayGame.filter((item) => item.correctAnswer >= 3).length;
 
   protected header: SprintHeader;
 
@@ -53,6 +55,7 @@ export default class GameAudioCall {
     this.greatestSeries = 0;
     this.score = 0;
     this.scoreUpdate = 10;
+    this.learnedWord = 0;
   }
 
   protected async getWords(level: string) {
@@ -61,12 +64,6 @@ export default class GameAudioCall {
     const promisesArr = arr.map((item) => getWords(level, item.toString()));
     const promises = await Promise.all(promisesArr);
     promises.forEach((item) => this.data.push(...item));
-  }
-
-  private getDate() {
-    const data = new Date();
-
-    return `${data.getDate()}.${data.getMonth()}.${data.getFullYear()}`;
   }
 
   protected async getArrayGame() {
@@ -106,6 +103,7 @@ export default class GameAudioCall {
 
   protected async showAnswer() {
     if (this.currentIndexWord >= 0) {
+      this.scoreUpdate = 10;
       const correctWord = this.arrayGame[this.currentIndexWord].wordTranslate;
       const answers = document.querySelectorAll(
         '.challenge__answer',
@@ -117,32 +115,38 @@ export default class GameAudioCall {
         }
       });
       correct.classList.add('challenge__correct-answer');
-      await this.createWordStat(false);
+      if (this.userId) {
+        await this.createWordStat(false);
+      }
     }
   }
 
   protected async checkAnswer(element: HTMLDivElement) {
     this.isAnswer = true;
-    const word = element.textContent.split('.')[1].trim();
-    const correctWord = this.arrayGame[this.currentIndexWord].wordTranslate;
-    if (correctWord === word) {
-      this.currentSeries += 1;
-      if (this.currentSeries > this.greatestSeries) {
-        this.greatestSeries = this.currentSeries;
+    if (element !== null) {
+      const word = element.textContent.split('.')[1].trim();
+      const correctWord = this.arrayGame[this.currentIndexWord].wordTranslate;
+      if (correctWord === word) {
+        this.currentSeries += 1;
+        if (this.currentSeries > this.greatestSeries) {
+          this.greatestSeries = this.currentSeries;
+        }
+        this.changeButton();
+        this.updateScore();
+        this.arrayGame[this.currentIndexWord].correctAnswer += 1;
+        element.classList.add('challenge__correct-answer');
+        if (this.userId) {
+          await this.createWordStat(true);
+        }
+      } else {
+        this.currentSeries = 0;
+        element.classList.add('challenge__incorrect-answer');
+        this.arrayGame[this.currentIndexWord].correctAnswer = 0;
+        this.scoreUpdate = 10;
+        this.updateScorePlus();
+        this.changeButton();
+        await this.showAnswer();
       }
-      this.changeButton();
-      this.updateScore();
-      this.arrayGame[this.currentIndexWord].correctAnswer += 1;
-      element.classList.add('challenge__correct-answer');
-      await this.createWordStat(true);
-    } else {
-      this.currentSeries = 0;
-      element.classList.add('challenge__incorrect-answer');
-      this.arrayGame[this.currentIndexWord].correctAnswer = 0;
-      this.scoreUpdate = 10;
-      this.updateScorePlus();
-      this.changeButton();
-      await this.showAnswer();
     }
   }
 
@@ -189,6 +193,7 @@ export default class GameAudioCall {
       this.userId,
       this.arrayGame[this.currentIndexWord].id,
     );
+    console.log(word);
     // если на слово праавильно ответили
     if (correct) {
       if (!word) {
@@ -226,7 +231,9 @@ export default class GameAudioCall {
             difficulty: 'weak',
             optional: {
               status: 'learned',
-
+              sprint: {
+                correctAnswers: word.optional.sprint.correctAnswers,
+              },
               audio: {
                 correctAnswers: (word.optional.audio.correctAnswers += 1),
               },
@@ -241,6 +248,9 @@ export default class GameAudioCall {
             difficulty: 'weak',
             optional: {
               new: true,
+              sprint: {
+                correctAnswers: word.optional.sprint.correctAnswers,
+              },
               audio: {
                 correctAnswers: word.optional.audio
                   ? (word.optional.audio.correctAnswers += 1)
@@ -275,11 +285,6 @@ export default class GameAudioCall {
 
   // статистика общая
   protected async addStatistics() {
-    const word = await getUserWordsId(
-      this.userId,
-      this.arrayGame[this.currentIndexWord].id,
-    );
-
     const statistics = await getUserStatistics(this.userId);
 
     if (statistics) {
@@ -303,7 +308,8 @@ export default class GameAudioCall {
               statistics.optional.audio.count +
               this.correctArr().length +
               this.wrongArr().length,
-            row: statistics.optional.audio.row + this.greatestSeries,
+            row: (this.greatestSeries > statistics.optional.audio.row) ?
+              this.greatestSeries : statistics.optional.audio.row,
           },
         },
       });

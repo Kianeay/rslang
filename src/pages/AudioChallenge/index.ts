@@ -104,11 +104,13 @@ export default class AudioChallenge extends GameAudioCall {
       this.correctArr(),
       this.wrongArr(),
       this.greatestSeries,
+      this.learnedWord,
     ).render();
 
     container.append(result);
-
-    super.addStatistics();
+    if (this.userId) {
+      super.addStatistics();
+    }
   }
 
   private createAnswerDiv(text: string, answerClass: string) {
@@ -225,6 +227,7 @@ export default class AudioChallenge extends GameAudioCall {
   }
 
   private startGame() {
+    this.learnedWord = 0;
     this.renderGame();
     this.roundGame();
     document.addEventListener('keydown', this.spaceListener);

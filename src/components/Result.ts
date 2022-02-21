@@ -7,6 +7,7 @@ export default class Result {
     private correctArray: IWord[],
     private incorrectArray: IWord[],
     private inRowCount: number,
+    private learnedWord: number,
   ) {
     this.listenerFunction = listenerFunction;
   }
@@ -45,7 +46,7 @@ export default class Result {
     accuracy.className = 'result__accuracy';
     const inRow = document.createElement('div');
     inRow.className = 'result__in-row';
-    learned.textContent = '1'.padStart(2, '0'); // TO DO
+    learned.textContent = `${this.learnedWord}`.padStart(2, '0'); // TO DO
     if (learned.textContent === '00') learned.textContent = ' 0';
     const sum = (this.correctArray.length + this.incorrectArray.length);
     let percent = `${Math.round((this.correctArray.length / sum) * 100)}`.padStart(2, '0');
