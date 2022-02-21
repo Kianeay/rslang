@@ -68,9 +68,12 @@ export default class TextbookPage {
       word.className = 'words__item';
       word.setAttribute('data-id', item.id);
 
-      const options = userWords.find((userItem) => userItem.wordId === item.id);
-      if (options) {
-        this.setWordStatus(word, options.optional);
+      let options: userWord;
+      if (userWords !== undefined) {
+        options = userWords.find((userItem) => userItem.wordId === item.id);
+        if (options) {
+          this.setWordStatus(word, options.optional);
+        }
       }
 
       const wordMeaning = document.createElement('h4');
