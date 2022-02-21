@@ -11,6 +11,8 @@ import {
   DifficultyLevel,
   Pagination,
   GamesPreview,
+  Footer,
+  Button,
 } from '../../components';
 
 import { IWord } from '../../types';
@@ -28,7 +30,7 @@ export default class TextbookPage {
 
   private pagination: Pagination;
 
-  constructor() {}
+  constructor() { }
 
   private async loadCurrentWord(id: string, options: WordStat = {}) {
     const word: HTMLDivElement = document.querySelector('.word');
@@ -45,6 +47,11 @@ export default class TextbookPage {
     difficultyLevel: string,
     page: string,
   ) {
+    const word = document.querySelector('.word');
+    if (word) {
+      word.classList.remove('word-invisible');
+    }
+
     const words = await getWords(difficultyLevel, page);
 
     localStorage.setItem('textbook-difficulty', difficultyLevel);
@@ -125,6 +132,11 @@ export default class TextbookPage {
         }
       });
 
+      if (hardWords.length === 0) {
+        const word = document.querySelector('.word');
+        word.classList.add('word-invisible');
+      }
+
       hardWords.forEach((item) => {
         this.createHardWord(wordsList, item);
       });
@@ -138,7 +150,7 @@ export default class TextbookPage {
     word.className = 'words__item';
     word.classList.add('words__item-hard');
     word.setAttribute('data-id', hardWord.id);
-    word.setAttribute('data-status', 'hard');
+    word.setAttribute('data-status', 'difficult');
 
     const wordMeaning = document.createElement('h4');
     wordMeaning.textContent = hardWord.word;
@@ -158,7 +170,7 @@ export default class TextbookPage {
     });
 
     if (wordslist.children.length === 0) {
-      this.loadCurrentWord(hardWord.id);
+      this.loadCurrentWord(hardWord.id, { status: 'difficult' });
     }
 
     wordslist.append(word);
@@ -297,9 +309,23 @@ export default class TextbookPage {
     this.loadWords(wordsList, this.difficultyLevel, page);
   }
 
+  private createLoginBtn() {
+    const loginBtn = new Button({
+      label: 'Log in',
+      onClick: () => {
+        location.hash = '#login';
+      },
+    }).render();
+    loginBtn.classList.add('main__login');
+
+    return loginBtn;
+  }
+
   render() {
     const component = document.createElement('div');
     component.className = 'textbook';
+
+    const footer = new Footer().render();
 
     component.append(
       this.createTitle(),
@@ -307,7 +333,12 @@ export default class TextbookPage {
       this.createDictionary(),
       this.createPagination(),
       this.createGamesList(),
+      footer,
     );
+
+    if (!localStorage.getItem('userID')) {
+      component.append(this.createLoginBtn());
+    }
 
     return component;
   }
