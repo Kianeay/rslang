@@ -1,13 +1,24 @@
-import { getWords, getWord, getUserWords, getUserWordsId, UsersWordParameter, WordStat } from '../../api';
-import { Word } from '../../components';
-import DifficultyLevel from '../../components/DifficultyLevel';
-import Pagination from '../../components/Pagination';
+import {
+  getWords,
+  getWord,
+  getUserWords,
+  getUserWordsId,
+  UsersWordParameter,
+  WordStat,
+} from '../../api';
+import {
+  Word,
+  DifficultyLevel,
+  Pagination,
+  GamesPreview,
+} from '../../components';
+
 import { IWord } from '../../types';
 
 interface userWord {
-  userId: string,
-  wordId: string,
-  optional: WordStat,
+  userId: string;
+  wordId: string;
+  optional: WordStat;
 }
 
 export default class TextbookPage {
@@ -17,7 +28,7 @@ export default class TextbookPage {
 
   private pagination: Pagination;
 
-  constructor() { }
+  constructor() {}
 
   private async loadCurrentWord(id: string, options: WordStat = {}) {
     const word: HTMLDivElement = document.querySelector('.word');
@@ -29,7 +40,11 @@ export default class TextbookPage {
     this.currentWord.loadCurrentWord(id, options);
   }
 
-  private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string, page: string) {
+  private async loadWords(
+    wordsList: HTMLDivElement,
+    difficultyLevel: string,
+    page: string,
+  ) {
     const words = await getWords(difficultyLevel, page);
 
     localStorage.setItem('textbook-difficulty', difficultyLevel);
@@ -234,9 +249,44 @@ export default class TextbookPage {
     const h2 = document.createElement('h2');
     h2.textContent = 'Games';
 
-    gamesList.append(h2);
+    const games = document.createElement('div');
+    games.className = 'games';
+
+    games.append(this.createAudioBlock(), this.createSprintBlock());
+
+    gamesList.append(h2, games);
 
     return gamesList;
+  }
+
+  private createAudioBlock() {
+    const audioText =
+      'Check your listening skills, trying to pick the right meaning after hearing a word. Be careful, as you just have one guess.';
+    const audioBlock = new GamesPreview({
+      title: 'Audio challenge',
+      text: audioText,
+      imgName: 'listen.svg',
+      onClick: () => {
+        location.hash = '#audioChallenge';
+      },
+    }).render();
+
+    return audioBlock;
+  }
+
+  private createSprintBlock() {
+    const sprintText =
+      'Check how much points you can get in one minute, making educated guesses about what is right and what is wrong.';
+    const sprintBlock = new GamesPreview({
+      title: 'Sprint',
+      text: sprintText,
+      imgName: 'sprint.svg',
+      onClick: () => {
+        location.hash = '#sprint';
+      },
+    }).render();
+
+    return sprintBlock;
   }
 
   private changePage(page: string) {
