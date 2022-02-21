@@ -243,12 +243,24 @@ export default class AudioChallenge extends GameAudioCall {
     this.startGame();
   }
 
+  private async getTextWords(page: string, group: string) {
+    await super.getWordsPage(page, group);
+    await super.getArrayGamePage();
+    this.startGame();
+  }
+
   render() {
     const container = document.createElement('div');
     container.className = 'challenge';
     const words = new DifficultyLevel(this.getWord.bind(this)).render();
 
-    container.append(words);
+    if (localStorage.getItem('page') === 'textbook') {
+      const page = localStorage.getItem('textbook-page');
+      const group = localStorage.getItem('textbook-difficulty');
+      this.getTextWords(page, group);
+    } else {
+      container.append(words);
+    }
 
     if (!localStorage.getItem('userID')) {
       container.append(this.createLoginBtn());
