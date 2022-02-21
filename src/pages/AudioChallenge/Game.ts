@@ -205,7 +205,6 @@ export default class GameAudioCall {
       this.userId,
       this.arrayGame[this.currentIndexWord].id,
     );
-    console.log(word);
     // если на слово праавильно ответили
     if (correct) {
       if (!word) {
