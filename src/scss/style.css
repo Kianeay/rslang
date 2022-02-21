@@ -942,6 +942,40 @@ ul {
   padding-bottom: 60px;
 }
 
+@media (max-width: 900px) {
+  .minigame {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  .minigame__wrap {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .minigame__info {
+    text-align: center;
+    padding-bottom: 20px;
+  }
+  .minigame__icon-wrap {
+    margin-right: 0;
+  }
+  .minigame__img {
+    width: 100%;
+  }
+  .main__login {
+    visibility: hidden;
+  }
+  .games-wrap__title {
+    font-size: 30px;
+  }
+}
+
 .footer {
   display: -webkit-box;
   display: -ms-flexbox;
