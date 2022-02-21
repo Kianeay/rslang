@@ -16,8 +16,14 @@ export default class Word {
           item.classList.remove('words__item-learned');
           item.setAttribute('data-status', 'difficult');
         }
+        if (status === 'learned') {
+          item.classList.remove('words__item-hard');
+          item.classList.add('words__item-learned');
+          item.setAttribute('data-status', 'learned');
+        }
         if (status === 'simple') {
           item.classList.remove('words__item-hard');
+          item.classList.remove('words__item-learned');
           item.removeAttribute('data-status');
         }
       }
@@ -67,16 +73,34 @@ export default class Word {
 
     const user = localStorage.getItem('userID');
 
-    const response = await changeUserWord(user, word, { optional: { status: 'learned' } });
-    if (!response) {
-      const options = {
-        status: 'learned',
-        newWord: 'false',
-        sprint: { correctAnswers: 0 },
-        audio: { correctAnswers: 0 },
-      };
+    if ((currentTarget as HTMLElement).classList.contains('word__notlearned')) {
+      await changeUserWord(user, word, { optional: { status: 'simple' } });
 
-      await createUserWords(user, word, { optional: options });
+      (currentTarget as HTMLElement).textContent = 'I know it!';
+      (currentTarget as HTMLElement).classList.remove('word__notlearned');
+
+      this.changeWordInList(word, 'simple');
+    } else {
+      const response = await changeUserWord(user, word, { optional: { status: 'learned' } });
+      if (!response) {
+        const options = {
+          status: 'learned',
+          newWord: 'false',
+          sprint: { correctAnswers: 0 },
+          audio: { correctAnswers: 0 },
+        };
+
+        await createUserWords(user, word, { optional: options });
+      }
+
+      (currentTarget as HTMLElement).textContent = 'Need to repeat';
+      (currentTarget as HTMLElement).classList.add('word__notlearned');
+
+      const difficultButton = document.querySelector('.word__difficult');
+      difficultButton.textContent = 'It\'s difficult';
+      difficultButton.classList.remove('word__simple');
+
+      this.changeWordInList(word, 'learned');
     }
   }
 
