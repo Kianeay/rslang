@@ -204,6 +204,10 @@
     background-color: $pink;
     color: $light-gray;
   }
+
+  &-invisible {
+    display: none;
+  }
 }
 
 .pagination {

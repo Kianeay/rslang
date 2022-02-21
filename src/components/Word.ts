@@ -8,26 +8,41 @@ export default class Word {
   constructor() { }
 
   private changeWordInList(id: string, status: string) {
+    const level = document.querySelector('.difficulty__item-active');
     const wordsInList = document.querySelectorAll('.words__item');
-    Array.from(wordsInList).forEach((item) => {
-      if (id === (item as HTMLElement).dataset.id) {
-        if (status === 'difficult') {
-          item.classList.add('words__item-hard');
-          item.classList.remove('words__item-learned');
-          item.setAttribute('data-status', 'difficult');
+
+    if ((level as HTMLElement).dataset.num === 'hard') {
+      Array.from(wordsInList).forEach((item) => {
+        if (id === (item as HTMLElement).dataset.id) {
+          const parent = item.parentNode;
+          parent.removeChild(item);
+          if (parent.children.length === 0) {
+            const word = document.querySelector('.word');
+            word.classList.add('word-invisible');
+          }
         }
-        if (status === 'learned') {
-          item.classList.remove('words__item-hard');
-          item.classList.add('words__item-learned');
-          item.setAttribute('data-status', 'learned');
+      });
+    } else {
+      Array.from(wordsInList).forEach((item) => {
+        if (id === (item as HTMLElement).dataset.id) {
+          if (status === 'difficult') {
+            item.classList.add('words__item-hard');
+            item.classList.remove('words__item-learned');
+            item.setAttribute('data-status', 'difficult');
+          }
+          if (status === 'learned') {
+            item.classList.remove('words__item-hard');
+            item.classList.add('words__item-learned');
+            item.setAttribute('data-status', 'learned');
+          }
+          if (status === 'simple') {
+            item.classList.remove('words__item-hard');
+            item.classList.remove('words__item-learned');
+            item.removeAttribute('data-status');
+          }
         }
-        if (status === 'simple') {
-          item.classList.remove('words__item-hard');
-          item.classList.remove('words__item-learned');
-          item.removeAttribute('data-status');
-        }
-      }
-    });
+      });
+    }
   }
 
   private async workWithDifficultWords(event: Event) {

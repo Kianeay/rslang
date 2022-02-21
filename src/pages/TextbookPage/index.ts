@@ -28,7 +28,7 @@ export default class TextbookPage {
 
   private pagination: Pagination;
 
-  constructor() {}
+  constructor() { }
 
   private async loadCurrentWord(id: string, options: WordStat = {}) {
     const word: HTMLDivElement = document.querySelector('.word');
@@ -45,6 +45,11 @@ export default class TextbookPage {
     difficultyLevel: string,
     page: string,
   ) {
+    const word = document.querySelector('.word');
+    if (word) {
+      word.classList.remove('word-invisible');
+    }
+
     const words = await getWords(difficultyLevel, page);
 
     localStorage.setItem('textbook-difficulty', difficultyLevel);
@@ -125,6 +130,11 @@ export default class TextbookPage {
         }
       });
 
+      if (hardWords.length === 0) {
+        const word = document.querySelector('.word');
+        word.classList.add('word-invisible');
+      }
+
       hardWords.forEach((item) => {
         this.createHardWord(wordsList, item);
       });
@@ -138,7 +148,7 @@ export default class TextbookPage {
     word.className = 'words__item';
     word.classList.add('words__item-hard');
     word.setAttribute('data-id', hardWord.id);
-    word.setAttribute('data-status', 'hard');
+    word.setAttribute('data-status', 'difficult');
 
     const wordMeaning = document.createElement('h4');
     wordMeaning.textContent = hardWord.word;
@@ -158,7 +168,7 @@ export default class TextbookPage {
     });
 
     if (wordslist.children.length === 0) {
-      this.loadCurrentWord(hardWord.id);
+      this.loadCurrentWord(hardWord.id, { status: 'difficult' });
     }
 
     wordslist.append(word);
