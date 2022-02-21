@@ -977,6 +977,7 @@ ul {
           justify-content: center;
   height: 100vh;
   position: relative;
+  background-color: white;
 }
 
 .sprint::before {
