@@ -1,4 +1,4 @@
-import { getWord, createUserWords, changeUserWord, EndPoints } from '../api';
+import { getWord, createUserWords, changeUserWord, WordStat, EndPoints } from '../api';
 import { IWord } from '../types';
 import { Button } from '../components';
 
@@ -24,9 +24,32 @@ export default class Word {
     if (!response) {
       await createUserWords(user, word, { optional: options });
     }
+
+    (currentTarget as HTMLElement).textContent = 'It\'s simple';
+    (currentTarget as HTMLElement).classList.add('word__simple');
+    (currentTarget as HTMLElement).classList.remove('word__difficult');
   }
 
-  async loadCurrentWord(id: string) {
+  private async workWithLearnedWords(event: Event) {
+    const { currentTarget } = event;
+    const { word } = (currentTarget as HTMLElement).dataset;
+
+    const user = localStorage.getItem('userID');
+
+    const response = await changeUserWord(user, word, { optional: { status: 'learned' } });
+    if (!response) {
+      const options = {
+        status: 'learned',
+        newWord: 'false',
+        sprint: { correctAnswers: 0 },
+        audio: { correctAnswers: 0 },
+      };
+
+      await createUserWords(user, word, { optional: options });
+    }
+  }
+
+  async loadCurrentWord(id: string, options: WordStat = {}) {
     this.word = await getWord(id);
 
     const image: HTMLImageElement = document.querySelector('.word__image');
@@ -64,8 +87,30 @@ export default class Word {
     );
     exampleTranslate.textContent = this.word.textExampleTranslate;
 
-    const difficultButton: HTMLElement = document.querySelector('.word__difficult');
-    difficultButton.setAttribute('data-word', this.word.id);
+    const user = localStorage.getItem('userID');
+    if (user) {
+      const difficultButton: HTMLElement = document.querySelector('.word__difficult');
+      difficultButton.setAttribute('data-word', this.word.id);
+      if (options.status === 'difficult') {
+        difficultButton.textContent = 'It\'s simple';
+        difficultButton.classList.add('word__simple');
+      }
+      else {
+        difficultButton.textContent = 'It\'s difficult';
+        difficultButton.classList.remove('word__simple');
+      }
+
+      const learnedButton: HTMLElement = document.querySelector('.word__learned');
+      learnedButton.setAttribute('data-word', this.word.id);
+      if (options.status === 'learned') {
+        learnedButton.textContent = 'Need to repeat';
+        learnedButton.classList.add('word__notlearned');
+      }
+      else {
+        learnedButton.textContent = 'I know it';
+        learnedButton.classList.remove('word__notlearned');
+      }
+    }
   }
 
   render() {
@@ -110,6 +155,8 @@ export default class Word {
 
     const user = localStorage.getItem('userID');
     if (user) {
+      const buttonsWrapper = document.createElement('div');
+      buttonsWrapper.className = 'word__buttons';
       const hardWordButton = new Button({
         label: 'It\'s difficult',
         onClick: (event: Event) => {
@@ -117,7 +164,18 @@ export default class Word {
         },
       }).render();
       hardWordButton.classList.add('word__difficult');
-      component.append(hardWordButton);
+      buttonsWrapper.append(hardWordButton);
+
+      const learnedWordButton = new Button({
+        label: 'I know it!',
+        onClick: (event: Event) => {
+          this.workWithLearnedWords(event);
+        },
+      }).render();
+      learnedWordButton.classList.add('word__learned');
+      buttonsWrapper.append(learnedWordButton);
+
+      component.append(buttonsWrapper);
     }
 
     return component;
