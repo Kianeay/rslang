@@ -613,6 +613,20 @@ export default class SprintGame {
       this.component.append(this.createLoginBtn());
     }
 
+    window.addEventListener('keydown', ({ code }: KeyboardEvent) => {
+      if (localStorage.getItem('page') === 'sprint') {
+        if (code === 'ArrowUp') {
+          if (this.correctBtn) {
+            this.onCorrectClick();
+          }
+        } else if (code === 'ArrowDown') {
+          if (this.wrongBtn) {
+            this.onWrongClick();
+          }
+        }
+      }
+    });
+
     return this.component;
   }
 }

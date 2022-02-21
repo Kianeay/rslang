@@ -102,14 +102,14 @@ export default class Navigation {
       console.log('logout');
     };
     const btn = new Button({ label: 'Log out', onClick: logOut }).render();
-    btn.className = 'nav__logout button none';
+    btn.className = 'nav__logout button none hidden';
 
     return btn;
   }
 
   private createLogoutIcon() {
     const iconWrap = document.createElement('div');
-    iconWrap.className = 'nav__logout-wrap';
+    iconWrap.className = 'nav__logout-wrap hidden';
     const svg = document.createElement('img');
     svg.className = 'nav__logout-img';
     svg.src = 'src/assets/images/logout.svg';

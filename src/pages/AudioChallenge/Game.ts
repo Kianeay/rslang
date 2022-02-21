@@ -102,6 +102,16 @@ export default class GameAudioCall {
     return arr;
   }
 
+  private playSound(type: boolean) {
+    const audio = new Audio();
+    if (type) {
+      audio.src = 'src/assets/sounds/yes.mp3';
+    } else {
+      audio.src = 'src/assets/sounds/no.mp3';
+    }
+    audio.play();
+  }
+
   protected changeButton() {
     const button = document.querySelector('.challenge__button');
     if (button !== null && this.isAnswer) {
@@ -115,6 +125,7 @@ export default class GameAudioCall {
 
   protected async showAnswer() {
     if (this.currentIndexWord >= 0) {
+      this.playSound(false);
       this.scoreUpdate = 10;
       const correctWord = this.arrayGame[this.currentIndexWord].wordTranslate;
       const answers = document.querySelectorAll(
@@ -143,6 +154,7 @@ export default class GameAudioCall {
         if (this.currentSeries > this.greatestSeries) {
           this.greatestSeries = this.currentSeries;
         }
+        this.playSound(true);
         this.changeButton();
         this.updateScore();
         this.arrayGame[this.currentIndexWord].correctAnswer += 1;
@@ -205,7 +217,6 @@ export default class GameAudioCall {
       this.userId,
       this.arrayGame[this.currentIndexWord].id,
     );
-    console.log(word);
     // если на слово праавильно ответили
     if (correct) {
       if (!word) {

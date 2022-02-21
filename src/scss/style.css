@@ -398,6 +398,42 @@ ul {
   padding: 30px;
 }
 
+@media (max-width: 1044px) {
+  .main__img {
+    position: static;
+    margin: 20px auto;
+  }
+  .main__wrap {
+    min-height: auto;
+    width: 90%;
+    background-size: 90%;
+  }
+  .main__subtitle {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 800px) {
+  .main {
+    overflow-x: hidden;
+  }
+  .main__team {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .main__team .main__about-subtitle {
+    padding: 0;
+  }
+}
+
 .textbook {
   padding-left: 50px;
   padding-right: 50px;
@@ -846,6 +882,56 @@ ul {
 @media (max-width: 1440px) {
   .form__title {
     font-size: 2.8125rem;
+    margin-bottom: 60px;
+  }
+  .form__input-container {
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .form {
+    width: 370px;
+  }
+  .form__title {
+    margin-bottom: 50px;
+  }
+  .form__email, .form__password, .form__user-name {
+    width: 369px;
+    height: 57px;
+    font-size: 1.5rem;
+  }
+  .form__user-name:focus ~ .form__label-name label,
+  .form__user-name:valid ~ .form__label-name label,
+  .form__email:focus ~ .form__label-email label,
+  .form__email:valid ~ .form__label-email label,
+  .form__password:focus ~ .form__label-password label,
+  .form__password:valid ~ .form__label-password label {
+    font-size: 1.125rem;
+    -webkit-transform: translateY(-35px);
+            transform: translateY(-35px);
+  }
+  .form__label-box label {
+    top: -48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    padding-top: 10%;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  __img {
+    -ms-flex-item-align: center;
+        -ms-grid-row-align: center;
+        align-self: center;
+    width: 50vh;
   }
 }
 
@@ -942,6 +1028,46 @@ ul {
   padding-bottom: 60px;
 }
 
+@media (max-width: 900px) {
+  .minigame {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  .minigame__wrap {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .minigame__info {
+    text-align: center;
+    padding-bottom: 20px;
+  }
+  .minigame__icon-wrap {
+    margin-right: 0;
+  }
+  .minigame__img {
+    width: 100%;
+  }
+  .main__login {
+    visibility: hidden;
+  }
+  .games-wrap__title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 714px) {
+  .games-wrap::before {
+    width: 0px;
+  }
+}
+
 .footer {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -966,6 +1092,18 @@ ul {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+@media (max-width: 714px) {
+  .footer {
+    padding-right: 0;
+  }
+  .footer__links {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
 }
 
 .sprint {
