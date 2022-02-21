@@ -1,4 +1,4 @@
-import { getWord, createUserWords, changeUserWord, EndPoints } from '../api';
+import { getWord, createUserWords, changeUserWord, WordStat, EndPoints } from '../api';
 import { IWord } from '../types';
 import { Button } from '../components';
 
@@ -49,7 +49,7 @@ export default class Word {
     }
   }
 
-  async loadCurrentWord(id: string) {
+  async loadCurrentWord(id: string, options: WordStat = {}) {
     this.word = await getWord(id);
 
     const image: HTMLImageElement = document.querySelector('.word__image');
@@ -91,9 +91,25 @@ export default class Word {
     if (user) {
       const difficultButton: HTMLElement = document.querySelector('.word__difficult');
       difficultButton.setAttribute('data-word', this.word.id);
+      if (options.status === 'difficult') {
+        difficultButton.textContent = 'It\'s simple';
+        difficultButton.classList.add('word__simple');
+      }
+      else {
+        difficultButton.textContent = 'It\'s difficult';
+        difficultButton.classList.remove('word__simple');
+      }
 
       const learnedButton: HTMLElement = document.querySelector('.word__learned');
       learnedButton.setAttribute('data-word', this.word.id);
+      if (options.status === 'learned') {
+        learnedButton.textContent = 'Need to repeat';
+        learnedButton.classList.add('word__notlearned');
+      }
+      else {
+        learnedButton.textContent = 'I know it';
+        learnedButton.classList.remove('word__notlearned');
+      }
     }
   }
 

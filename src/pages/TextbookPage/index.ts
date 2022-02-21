@@ -19,13 +19,14 @@ export default class TextbookPage {
 
   constructor() { }
 
-  private async loadCurrentWord(id: string) {
+  private async loadCurrentWord(id: string, options: WordStat = {}) {
     const word: HTMLDivElement = document.querySelector('.word');
+
     if (!this.currentWord) {
       this.currentWord = new Word();
       word.append(this.currentWord.render());
     }
-    this.currentWord.loadCurrentWord(id);
+    this.currentWord.loadCurrentWord(id, options);
   }
 
   private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string, page: string) {
@@ -66,13 +67,17 @@ export default class TextbookPage {
 
       word.addEventListener('click', (event: Event) => {
         const { currentTarget } = event;
-        const { id } = (currentTarget as HTMLElement).dataset;
-
-        this.loadCurrentWord(id);
+        const { id, status } = (currentTarget as HTMLElement).dataset;
+        this.loadCurrentWord(id, { status });
       });
 
       if (index === 0) {
-        this.loadCurrentWord(words[index].id);
+        if (options) {
+          const { status } = options.optional;
+          this.loadCurrentWord(words[index].id, { status });
+        } else {
+          this.loadCurrentWord(words[index].id);
+        }
       }
 
       wordsList.append(word);
@@ -126,9 +131,9 @@ export default class TextbookPage {
 
     word.addEventListener('click', (event: Event) => {
       const { currentTarget } = event;
-      const { id } = (currentTarget as HTMLElement).dataset;
+      const { id, status } = (currentTarget as HTMLElement).dataset;
 
-      this.loadCurrentWord(id);
+      this.loadCurrentWord(id, { status });
     });
 
     if (wordslist.children.length === 0) {

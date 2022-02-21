@@ -189,6 +189,11 @@
     background-color: $light-green;
     color: $black;
   }
+
+  .word__notlearned {
+    background-color: $pink;
+    color: $light-gray;
+  }
 }
 
 .pagination {
