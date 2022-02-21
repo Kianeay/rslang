@@ -1,0 +1,113 @@
+.challenge {
+  padding-top: 12%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  &::before {
+    background-image: url('../assets/images/back-title-gray.svg');
+    position: absolute;
+    content: 'Audio - call';
+    font-size: 2.8125rem;
+    padding-top: 12px;
+    padding-left: 50px;
+    font-weight: bold;
+    color: #785cad;
+    text-transform: uppercase;
+    text-align: left;
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 500px;
+    height: 200px;
+    top: 0%;
+    left: 0;
+  }
+  .difficulty {
+    padding-top: 17%;
+  }
+  .difficulty__title {
+    text-align: left;
+  }
+  .sprint__header {
+    width: 1200px;
+  }
+  &__answers {
+    display: flex;
+    column-gap: 20px;
+    margin-bottom: 70px;
+  }
+  &__answer{
+    border: 1px solid $violet;
+    border-radius: 7px;
+    padding: 7px 30px;
+    cursor: pointer;
+    text-align: center;
+    line-height: 1.1;
+    font-size: $font-s-big;
+    color: $violet;
+  }
+  &__correct-answer {
+    border: solid 2px green;
+  }
+  &__incorrect-answer {
+    border: solid 2px red;
+  }
+  &__play-audio {
+    margin-top: 75px;
+    margin-bottom: 75px;
+    background-image: url("../assets/images/challenge-play.svg");
+    width: 142px;
+    height: 114px;
+    background-size: contain;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    border: none;
+    background-color: transparent;
+  }
+}
+
+@media (max-width: 1440px) {
+  .challenge {
+    .sprint__header {
+      width: 1000px;
+    }
+    &__answers {
+      margin-bottom: 50px;
+    }
+    &__play-audio {
+      margin-top: 60px;
+      margin-bottom: 60px;
+    }
+    &__answer{
+      font-size: $font-big;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .challenge {
+    .sprint__header {
+      width: 800px;
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .challenge {
+    .sprint__header {
+      width: 500px;
+    }
+    &__answers {
+      flex-direction: column;
+      row-gap: 20px;
+      margin-bottom: 30px;
+    }
+    &__play-audio {
+      margin-top: 35px;
+      margin-bottom: 35px;
+    }
+    &__answer{
+      font-size: $font-big;
+    }
+  }
+}

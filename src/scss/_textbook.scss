@@ -1,0 +1,286 @@
+.textbook {
+  padding-left: 50px;
+  padding-right: 50px;
+  position: relative;
+  background-size: contain;
+
+  &::before {
+    background-image: url('../assets/images/back-title-gray.svg');
+    position: absolute;
+    content: '';
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 500px;
+    height: 200px;
+    top: 0%;
+    left: 0;
+  }
+
+  &__title {
+    padding-top: 15px;
+    margin-bottom: 50px;
+    position: relative;
+    z-index: 1000;
+  }
+}
+
+.difficulty {
+  padding-top: 20px;
+
+  &__title {
+    font-size: $font-big;
+    color: $gray;
+  }
+
+  &__list {
+    display: flex;
+    gap: 25px;
+    padding-top: 25px;
+  }
+
+  &__item {
+    width: 73px;
+    height: 73px;
+    line-height: 73px;
+    background-color: $light-violet;
+    border-radius: 50%;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    font-size: 48px;
+    color: $white;
+  }
+
+  &__item-hard {
+     background-color: $pink;
+  }
+
+  &__item-active {
+    background-color: $violet;
+  }
+}
+
+.words {
+  display: flex;
+  column-gap: 20px;
+  padding-top: 100px;
+  align-items: flex-start;
+
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;    
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 256px;
+    height: 100px;
+    background-color: $light-gray;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+
+  &__word {
+    font-weight: bold;
+    font-size: $font-med;
+    text-transform: uppercase;
+    color: $violet;
+  }
+
+  &__translate {
+    font-size: $font-sm;
+    color: $black;
+  }
+
+  &__item-hard {
+    background-color: $pink;
+
+    .words__word {
+      color: $light-gray;
+    }
+  }
+
+  &__item-learned {
+    background-color: $light-green;
+
+    .words__word {
+      color: $black;
+    }
+  }
+}
+
+.word {
+  min-width: 35%;
+  background-color: $light-gray;
+  align-self: start;
+  padding-bottom: 20px;
+
+  &__image {
+    width: 100%;
+  }
+
+  &__title {
+    padding-left: 35px;
+    padding-top: 20px;
+    font-weight: bold;
+    font-size: $font-med;
+    line-height: $font-s-big;
+    text-transform: capitalize;
+  }
+
+  &__wrapper {
+    display: flex;
+    justify-content: flex-start;
+    column-gap: 15px;
+  }
+
+  &__transcription {
+    padding-left: 35px;
+    font-weight: bold;
+    font-size: $font-med;
+    line-height: $font-s-big;
+    letter-spacing: 2px;
+    color: $violet;
+  }
+
+  &__translate {
+    padding-left: 35px;
+    font-size: $font-med;
+    line-height: $font-s-big;
+  }
+
+  &__sound {
+    width: 30px;
+    height: 30px;
+    background-image: url(../assets/images/textbook-sound.svg);
+    background-repeat: no-repeat;
+    background-size: contain;    
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+  }
+
+  &__meaning {
+    padding-left: 35px;
+    font-weight: 500;
+    font-size: $font-sm;
+    line-height: $font-big;
+  }
+
+  &__meaning-translate {
+    padding-left: 35px;
+    font-weight: 300;
+    font-size: $font-sm;
+    line-height: $font-big;
+    color: $black;
+  }
+
+  &__example-paragraph {
+    padding-top: 20px;
+    padding-left: 35px;
+    font-weight: 500;
+    font-size: $font-sm;
+    line-height: $font-s-big;
+  }
+
+  &__example {
+    padding-left: 35px;
+    font-weight: 500;
+    font-size: $font-sm;
+    line-height: $font-s-big;
+  }
+
+  &__example-translate {
+    padding-left: 35px;
+    font-weight: 300;
+    font-size: $font-sm;
+    line-height: $font-s-big;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 20px;
+  }
+
+  .word__simple {
+    background-color: $light-green;
+    color: $black;
+  }
+
+  .word__learned {
+    background-color: $light-green;
+    color: $black;
+  }
+
+  .word__notlearned {
+    background-color: $pink;
+    color: $light-gray;
+  }
+
+  &-invisible {
+    display: none;
+  }
+}
+
+.pagination {
+  display: flex;
+  margin-top: 20px;
+  column-gap: 25px;
+
+  &__item {
+    display: none;
+    width: 35px;
+    height: 35px;       
+    line-height: 35px;
+    text-align: center;
+    background-color: $light-gray;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    color: $gray;
+  }
+
+  &__item-visible {
+    display: block;
+  }
+
+  &__item-visible:hover {
+    background-color: $active-gray;
+  }
+
+  &__item-active {
+    background-color: $active-gray;
+  }
+
+  &__control {
+    width: 35px;
+    height: 35px;       
+    line-height: 35px;
+    text-align: center;
+    background-color: $light-gray;  
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+    color: $gray;
+  }
+
+  &__control:hover {
+    background-color: $active-gray;
+    color: $white;
+  }
+
+  &__control-middle {
+    border-radius: 4px;
+  }
+
+  &-invisible {
+    display: none;
+  }
+}

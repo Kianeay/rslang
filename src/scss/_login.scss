@@ -1,0 +1,182 @@
+.form {
+  width: 470px;
+  font-style: normal;
+  font-weight: normal;
+  color: $violet;
+  font-size: $font-s-big;
+  line-height: 1.04;
+  &__login-btn, &__signup-btn {
+    transition: transform 0.2s;
+    &_scale-down {
+      transform: scale(0);
+    }
+  }
+
+  &__logout-btn {
+    transform: scale(0);
+    transition: transform 0.2s;
+    &_scale-up {
+      transform: scale(1) translateY(-100%);
+    }
+  }
+
+  &__login-btn {
+    margin-right: 28.8px;
+  }
+
+  &__signup-btn {
+    transform: translateX(-116%);
+  }
+
+  &__title {
+    margin: 0;
+    font-weight: bold;
+    font-size: $font-title-big;
+    line-height: 1.16;
+    position: relative;
+    margin-bottom: 90px;
+    &::after {
+      content: '';
+      margin-top: 19px;
+      display: block;
+      width: 100%;
+      height: 5px;
+      background-color: $violet;
+    }
+  }
+
+  &__input-container {
+    margin-bottom: 61px;
+    position: relative;
+  }
+
+  &__email, &__password, &__user-name {
+    width: 469px;
+    height: 67px;
+    font-style: normal;
+    font-weight: normal;
+    font-size: $font-s-big;
+    line-height: 1.04;
+    background-color: $light-purple;
+    border: none;
+    &_invalid {
+      border: solid 1px red;
+    }
+    &:focus-visible {
+     outline: none;
+    }
+  }
+
+  &__invalid-text {
+    color: red;
+    position: absolute;
+    font-size: $font-med;
+    right: 0;
+    bottom: -30px;
+    height: 10px;
+  }
+
+  &__buttons-container{
+    position: relative;
+  }
+
+  &__invalid__answer {
+    bottom: 0;
+    left: 0;
+    top: -35px;
+  }
+
+  &__label-box {
+    position: relative;
+    label {
+      position: absolute;
+      top: -54px;
+      color: $violet;
+      left: 6px;
+      pointer-events: none;
+      font-style: normal;
+      font-weight: normal;
+      font-size: $font-s-big;
+      line-height: 1.04;
+    }
+  }
+
+  &__link {
+    font-size: $font-big;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  &__img {
+    align-self: baseline;
+    width: 50vh;
+  }
+
+  &__user-name:focus ~ &__label-name label,
+  &__user-name:valid ~ &__label-name label,
+  &__email:focus ~ &__label-email label,
+  &__email:valid ~ &__label-email label,
+  &__password:focus ~ &__label-password label,
+  &__password:valid ~ &__label-password label {
+    font-size: $font-med;
+    transform: translateY(-50px);
+  }
+}
+
+.form-container {
+  padding-top: 13%;
+  display: flex;
+  justify-content: space-around;
+}
+
+@media (max-width: 1440px) {
+  .form {
+    &__title {
+      font-size: $font-title;
+      margin-bottom: 60px;
+    }
+    &__input-container {
+      margin-bottom: 40px;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .form {
+    width: 370px;
+    &__title {
+      margin-bottom: 50px;
+    }
+    &__email, &__password, &__user-name {
+      width: 369px;
+      height: 57px;
+      font-size: $font-big;
+    }
+    &__user-name:focus ~ &__label-name label,
+    &__user-name:valid ~ &__label-name label,
+    &__email:focus ~ &__label-email label,
+    &__email:valid ~ &__label-email label,
+    &__password:focus ~ &__label-password label,
+    &__password:valid ~ &__label-password label {
+      font-size: $font-med;
+      transform: translateY(-35px);
+    }
+    &__label-box {
+      label {
+        top: -48px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    padding-top: 10%;
+    flex-direction: column;
+    align-items: center;
+  }
+  &__img {
+    align-self: center;
+    width: 50vh;
+  }
+}

@@ -1,0 +1,244 @@
+.sprint {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+  background-color: white;
+
+  &::before {
+    background-image: url('../assets/images/back-title-gray.svg');
+    position: absolute;
+    content: '';
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 500px;
+    height: 200px;
+    top: 0%;
+    left: 0;
+  }
+
+  &__icon-wrap {
+    position: absolute;
+    top: 50px;
+    right: 250px;
+    display: flex;
+    gap: 20px;
+  }
+
+  &__sound {
+    width: 30px;
+    cursor: pointer;
+  }
+
+  &__screen {
+    width: 30px;
+    cursor: pointer;
+  }
+
+  &__title {
+    position: absolute;
+    top: 20px;
+    left: 50px;
+  }
+
+  &__wrapper {
+    width: 600px;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid $violet;
+    font-size: $font-s-big;
+  }
+
+  &__plus-score {
+    font-size: $font-title;
+    font-weight: bold;
+    color: $violet;
+  }
+
+  &__main {
+    display: flex;
+    height: 200px;
+    justify-content: space-between;
+    margin-top: 50px;
+  }
+
+  &__words {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 0;
+  }
+
+  &__word {
+    color: $violet;
+    font-weight: bold;
+    font-size: $font-big;
+    line-height: 1;
+    text-align: center;
+  }
+
+  &__wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 60px;
+    border: 1px solid $violet;
+    flex-shrink: 0;
+  }
+
+  &__buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    & .button {
+      height: 60px;
+
+      &:first-of-type {
+        background-color: $light-violet;
+      }
+    }
+  }
+
+  &__question {
+    align-self: center;
+    font-size: 200px;
+    font-weight: bold;
+    color: $med-gray;
+  }
+
+  &__equally {
+    font-size: 100px;
+    font-weight: bold;
+    color: $med-gray;
+  }
+
+  &__time {
+    color: $gray;
+    padding-right: 10px;
+  }
+
+  &__score {
+    color: $gray;
+    padding-right: 10px;
+  }
+
+  &__score-count {
+    color: $violet;
+  }
+
+  &__time-count {
+    color: $violet;
+  }
+
+  .red {
+    color: red;
+  }
+
+  .green {
+    color: green;
+  }
+}
+
+.game-stat {
+  &__main {
+    /*  display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center; */
+    margin-top: 10px;
+    padding-bottom: 20px;
+    height: 50vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+
+  &__block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__stat {
+    font-size: $font-s-big;
+    color: $violet;
+    font-weight: bold;
+  }
+
+  &__text {
+    color: $violet;
+  }
+
+  &__title-wrap {
+    border-bottom: 2px solid $violet;
+  }
+
+  &__wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    height: 40vh;
+  }
+
+  &__title {
+    text-transform: uppercase;
+    color: $gray;
+    font-size: $font-s-big;
+    text-align: center;
+    padding-bottom: 10px;
+  }
+
+  &__subtitle {
+    font-size: $font-big;
+    color: $violet;
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
+
+  &__btn-wrap {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  &__stat-wrap {
+    display: flex;
+    gap: 50px;
+    justify-content: center;
+    padding-bottom: 20px;
+    padding-top: 20px;
+  }
+
+  &__sound {
+    background-image: url('../assets/images/challenge-play.svg');
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    border: none;
+    background-color: transparent;
+    margin-right: 10px;
+    filter: grayscale(10);
+  }
+
+  &__word-wrap {
+    display: flex;
+    align-items: center;
+  }
+
+  &__word {
+    font-weight: 400;
+    color: $violet;
+  }
+}
