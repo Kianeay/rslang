@@ -70,7 +70,7 @@ export default class MainPage {
 
     const aboutTitle = document.createElement('h2');
     aboutTitle.className = 'main__about-subtitle';
-    aboutTitle.textContent = 'About';
+    aboutTitle.textContent = 'Application features';
 
     wrapper.append(
       aboutTitle,

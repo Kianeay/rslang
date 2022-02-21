@@ -6,3 +6,4 @@ export { default as Footer } from './Footer';
 export { default as DifficultyLevel } from './DifficultyLevel';
 export { default as Word } from './Word';
 export { default as Result } from './Result';
+export { default as Pagination } from './Pagination';
