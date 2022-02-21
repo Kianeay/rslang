@@ -90,11 +90,5 @@ export default class View {
         el.classList.remove('active');
       }
     });
-
-    /*   for (const link of links) {
-      currentPage === link.getAttribute('href').slice(1)
-        ? link.classList.add('active')
-        : link.classList.remove('active');
-    } */
   }
 }

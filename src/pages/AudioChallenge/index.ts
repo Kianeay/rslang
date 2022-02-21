@@ -242,10 +242,11 @@ export default class AudioChallenge extends GameAudioCall {
     container.className = 'challenge';
     const words = new DifficultyLevel(this.getWord.bind(this)).render();
 
-    container.append(
-      words,
-      this.createLoginBtn(),
-    );
+    container.append(words);
+
+    if (!localStorage.getItem('userID')) {
+      container.append(this.createLoginBtn());
+    }
 
     return container;
   }
