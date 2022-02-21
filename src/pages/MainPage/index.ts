@@ -119,6 +119,24 @@ export default class MainPage {
     return wrapper;
   }
 
+  private createAboutTeam() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'main__team';
+
+    const aboutTitle = document.createElement('h2');
+    aboutTitle.className = 'main__about-subtitle';
+    aboutTitle.textContent = 'Our team';
+
+    wrapper.append(
+      aboutTitle,
+      this.createImageBlock('', 'About', 'Ekaterina'),
+      this.createImageBlock('', 'About', 'Artem'),
+      this.createImageBlock('', 'About', 'Elena'),
+    );
+
+    return wrapper;
+  }
+
   private createIcon(name: string) {
     const iconWrap = document.createElement('div');
     iconWrap.className = 'main__icon-wrap';
@@ -141,6 +159,7 @@ export default class MainPage {
       this.createMainBackground(),
       this.createLoginBtn(),
       this.createAbout(),
+      this.createAboutTeam(),
       footer,
     );
 
