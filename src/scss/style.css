@@ -590,6 +590,17 @@ ul {
   text-transform: capitalize;
 }
 
+.word__wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  -webkit-column-gap: 15px;
+          column-gap: 15px;
+}
+
 .word__transcription {
   padding-left: 35px;
   font-weight: bold;
@@ -603,6 +614,19 @@ ul {
   padding-left: 35px;
   font-size: 1.125rem;
   line-height: 2.1875rem;
+}
+
+.word__sound {
+  width: 30px;
+  height: 30px;
+  background-image: url(../assets/images/textbook-sound.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }
 
 .word__meaning {
@@ -665,6 +689,10 @@ ul {
 .word .word__notlearned {
   background-color: #d2448d;
   color: #eae8ed;
+}
+
+.word-invisible {
+  display: none;
 }
 
 .pagination {
