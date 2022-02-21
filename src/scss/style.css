@@ -977,6 +977,7 @@ ul {
           justify-content: center;
   height: 100vh;
   position: relative;
+  background-color: white;
 }
 
 .sprint::before {
@@ -989,6 +990,26 @@ ul {
   height: 200px;
   top: 0%;
   left: 0;
+}
+
+.sprint__icon-wrap {
+  position: absolute;
+  top: 50px;
+  right: 250px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 20px;
+}
+
+.sprint__sound {
+  width: 30px;
+  cursor: pointer;
+}
+
+.sprint__screen {
+  width: 30px;
+  cursor: pointer;
 }
 
 .sprint__title {

@@ -66,6 +66,8 @@ export default class SprintGame {
 
   private learnedWord: number = 0;
 
+  private isSoundEnabled: boolean = true;
+
   constructor() {
     this.header = new SprintHeader(this.stopGame.bind(this));
   }
@@ -264,6 +266,7 @@ export default class SprintGame {
     if (this.wordsArray[this.currentWordIndex].correct) {
       this.correctAnswers.push(this.currentWordIndex);
       this.checkRowAnswers(true);
+      this.playSound(true);
 
       if (this.currentRow >= 3 && this.currentRow <= 5) {
         this.header.updateScore(20);
@@ -294,7 +297,7 @@ export default class SprintGame {
       }, 1500);
     } else {
       this.wrongAnswers.push(this.currentWordIndex);
-
+      this.playSound(false);
       this.checkRowAnswers(false);
       this.header.updatePlusScore(10);
 
@@ -321,7 +324,7 @@ export default class SprintGame {
   private onWrongClick() {
     if (this.wordsArray[this.currentWordIndex].correct) {
       this.wrongAnswers.push(this.currentWordIndex);
-
+      this.playSound(false);
       this.checkRowAnswers(false);
 
       this.header.updatePlusScore(10);
@@ -345,6 +348,7 @@ export default class SprintGame {
     } else {
       this.correctAnswers.push(this.currentWordIndex);
       this.checkRowAnswers(true);
+      this.playSound(true);
 
       if (this.currentRow >= 3 && this.currentRow <= 5) {
         this.header.updateScore(20);
@@ -546,18 +550,63 @@ export default class SprintGame {
     this.component.append(stat);
   }
 
+  private playSound(type: boolean) {
+    if (this.isSoundEnabled) {
+      const audio = new Audio();
+      if (type) {
+        audio.src = 'src/assets/sounds/yes.mp3';
+      } else {
+        audio.src = 'src/assets/sounds/no.mp3';
+      }
+      audio.play();
+    }
+  }
+
+  private createToolBar() {
+    const iconWRapper = document.createElement('div');
+    iconWRapper.className = 'sprint__icon-wrap';
+
+    const sound = document.createElement('img');
+    sound.className = 'sprint__sound';
+    sound.src = 'src/assets/images/play-audio.svg';
+
+    const fullscreen = document.createElement('img');
+    fullscreen.className = 'sprint__screen';
+    fullscreen.src = 'src/assets/images/fullscreen.svg';
+
+    sound.addEventListener('click', () => {
+      this.isSoundEnabled = !this.isSoundEnabled;
+    });
+    fullscreen.addEventListener('click', () => {
+      const isFullscreen = document.fullscreenElement;
+      if (isFullscreen) {
+        document.exitFullscreen();
+      } else {
+        this.component.requestFullscreen();
+      }
+    });
+
+    iconWRapper.append(sound, fullscreen);
+
+    return iconWRapper;
+  }
+
   render() {
     this.component = document.createElement('div');
     this.component.className = 'sprint';
     this.levelElem = new DifficultyLevel(this.getWords.bind(this)).render();
 
     if (localStorage.getItem('page') === 'textbook') {
-      this.component.append(this.createTitle('Sprint'));
+      this.component.append(this.createTitle('Sprint'), this.createToolBar());
       const level = localStorage.getItem('textbook-difficulty');
       const page = localStorage.getItem('textbook-page');
       this.getWordsTextBook(level, page);
     } else {
-      this.component.append(this.createTitle('Sprint'), this.levelElem);
+      this.component.append(
+        this.createTitle('Sprint'),
+        this.createToolBar(),
+        this.levelElem,
+      );
     }
 
     if (!localStorage.getItem('userID')) {

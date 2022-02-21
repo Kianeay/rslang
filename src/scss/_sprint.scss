@@ -4,6 +4,7 @@
   justify-content: center;
   height: 100vh;
   position: relative;
+  background-color: white;
 
   &::before {
     background-image: url('../assets/images/back-title-gray.svg');
@@ -15,6 +16,24 @@
     height: 200px;
     top: 0%;
     left: 0;
+  }
+
+  &__icon-wrap {
+    position: absolute;
+    top: 50px;
+    right: 250px;
+    display: flex;
+    gap: 20px;
+  }
+
+  &__sound {
+    width: 30px;
+    cursor: pointer;
+  }
+
+  &__screen {
+    width: 30px;
+    cursor: pointer;
   }
 
   &__title {
