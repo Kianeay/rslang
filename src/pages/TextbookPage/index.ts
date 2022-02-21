@@ -32,6 +32,9 @@ export default class TextbookPage {
   private async loadWords(wordsList: HTMLDivElement, difficultyLevel: string, page: string) {
     const words = await getWords(difficultyLevel, page);
 
+    localStorage.setItem('textbook-difficulty', difficultyLevel);
+    localStorage.setItem('textbook-page', page);
+
     const user = localStorage.getItem('userID');
     let userWords: userWord[];
     if (user) {
@@ -165,7 +168,12 @@ export default class TextbookPage {
     const difficultyLevels = new DifficultyLevel(
       this.changeActiveDifficultyLevel.bind(this),
     ).render();
-    this.difficultyLevel = '0';
+    const level = localStorage.getItem('textbook-difficulty');
+    if (typeof level === 'string') {
+      this.difficultyLevel = level;
+    } else {
+      this.difficultyLevel = '0';
+    }
 
     return difficultyLevels;
   }
@@ -185,7 +193,14 @@ export default class TextbookPage {
   private createWordsList(element: HTMLDivElement) {
     const wordsList = document.createElement('div');
     wordsList.className = 'words__list';
-    this.loadWords(wordsList, '0', '0');
+
+    const level = localStorage.getItem('textbook-difficulty');
+    const page = localStorage.getItem('textbook-page');
+    if (typeof level === 'string' && typeof page === 'string') {
+      this.loadWords(wordsList, level, page);
+    } else {
+      this.loadWords(wordsList, '0', '0');
+    }
     element.append(wordsList);
   }
 

@@ -7,27 +7,58 @@ export default class Word {
 
   constructor() { }
 
+  private changeWordInList(id: string, status: string) {
+    const wordsInList = document.querySelectorAll('.words__item');
+    Array.from(wordsInList).forEach((item) => {
+      if (id === (item as HTMLElement).dataset.id) {
+        if (status === 'difficult') {
+          item.classList.add('words__item-hard');
+          item.classList.remove('words__item-learned');
+          item.setAttribute('data-status', 'difficult');
+        }
+        if (status === 'simple') {
+          item.classList.remove('words__item-hard');
+          item.removeAttribute('data-status');
+        }
+      }
+    });
+  }
+
   private async workWithDifficultWords(event: Event) {
     const { currentTarget } = event;
-    const { word } = (currentTarget as HTMLElement).dataset;
+    const { word, status } = (currentTarget as HTMLElement).dataset;
 
     const user = localStorage.getItem('userID');
 
-    const options = {
-      status: 'difficult',
-      newWord: 'false',
-      sprint: { correctAnswers: 0 },
-      audio: { correctAnswers: 0 },
-    };
+    if ((currentTarget as HTMLElement).classList.contains('word__simple')) {
+      await changeUserWord(user, word, { optional: { status: 'simple' } });
 
-    const response = await changeUserWord(user, word, { optional: options });
-    if (!response) {
-      await createUserWords(user, word, { optional: options });
+      (currentTarget as HTMLElement).textContent = 'It\'s difficult';
+      (currentTarget as HTMLElement).classList.remove('word__simple');
+
+      this.changeWordInList(word, 'simple');
+    } else {
+      const options = {
+        status: 'difficult',
+        newWord: 'false',
+        sprint: { correctAnswers: 0 },
+        audio: { correctAnswers: 0 },
+      };
+
+      const response = await changeUserWord(user, word, { optional: { status: 'difficult' } });
+      if (!response) {
+        await createUserWords(user, word, { optional: options });
+      }
+
+      (currentTarget as HTMLElement).textContent = 'It\'s simple';
+      (currentTarget as HTMLElement).classList.add('word__simple');
+
+      const learnedButton = document.querySelector('.word__learned');
+      learnedButton.textContent = 'I know it';
+      learnedButton.classList.remove('word__notlearned');
+
+      this.changeWordInList(word, 'difficult');
     }
-
-    (currentTarget as HTMLElement).textContent = 'It\'s simple';
-    (currentTarget as HTMLElement).classList.add('word__simple');
-    (currentTarget as HTMLElement).classList.remove('word__difficult');
   }
 
   private async workWithLearnedWords(event: Event) {
@@ -94,8 +125,7 @@ export default class Word {
       if (options.status === 'difficult') {
         difficultButton.textContent = 'It\'s simple';
         difficultButton.classList.add('word__simple');
-      }
-      else {
+      } else {
         difficultButton.textContent = 'It\'s difficult';
         difficultButton.classList.remove('word__simple');
       }
@@ -105,8 +135,7 @@ export default class Word {
       if (options.status === 'learned') {
         learnedButton.textContent = 'Need to repeat';
         learnedButton.classList.add('word__notlearned');
-      }
-      else {
+      } else {
         learnedButton.textContent = 'I know it';
         learnedButton.classList.remove('word__notlearned');
       }
