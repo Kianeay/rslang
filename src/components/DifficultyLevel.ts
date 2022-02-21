@@ -26,6 +26,11 @@ export default class DifficultyLevel {
   }
 
   private createDifficultyList() {
+    let level = Number(localStorage.getItem('textbook-difficulty'));
+    if (typeof level !== 'number') {
+      level = 0;
+    }
+
     const difficultyList = document.createElement('ul');
     difficultyList.className = 'difficulty__list';
     for (let i = 0; i < this.difficultyLevelsCount; i += 1) {
@@ -34,7 +39,7 @@ export default class DifficultyLevel {
       difficultyItem.textContent = String(i + 1);
       difficultyItem.setAttribute('data-num', String(i));
 
-      if (i === 0) {
+      if (i === level) {
         difficultyItem.classList.add('difficulty__item-active');
       }
 

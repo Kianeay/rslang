@@ -39,6 +39,11 @@ export default class Pagination {
   }
 
   private createPaginationItems(component: HTMLElement) {
+    let page = Number(localStorage.getItem('textbook-page'));
+    if (typeof page !== 'number') {
+      page = 0;
+    }
+
     for (let i = 0; i < this.pages; i += 1) {
       if (i === this.visiblePages) {
         component.append(this.createMiddleButton());
@@ -53,7 +58,7 @@ export default class Pagination {
 
       item.textContent = String(i + 1);
 
-      if (i === 0) {
+      if (i === page) {
         item.classList.add('pagination__item-active');
       }
 
