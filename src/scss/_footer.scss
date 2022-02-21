@@ -11,3 +11,13 @@
     align-items: center;
   }
 }
+
+@media (max-width: 714px) {
+  .footer {
+    padding-right: 0;
+
+    &__links {
+      flex-direction: column;
+    }
+  }
+}

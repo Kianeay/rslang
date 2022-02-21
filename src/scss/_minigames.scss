@@ -104,3 +104,9 @@
     font-size: 30px;
   }
 }
+
+@media (max-width: 714px) {
+  .games-wrap::before {
+    width: 0px;
+  }
+}
