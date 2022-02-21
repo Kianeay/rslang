@@ -66,6 +66,18 @@ export default class GameAudioCall {
     promises.forEach((item) => this.data.push(...item));
   }
 
+  protected async getWordsPage(page: string, group: string) {
+    const arr = await getWords(group, page);
+    this.data = [...arr];
+  }
+
+  protected async getArrayGamePage() {
+    this.data.sort(() => Math.random() - 0.5);
+    this.arrayGame = this.data.map((item) =>
+      Object.assign(item, { correctAnswer: 0 }),
+    );
+  }
+
   protected async getArrayGame() {
     let arrNum = Array.from({ length: 20 }, () => this.getRandomNum(600));
     arrNum = [...this.checkArray(arrNum, 600)];
