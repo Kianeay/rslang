@@ -4,13 +4,23 @@
   position: relative;
   background-size: contain;
 
-  &__title {
-    font-size: $font-title;
-    color: $violet;
-    padding-top: 15px;
-    background-image: url('../assets/images/gray-back.svg');
+  &::before {
+    background-image: url('../assets/images/back-title-gray.svg');
+    position: absolute;
+    content: '';
     background-repeat: no-repeat;
-    background-position: left -35px;
+    background-size: contain;
+    width: 500px;
+    height: 200px;
+    top: 0%;
+    left: 0;
+  }
+
+  &__title {
+    padding-top: 15px;
+    margin-bottom: 50px;
+    position: relative;
+    z-index: 1000;
   }
 }
 
