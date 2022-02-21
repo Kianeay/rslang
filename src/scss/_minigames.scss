@@ -69,3 +69,44 @@
     padding-bottom: 60px;
   }
 }
+
+@media (max-width: 900px) {
+  .games {
+  }
+  .minigame {
+    flex-wrap: wrap;
+    justify-content: center;
+
+    &__wrap {
+      justify-content: center;
+      align-items: center;
+    }
+
+    &__info {
+      text-align: center;
+      padding-bottom: 20px;
+    }
+
+    &__icon-wrap {
+      margin-right: 0;
+    }
+
+    &__img {
+      width: 100%;
+    }
+  }
+
+  .main__login {
+    visibility: hidden;
+  }
+
+  .games-wrap__title {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 714px) {
+  .games-wrap::before {
+    width: 0px;
+  }
+}

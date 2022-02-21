@@ -154,3 +154,37 @@
     }
   }
 }
+
+@media (max-width: 1044px) {
+  .main {
+    &__img {
+      position: static;
+      margin: 20px auto;
+    }
+
+    &__wrap {
+      min-height: auto;
+      width: 90%;
+      background-size: 90%;
+    }
+
+    &__subtitle {
+      max-width: 100%;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .main {
+    overflow-x: hidden;
+    &__team {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      .main__about-subtitle {
+        padding: 0;
+      }
+    }
+  }
+}
